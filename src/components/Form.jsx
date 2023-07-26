@@ -3,6 +3,7 @@ import { Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, View } from 
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
+import { database } from '../database/firebaseC'
 
 const loadFonts = async () => {
     await Font.loadAsync({
@@ -30,22 +31,51 @@ const predios = [
 
 const CrimeForm = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const { control, handleSubmit } = useForm();
+    const { control, handleSubmit, reset } = useForm();
     const [formData, setFormData] = useState({});
     const [formArray, setFormArray] = useState([]);
     const navigation = useNavigation();
-    const [selectedTipoNovedad, setSelectedTipoNovedad] = useState(null);
-    const [selectedPredio, setSelectedPredio] = useState(null);
-    const [selectedEmpresa, setSelectedEmpresa] = useState(null);
+    const [selectedTipoNovedad, setSelectedTipoNovedad] = useState([]);
+    const [selectedPredio, setSelectedPredio] = useState([]);
+    const [selectedEmpresa, setSelectedEmpresa] = useState([]);
+    const [selectedHour, setSelectedHour] = useState([]);
+    const [selectedDocument, setSelectedDocument] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+
+    const FilePicker = () => {
+        const handleFilePick = async () => {
+          try {
+            const res = await DocumentPicker.pick({
+              type: [DocumentPicker.types.allFiles],
+            });
+      
+            // Aquí puedes procesar el archivo seleccionado (por ejemplo, subirlo a Firebase o guardar la ruta del archivo).
+            console.log('Archivo seleccionado:', res);
+          } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+              console.log('Cancelado por el usuario');
+            } else {
+              console.error('Error al seleccionar el archivo:', err);
+            }
+          }
+        };
+    }
 
     useEffect(() => {
         loadFonts();
     }, []);
 
+
     const handleFormRestart = () => {
         setSelectedOptions([]);
+        setSelectedTipoNovedad([]);
+        setSelectedPredio([]);
+        setSelectedEmpresa([]);
         setFormData({});
-        // ... Reiniciar otros campos del formulario aquí si es necesario ...
+
+        // Resetea los valores del formulario usando el método reset del useForm
+        reset();
     };
 
     const handleFormSubmit = async (data) => {
@@ -53,18 +83,24 @@ const CrimeForm = () => {
             const dataToSend = {
                 vigilador: data.vigilador,
                 vigiladorNovedad: data.vigiladorNovedad,
-                tipoNovedad: selectedOptions,
-                horaHecho: data.horaHecho,
-                predio: selectedOptions,
-                empresaSeleccionada: formData.empresaOtro || data.empresa,
+                tipoNovedad: selectedTipoNovedad,
+                horaHecho: selectedHour,
+                predio: selectedPredio,
+                empresaSeleccionada: selectedEmpresa,
                 novedad1: data.novedad1,
                 predioOtro: formData.predioOtro || '',
                 empresaOtro: formData.empresaOtro || '',
             };
 
-            setFormArray((prevFormArray) => [...prevFormArray, dataToSend]);
+            setFormArray((prevFormArray) => {
+                const newFormArray = [dataToSend, ...prevFormArray];
+                return newFormArray;
+            });
+
             console.log('Form data added to the formArray:', dataToSend);
-            alert('Form made');
+
+            await database.collection('form').add({ dataToSend });
+            alert('Form made', dataToSend);
 
             navigation.navigate('ThankYou', { onFormRestart: handleFormRestart });
         } catch (error) {
@@ -73,31 +109,41 @@ const CrimeForm = () => {
     };
 
     const handleTipoNovedadChange = (selectedOption) => {
-        setSelectedOptions((prevSelectedOptions) => {
-            if (prevSelectedOptions.includes(selectedOption)) {
-                return prevSelectedOptions.filter((option) => option !== selectedOption);
+        setSelectedTipoNovedad((prevSelectedTipoNovedad) => {
+            if (prevSelectedTipoNovedad.includes(selectedOption)) {
+                return prevSelectedTipoNovedad.filter((option) => option !== selectedOption);
             } else {
-                return [...prevSelectedOptions, selectedOption];
+                return [...prevSelectedTipoNovedad, selectedOption];
             }
         });
     };
 
     const handlePredioChange = (selectedOption) => {
-        setSelectedOptions((prevSelectedOptions) => {
-            if (prevSelectedOptions.includes(selectedOption)) {
-                return prevSelectedOptions.filter((option) => option !== selectedOption);
+        setSelectedPredio((prevSelectedPredio) => {
+            if (prevSelectedPredio.includes(selectedOption)) {
+                return prevSelectedPredio.filter((option) => option !== selectedOption);
             } else {
-                return [...prevSelectedOptions, selectedOption];
+                return [...prevSelectedPredio, selectedOption];
             }
         });
     };
 
     const handleEmpresaChange = (selectedOption) => {
-        setSelectedOptions((prevSelectedOptions) => {
-            if (prevSelectedOptions.includes(selectedOption)) {
-                return prevSelectedOptions.filter((option) => option !== selectedOption);
+        setSelectedEmpresa((prevSelectedEmpresa) => {
+            if (prevSelectedEmpresa.includes(selectedOption)) {
+                return prevSelectedEmpresa.filter((option) => option !== selectedOption);
             } else {
-                return [...prevSelectedOptions, selectedOption];
+                return [...prevSelectedEmpresa, selectedOption];
+            }
+        });
+    };
+
+    const handleHourChange = (selectedOption) => {
+        setSelectedHour((prevSelectedHour) => {
+            if (prevSelectedHour.includes(selectedOption)) {
+                return prevSelectedHour.filter((option) => option !== selectedOption);
+            } else {
+                return [...prevSelectedHour, selectedOption];
             }
         });
     };
@@ -154,7 +200,7 @@ const CrimeForm = () => {
                     >
                         <View style={styles.radioCircle}>
                             <Text>
-                                {selectedOptions.includes(newSuccess) && <View style={styles.selectedRb} />}
+                                {selectedTipoNovedad.includes(newSuccess) && <View style={styles.selectedRb} />}
                             </Text>
                         </View>
                         <Text style={styles.radioText}>{newSuccess}</Text>
@@ -187,18 +233,12 @@ const CrimeForm = () => {
                         key={index}
                         style={styles.radio}
                         onPress={() => {
-                            setSelectedOptions((prevSelectedOptions) => {
-                                if (prevSelectedOptions.includes(hour)) {
-                                    return prevSelectedOptions.filter((option) => option !== hour);
-                                } else {
-                                    return [...prevSelectedOptions, hour];
-                                }
-                            });
+                            handleHourChange(hour)
                         }}
                     >
                         <View style={styles.radioCircle}>
                             <Text>
-                                {selectedOptions.includes(hour) && <View style={styles.selectedRb} />}
+                                {selectedHour.includes(hour) && <View style={styles.selectedRb} />}
                             </Text>
                         </View>
                         <Text style={styles.radioText}>{hour}</Text>
@@ -218,7 +258,7 @@ const CrimeForm = () => {
                     >
                         <View style={styles.radioCircle}>
                             <Text>
-                                {selectedOptions.includes(predio) && <View style={styles.selectedRb} />}
+                                {selectedPredio.includes(predio) && <View style={styles.selectedRb} />}
                             </Text>
                         </View>
                         <Text style={styles.radioText}>{predio}</Text>
@@ -255,7 +295,7 @@ const CrimeForm = () => {
                     >
                         <View style={styles.radioCircle}>
                             <Text>
-                                {selectedOptions.includes(e) && <View style={styles.selectedRb} />}
+                                {selectedEmpresa.includes(e) && <View style={styles.selectedRb} />}
                             </Text>
                         </View>
                         <Text style={styles.radioText}>{e}</Text>
@@ -295,6 +335,14 @@ const CrimeForm = () => {
                     rules={{ required: true, maxLength: 80 }}
                     defaultValue=""
                 />
+            </View>
+
+
+            <View style={styles.button}>
+                <TouchableOpacity onPress={FilePicker}>
+                    <Text>Seleccionar archivo</Text>
+                </TouchableOpacity>
+                {selectedFile && <Text>Archivo seleccionado: {selectedFile}</Text>}
             </View>
 
             <View style={styles.box}>

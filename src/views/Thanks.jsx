@@ -5,13 +5,20 @@ import { Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, View } from 
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-const ThankYouScreen = () => {
+const ThankYouScreen = ({route}) => {
+    
     const navigation = useNavigation();
+
+    const { onFormRestart } = route.params;
 
     const handleFormRestart = () => {
         // Navigate back to the Form screen
+        
+        onFormRestart();
         navigation.navigate('Home');
     };
+
+
 
     return (
         <View style={styles.thankYouContainer}>

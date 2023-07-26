@@ -18,8 +18,8 @@ const firebaseApp = firebase.initializeApp({
 
 
  
-  export const db = firebaseApp.firestore()
+const database = firebaseApp.firestore()
 
 
-  export default firebaseApp
-  
+export default firebaseApp
+export {database}
