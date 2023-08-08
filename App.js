@@ -12,6 +12,11 @@ import LoginScreen from './src/views/LoginScreen'; // ¡No olvides importar Logi
 import ProfileScreen from './src/views/ProfileScreen';
 import ReportsScreen from './src/views/ReportScreen';
 import NotificationSender from './src/components/Notifications';
+import AddCompanyScreen from './src/views/addCompanyScreen';
+import VigilantesScreen from './src/views/vigilanteScreen';
+import CalendarView from './src/components/Calendar';
+import QRScanner from './src/components/QRscanner';
+import AlertForm from './src/components/AlertForm';
 const Stack = createStackNavigator();
 
 // Agrega la configuración de Firebase aquí si no lo has hecho aún
@@ -55,6 +60,12 @@ export default function App() {
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="addCompany" component={AddCompanyScreen} />
+      <Stack.Screen name="Vigilantes" component={VigilantesScreen} />
+      <Stack.Screen name="reportHistory" component={ReportsScreen} />
+      <Stack.Screen name="calendar" component={CalendarView} />
+
+
     </Stack.Navigator>
     </NavigationContainer>
   );
