@@ -9,37 +9,42 @@ const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState('vigilante');
+  const [role, setRole] = useState('');
   const [location, setLocation] = useState('');
+  const [dni, setDNI] = useState('');
 
 
 
-  const handleRegister = () => {
-    // Lógica para registrar un nuevo usuario...
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // Obtenemos el ID del usuario creado
-        const userId = userCredential.user.uid;
 
-  
-        // Guardamos el usuario en la colección "users" de Firestore
-        database.collection('users').doc(userId).set({
-          name: name,
-          email: email,
-          role: role,
-          location: location,
-        });
-  
-        // Redirigimos al usuario a la pantalla de inicio de sesión
-        navigation.navigate('Home');
-      })
-      .catch((error) => {
-        console.error('Error al registrar el usuario:', error.message);
+  const handleRegister = async () => {
+    try {
+      // Lógica para registrar un nuevo usuario...
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+      // Obtenemos el ID del usuario creado
+      const userId = userCredential.user.uid;
+
+      // Obtener el token de registro
+      const messaging = firebase.messaging();
+      const token = await messaging.getToken();
+
+      // Guardamos el usuario en la colección "users" de Firestore junto con el token de registro
+      await database.collection('users').doc(userId).set({
+        name: name,
+        email: email,
+        role: role,
+        location: location,
+        uid: userId,
+        dni: dni,
+        pushToken: token, // Aquí guardamos el token de registro
       });
-  };
-  
+
+      // Redirigimos al usuario a la pantalla de inicio de sesión
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error al registrar el usuario:', error.message);
+    }
+  }; 
 
   return (
     <View style={styles.container}>
@@ -49,6 +54,16 @@ const RegisterScreen = ({ navigation }) => {
         value={name}
         onChangeText={(text) => setName(text)}
       />
+
+      
+      <Text style={styles.label}>DNI:</Text>
+      <TextInput
+        style={styles.input}
+        value={dni}
+        onChangeText={(text) => setDNI(text)}
+      />
+      
+      
 
       <Text style={styles.label}>Correo electrónico:</Text>
       <TextInput

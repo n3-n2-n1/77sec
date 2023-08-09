@@ -5,6 +5,9 @@ import 'firebase/compat/auth';
 import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = ({navigation}) => {
+
+
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -44,6 +47,9 @@ const LoginScreen = ({navigation}) => {
         secureTextEntry
         onChangeText={(text) => setPassword(text)}
       />
+
+      <View style={styles.actions}>
+
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
@@ -52,6 +58,7 @@ const LoginScreen = ({navigation}) => {
       <TouchableOpacity style={styles.button} onPress={handleRegistration}>
         <Text style={styles.buttonText}>Registrarme</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -62,6 +69,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+  },
+  actions:{
+    width: '40%',
+    gap: 30,
+    paddingTop: 30,
   },
   heading: {
     fontSize: 24,

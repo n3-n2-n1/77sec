@@ -1,12 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react'
-import { Text, TouchableOpacity, StyleSheet, ScrollView, View, Button } from 'react-native';
-import CrimeForm from '../components/Form';
-import ProfileScreen from './ProfileScreen';
+import { Text, TouchableOpacity, StyleSheet, ScrollView, View, Button} from 'react-native';
 import firebase from '../database/firebaseC';
 import 'firebase/compat/auth'
 import { useEffect } from 'react';
-import AddCompanyScreen from './addCompanyScreen';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -55,102 +52,105 @@ const Home = () => {
   };
 
   return (
-    <View style={styles.container}>
-
-
-      <View style={styles.btnCall}>
-        <TouchableOpacity onPress={handleCall}>
-          <Text style={styles.btnCall}>Llamar</Text>
-        </TouchableOpacity>
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>¡Bienvenido!</Text>
+      <View style={styles.gridContainer}>
+        <GridButton onPress={handleReport} title="Reportar" icon="alert-circle" />
+        <GridButton onPress={handleCall} title="Llamar" icon="phone" />
       </View>
-
-      <View style={styles.btnCall}>
-        <TouchableOpacity onPress={handleReport}>
-          <Text style={styles.btnCall}>Reportar</Text>
-        </TouchableOpacity>
+      <View style={styles.gridContainer}>
+        <GridButton onPress={() => navigation.navigate('qr')} title="Escanear QR" icon="qrcode-scan" />
+        <GridButton onPress={() => navigation.navigate('Alerta')} title="Alerta" icon="alert-octagon" />
       </View>
+      {isAdmin && (
+        <View style={styles.gridContainer}>
+          <ScrollView style={styles.Container}>
 
-      <View style={styles.btnCall}>
-        <TouchableOpacity onPress={() => navigation.navigate('addCompany')}>
-          <Text style={styles.btnCall}>Añadir Empresa</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.btnCall}>
-        <TouchableOpacity onPress={() => navigation.navigate('Vigilantes')}>
-          <Text style={styles.btnCall}>Añadir Vigilante</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.btnCall}>
-        <TouchableOpacity onPress={() => navigation.navigate('Vigilantes')}>
-          <Text style={styles.btnCall}>Enviar Notif</Text>
-        </TouchableOpacity>
-      </View>
-
-
-      <View style={styles.btnCall}>
-      <TouchableOpacity onPress={() => navigation.navigate('qr')}>
-        <Text style={styles.btnCall}>Escanear QR</Text>
-      </TouchableOpacity>
-      </View>
-
-      <View style={styles.btnCall}>
-      <TouchableOpacity onPress={() => navigation.navigate('Alerta')}>
-        <Text style={styles.btnCall}>ALERTA</Text>
-      </TouchableOpacity>
-      </View>
-
-      <View style={styles.btnCall}>
-      <TouchableOpacity onPress={() => navigation.navigate('calendar')}>
-        <Text style={styles.btnCall}>Ver Calendario</Text>
-      </TouchableOpacity>
-      </View>
-
-
-      
-        <View style={styles.btnCall}>
-          <TouchableOpacity onPress={() => navigation.navigate('reportHistory')}>
-            <Text style={styles.btnCall}>Reportes Historial</Text>
-          </TouchableOpacity>
+          <GridButton onPress={() => navigation.navigate('calendar')} title="Ver Calendario" icon="calendar" />
+          <GridButton onPress={() => navigation.navigate('qrGen')} title="Ver QR" icon="qrcode" />
+          <GridButton onPress={() => navigation.navigate('AdminDashboard')} title="Admin Panel" icon="file-text" />
+          <GridButton onPress={() => navigation.navigate('NotificationSender')} title="NotificationSender" icon="file-text" />
+          
+          </ScrollView>
         </View>
-    
-      <View style={styles.btnCall}>
-        <TouchableOpacity onPress={handleProfile}>
-          <Text style={styles.btnCall}>Perfil</Text>
-        </TouchableOpacity>
+      )}
+      <View style={styles.gridContainer}>
+        <GridButton onPress={handleProfile} title="Perfil" icon="user" />
       </View>
+      <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+        <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+};
 
-      <Button title="Cerrar Sesión" onPress={handleLogout} />
-
-
-    </View>
-
-
-
-
-
-  )
-}
+const GridButton = ({ onPress, title, icon }) => (
+  <TouchableOpacity onPress={onPress} style={styles.gridButton}>
+    <Text style={styles.gridButtonText}>{title}</Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
-    paddingVertical: 16,
+    backgroundColor: '#1E1E1E',
     paddingHorizontal: 20,
+    paddingTop: 40,
   },
-  btnCall: {
-    marginVertical: 10,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'red',
-    color: 'black',
-    fontSize: 20,
+  Container:{
+    width: '100%',
+    gap: '30',
+    paddingTop: 24,
+  },
+  logo: {
+    width: 80,
+    height: 80,
+    alignSelf: 'center',
+  },
+  title: {
+    color: 'white',
+    fontSize: 28,
+    fontWeight: 'bold',
     textAlign: 'center',
-    paddingVertical: 10,
+    marginTop: 16,
+    marginBottom: 40,
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    gap: 30,
+  },
+  gridButton: {
+    width: '48%',
+    gap: 30,
+    flex: 1,
+    backgroundColor: '#333333',
+    borderRadius: 10,
+    paddingVertical: 20,
+    alignItems: 'center',
+    paddingTop: 20,
+  },
+  gridButtonIcon: {
+    marginBottom: 12,
+  },
+  gridButtonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  logoutButton: {
+    backgroundColor: '#FF4545',
+    borderRadius: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+  },
+  logoutButtonText: {
+    color: 'white',
+    fontSize: 18,
   },
 });
+
 
 export default Home;

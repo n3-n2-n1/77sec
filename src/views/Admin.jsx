@@ -1,62 +1,82 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import firebase from '../database/firebaseC';
+import EnterprisesView from './EnterprisesView';
+import ReportsChart from '../components/chartAdmin';
 
-const AdminViewScreen = () => {
-  const sendNotificationsToAllDevices = async () => {
-    try {
-      // Initialize Firebase with your configuration
-      firebase.initializeApp({
-        apiKey: "AIzaSyBNR6o3JhtLLAKLfXC45UhX__2VzOyXr8c",
-        authDomain: "crimereports-d260e.firebaseapp.com",
-        databaseURL: "https://crimereports-d260e-default-rtdb.firebaseio.com",
-        projectId: "crimereports-d260e",
-        storageBucket: "crimereports-d260e.appspot.com",
-        messagingSenderId: "970236483682",
-        appId: "1:970236483682:web:c3430c03dddcd240bd193b",
-        measurementId: "G-F39RHMXWKF"
-      });
+const AdminPanel = () => {
+  const navigation = useNavigation();
 
-            // Construct the notification payload
-      const notification = {
-        title: 'Notification Title',
-        body: 'Notification Body',
-        // Add any additional data you want to send in the notification payload
-      };
-
-      // Send the notification to all devices using FCM
-      const response = await fetch('https://fcm.googleapis.com/fcm/send', {
-        method: 'POST',
-        headers: {
-          'Authorization': `key=YOUR_SERVER_KEY`, // Use your FCM server key
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: '/topics/all', // Send to a specific topic or device tokens
-          priority: 'high',
-          notification,
-        }),
-      });
-
-      if (response.ok) {
-        // Notification sent successfully
-        // You can display a success message or handle the response as needed
-        console.log('Notification sent successfully');
-      } else {
-        // Handle the error or show an error message to the admin
-        console.error('Error sending notification:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error sending notification:', error);
-    }
-  };
 
   return (
-    <View>
-      <TouchableOpacity onPress={sendNotificationsToAllDevices}>  
-        <Text>Send Notifications to All Devices</Text>
+    <ScrollView style={styles.container}>
+
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Empresas')}>
+        <Text style={styles.buttonText}>Ver Lista de Empresas</Text>
       </TouchableOpacity>
-    </View>
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('addCompany')}>
+        <Text style={styles.buttonText}>Agregar Empresa</Text>
+      </TouchableOpacity>
+
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('vigilantesView')}>
+        <Text style={styles.buttonText}>Ver lista de Vigilantes</Text>
+      </TouchableOpacity>
+
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Vigilantes')}>
+        <Text style={styles.buttonText}>Agregar Vigilante</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('reportHistory')}>
+        <Text style={styles.buttonText}>Ver Lista de Reportes</Text>
+      </TouchableOpacity>
+
+      <ReportsChart />
+    </ScrollView>
   );
 };
 
-export default AdminViewScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+    padding: 20,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  card: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+  },
+  cardText: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});
+
+export default AdminPanel;

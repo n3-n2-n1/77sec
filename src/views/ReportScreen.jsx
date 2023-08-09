@@ -1,71 +1,86 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { useNavigation } from '@react-navigation/native';
 
 const ReportsScreen = () => {
+
   const [reports, setReports] = useState([]);
+  const navigation = useNavigation();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Comprueba si el usuario actual es admin
-    const currentUser = firebase.auth().currentUser;
-    if (currentUser) {
-      firebase.firestore().collection('users').doc(currentUser.uid).get()
-        .then((doc) => {
-          if (doc.exists) {
-            const userData = doc.data();
-            if (userData.role === 'admin') {
-              // Si el usuario es admin, recupera los reportes de Firestore
-              firebase.firestore().collection('forms').get()
-                .then((querySnapshot) => {
-                  const reportsData = [];
-                  querySnapshot.forEach((doc) => {
-                    reportsData.push({ id: doc.id, ...doc.data() });
-                  });
-                  setReports(reportsData);
-                })
-                .catch((error) => {
-                  console.error('Error al obtener los reportes:', error.message);
-                });
-            }
-          } else {
-            console.log('No se encontraron datos para el usuario actual.');
-          }
-        })
-        .catch((error) => {
-          console.error('Error al obtener datos del usuario:', error.message);
-        });
-    } else {
-      console.log('No hay usuario autenticado.');
-    }
+    // Cargar la lista de reportes desde Firebase
+    const reportsRef = firebase.firestore().collection('form');
+    reportsRef.get().then((querySnapshot) => {
+      const reportList = [];
+      querySnapshot.forEach((doc) => {
+        const reportData = { id: doc.id, ...doc.data() };
+        reportList.push(reportData);
+        console.log('Report data:', reportData);
+      });
+      setReports(reportList);
+    });
   }, []);
+
+  const filteredReports = reports.filter((report) => {
+    for (const key in report.dataToSend) {
+      if (report.dataToSend.hasOwnProperty(key) && report.dataToSend[key]) {
+        const fieldValue = report.dataToSend[key].toString().toLowerCase();
+        if (fieldValue.includes(searchTerm.toLowerCase())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  });
 
   return (
     <View style={styles.container}>
-      {reports.length > 0 ? (
-        <FlatList
-          data={reports}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.reportItem}>
-              <Text style={styles.reportText}>Reporte ID: {item.id}</Text>
-              <Text style={styles.reportText}>Fecha: {item.date}</Text>
-              {/* Agrega aquí los demás campos que deseas mostrar */}
-            </View>
-          )}
-        />
-      ) : (
-        <Text>No hay reportes disponibles.</Text>
-      )}
+      <Text style={styles.sectionTitle}>Lista de Reportes</Text>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar por predio"
+        value={searchTerm}
+        onChangeText={(text) => setSearchTerm(text)}
+      />
+      <FlatList
+        data={filteredReports}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.reportItem}
+            onPress={() => navigation.navigate('ReportDetail', { report: item })}
+          >
+            <Text style={styles.reportText}>ID: {item.id}</Text>
+            <Text style={styles.reportText}>Descripción: {item.dataToSend.predio}</Text>
+            <Text style={styles.reportText}>Vigilador: {item.dataToSend.vigilador}</Text>
+            <Text style={styles.reportText}>Novedad: {item.dataToSend.tipoNovedad}</Text>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  searchInput: {
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 8,
   },
   reportItem: {
     marginBottom: 16,
@@ -77,5 +92,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
 export default ReportsScreen;

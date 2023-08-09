@@ -3,6 +3,7 @@ import { Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, View } from 
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
+import firebase from 'firebase/compat/app';
 import { database } from '../database/firebaseC'
 
 const loadFonts = async () => {
@@ -20,14 +21,7 @@ const news = [
 
 const hours = ['07 a 19', '19 a 06'];
 
-const empresa = ["Legionarios", "Latin-Sec"];
 
-const predios = [
-    'EGS', 'Escobar', 'Lanzone', 'Loma Hermosa', 'Stefani', 'Jose c. Paz',
-    'Palomar', 'Santo Domingo', 'Merlo', 'La plata', 'Zarate', 'Once',
-    'Constitución', 'Derqui', 'Cazador', 'Marcos paz', 'El cruce',
-    'Sol y Verde', 'Matera 741',
-];
 
 const CrimeForm = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
@@ -41,24 +35,28 @@ const CrimeForm = () => {
     const [selectedHour, setSelectedHour] = useState([]);
     const [selectedDocument, setSelectedDocument] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [empresas, setEmpresas] = useState([]);
+    const [empresaPredios, setEmpresaPredios] = useState([]);
+
+
 
 
     const FilePicker = () => {
         const handleFilePick = async () => {
-          try {
-            const res = await DocumentPicker.pick({
-              type: [DocumentPicker.types.allFiles],
-            });
-      
-            // Aquí puedes procesar el archivo seleccionado (por ejemplo, subirlo a Firebase o guardar la ruta del archivo).
-            console.log('Archivo seleccionado:', res);
-          } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-              console.log('Cancelado por el usuario');
-            } else {
-              console.error('Error al seleccionar el archivo:', err);
+            try {
+                const res = await DocumentPicker.pick({
+                    type: [DocumentPicker.types.allFiles],
+                });
+
+                // Aquí puedes procesar el archivo seleccionado (por ejemplo, subirlo a Firebase o guardar la ruta del archivo).
+                console.log('Archivo seleccionado:', res);
+            } catch (err) {
+                if (DocumentPicker.isCancel(err)) {
+                    console.log('Cancelado por el usuario');
+                } else {
+                    console.error('Error al seleccionar el archivo:', err);
+                }
             }
-          }
         };
     }
 
@@ -78,6 +76,22 @@ const CrimeForm = () => {
         reset();
     };
 
+
+    useEffect(() => {
+        const fetchEmpresas = async () => {
+            try {
+                const empresasSnapshot = await database.collection('empresas').get();
+                const empresasData = empresasSnapshot.docs.map((doc) => doc.data());
+                setEmpresas(empresasData);
+            } catch (error) {
+                console.error('Error al cargar las empresas:', error);
+            }
+        };
+
+        fetchEmpresas();
+    }, []);
+
+
     const handleFormSubmit = async (data) => {
         try {
             const dataToSend = {
@@ -90,6 +104,7 @@ const CrimeForm = () => {
                 novedad1: data.novedad1,
                 predioOtro: formData.predioOtro || '',
                 empresaOtro: formData.empresaOtro || '',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
 
             setFormArray((prevFormArray) => {
@@ -129,10 +144,22 @@ const CrimeForm = () => {
     };
 
     const handleEmpresaChange = (selectedOption) => {
+        console.log("Selected Option:", selectedOption);
+
         setSelectedEmpresa((prevSelectedEmpresa) => {
             if (prevSelectedEmpresa.includes(selectedOption)) {
                 return prevSelectedEmpresa.filter((option) => option !== selectedOption);
             } else {
+                // Buscar la empresa seleccionada en la lista de empresas
+                const selectedEmpresa = empresas.find((empresa) => empresa.name === selectedOption);
+
+                if (selectedEmpresa) {
+                    // Actualizar la lista de predios con los objectives de la empresa seleccionada
+                    setEmpresaPredios(selectedEmpresa.objectives || []);
+                } else {
+                    setEmpresaPredios([]); // Si no se encuentra la empresa, establecer la lista de predios como vacía
+                }
+
                 return [...prevSelectedEmpresa, selectedOption];
             }
         });
@@ -248,7 +275,7 @@ const CrimeForm = () => {
 
             <View style={styles.box}>
                 <Text style={styles.container}>Predio</Text>
-                {predios.map((predio, index) => (
+                {empresaPredios.map((predio, index) => (
                     <TouchableOpacity
                         key={index}
                         style={styles.radio}
@@ -285,20 +312,20 @@ const CrimeForm = () => {
             {/* Empresa */}
             <View style={styles.box}>
                 <Text style={styles.container}>Empresa</Text>
-                {empresa.map((e, index) => (
+                {empresas.map((empresaItem, index) => (
                     <TouchableOpacity
                         key={index}
                         style={styles.radio}
                         onPress={() => {
-                            handleEmpresaChange(e);
+                            handleEmpresaChange(empresaItem.name);
                         }}
                     >
                         <View style={styles.radioCircle}>
                             <Text>
-                                {selectedEmpresa.includes(e) && <View style={styles.selectedRb} />}
+                                {selectedEmpresa.includes(empresaItem.name) && <View style={styles.selectedRb} />}
                             </Text>
                         </View>
-                        <Text style={styles.radioText}>{e}</Text>
+                        <Text style={styles.radioText}>{empresaItem.name}</Text>
                     </TouchableOpacity>
                 ))}
                 <Controller
@@ -318,7 +345,6 @@ const CrimeForm = () => {
                     defaultValue=""
                 />
             </View>
-
             <View style={styles.box}>
                 <Text style={styles.container}>Novedad 1</Text>
                 <Controller
