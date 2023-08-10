@@ -16,7 +16,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Permiso para acceder a la galería de fotos"
+      }
     },
     "android": {
       "adaptiveIcon": {

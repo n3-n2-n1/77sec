@@ -3,13 +3,33 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput } from 'r
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const ReportsScreen = () => {
 
   const [reports, setReports] = useState([]);
   const navigation = useNavigation();
   const [searchTerm, setSearchTerm] = useState('');
+
+
+    // Cargar la lista de reportes desde Firebase
+    const loadReports = () => {
+      const reportsRef = firebase.firestore().collection('form');
+      reportsRef.get().then((querySnapshot) => {
+        const reportList = [];
+        querySnapshot.forEach((doc) => {
+          const reportData = { id: doc.id, ...doc.data() };
+          reportList.push(reportData);
+          console.log('Report data:', reportData);
+        });
+        setReports(reportList);
+      });
+    };
+  
+    // Cargar la lista de reportes cuando la pantalla obtenga el enfoque
+    useFocusEffect(() => {
+      loadReports();
+    });
 
   useEffect(() => {
     // Cargar la lista de reportes desde Firebase

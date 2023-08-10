@@ -13,6 +13,11 @@ const AdminPanel = () => {
     <ScrollView style={styles.container}>
 
 
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('calendar')} icon="calendar">
+        <Text style={styles.buttonText}>Ver Calendario</Text>
+      </TouchableOpacity>
+
+
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Empresas')}>
         <Text style={styles.buttonText}>Ver Lista de Empresas</Text>
       </TouchableOpacity>
@@ -27,7 +32,7 @@ const AdminPanel = () => {
       </TouchableOpacity>
 
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Vigilantes')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
         <Text style={styles.buttonText}>Agregar Vigilante</Text>
       </TouchableOpacity>
 
@@ -35,7 +40,6 @@ const AdminPanel = () => {
         <Text style={styles.buttonText}>Ver Lista de Reportes</Text>
       </TouchableOpacity>
 
-      <ReportsChart />
     </ScrollView>
   );
 };

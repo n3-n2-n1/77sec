@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, View } from 'react-native';
+import { Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, View, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
 import firebase from 'firebase/compat/app';
 import { database } from '../database/firebaseC'
+import storage from 'firebase/storage'; // Asumiendo que estás utilizando @react-native-firebase
+import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 
-const loadFonts = async () => {
-    await Font.loadAsync({
-        'epilogue-regular': require('../../assets/fonts/Epilogue-Variable.ttf'),
-        'epilogue-bold': require('../../assets/fonts/EpilogueItalic.ttf'),
-        // Add other styles (e.g., italic, semibold, etc.) if you have them
-    });
-};
+
 
 const news = [
     'Hurtos o robos', 'Incidentes de unidades', 'Infraestructura perimetral',
@@ -37,33 +36,61 @@ const CrimeForm = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [empresas, setEmpresas] = useState([]);
     const [empresaPredios, setEmpresaPredios] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [uploadedImages, setUploadedImages] = useState([]);
 
 
 
 
-    const FilePicker = () => {
-        const handleFilePick = async () => {
-            try {
-                const res = await DocumentPicker.pick({
-                    type: [DocumentPicker.types.allFiles],
+
+
+    const handleFilePick = async () => {
+        try {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status === 'granted') {
+                const result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true,
+                    aspect: [4, 3],
+                    quality: 1,
                 });
-
-                // Aquí puedes procesar el archivo seleccionado (por ejemplo, subirlo a Firebase o guardar la ruta del archivo).
-                console.log('Archivo seleccionado:', res);
-            } catch (err) {
-                if (DocumentPicker.isCancel(err)) {
-                    console.log('Cancelado por el usuario');
-                } else {
-                    console.error('Error al seleccionar el archivo:', err);
+    
+                if (!result.canceled) {
+                    setSelectedImage(result.assets[0].uri);
                 }
+            } else {
+                console.log('Permiso denegado para acceder a la galería');
             }
-        };
-    }
-
-    useEffect(() => {
-        loadFonts();
-    }, []);
-
+        } catch (error) {
+            console.error('Error en ImagePicker:', error);
+        }
+    };
+    
+    const handleImageUpload = async () => {
+        try {
+            if (!selectedImage) {
+                console.log('No se ha seleccionado ninguna imagen');
+                return;
+            }
+    
+            const imageUri = selectedImage;
+            const imageExtension = imageUri.split('.').pop(); // Obtener la extensión de la imagen
+    
+            const storageRef = storage().ref(`uploads/${Date.now()}.${imageExtension}`);
+            await storageRef.putFile(imageUri);
+    
+            const downloadURL = await storageRef.getDownloadURL();
+            console.log('URL de descarga:', downloadURL);
+    
+            // Agregar la URL de descarga a la lista de imágenes subidas
+            setUploadedImages((prevUploadedImages) => [...prevUploadedImages, downloadURL]);
+    
+            setSelectedImage(null); // Limpiar la imagen seleccionada
+        } catch (error) {
+            console.error('Error al cargar la imagen:', error);
+        }
+    };
 
     const handleFormRestart = () => {
         setSelectedOptions([]);
@@ -94,6 +121,14 @@ const CrimeForm = () => {
 
     const handleFormSubmit = async (data) => {
         try {
+
+            const fileDownloadURLs = await Promise.all(selectedFiles.map(async (file) => {
+                const storageRef = firebase.storage().ref(`uploads/${file.name}`);
+                await storageRef.putFile(file.uri);
+                return storageRef.getDownloadURL();
+            }));
+
+
             const dataToSend = {
                 vigilador: data.vigilador,
                 vigiladorNovedad: data.vigiladorNovedad,
@@ -104,7 +139,8 @@ const CrimeForm = () => {
                 novedad1: data.novedad1,
                 predioOtro: formData.predioOtro || '',
                 empresaOtro: formData.empresaOtro || '',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                archivosAdjuntos: fileDownloadURLs,
             };
 
             setFormArray((prevFormArray) => {
@@ -364,13 +400,15 @@ const CrimeForm = () => {
             </View>
 
 
-            <View style={styles.button}>
-                <TouchableOpacity onPress={FilePicker}>
-                    <Text>Seleccionar archivo</Text>
-                </TouchableOpacity>
-                {selectedFile && <Text>Archivo seleccionado: {selectedFile}</Text>}
-            </View>
+            <View>
+                <Button title="Seleccionar Imagen" onPress={handleFilePick} />
+                {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
 
+                {/* Mostrar las imágenes subidas */}
+                {uploadedImages.map((imageUrl, index) => (
+                    <Image key={index} source={{ uri: imageUrl }} style={styles.uploadedImage} />
+                ))}
+            </View>
             <View style={styles.box}>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit(handleFormSubmit)}>
                     <Text style={styles.submitButtonText}>Submit</Text>
@@ -442,6 +480,11 @@ const styles = StyleSheet.create({
         height: 20,
         borderRadius: 10,
         backgroundColor: '#3498db',
+    },
+    image: {
+        width: 200,
+        height: 200,
+        marginTop: 20,
     },
     button: {
         backgroundColor: 'blue',

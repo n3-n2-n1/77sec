@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import firebase from '../database/firebaseC';
 
+
 const UserVigilantesView = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigation = useNavigation(); // Agregar esta línea
 
   useEffect(() => {
     // Cargar la lista de usuarios desde Firebase
@@ -20,8 +22,8 @@ const UserVigilantesView = () => {
   }, []);
 
   const filteredUsers = users.filter((user) =>
-  user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())
-);
+    user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
@@ -34,11 +36,17 @@ const UserVigilantesView = () => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Lista de Usuarios</Text>
         {filteredUsers.map((user) => (
-          <View key={user.id} style={styles.card}>
+          <TouchableOpacity
+            key={user.id}
+            style={styles.card}
+            onPress={() => {
+              navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
+            }}
+          >
             <Text style={styles.cardText}>{user.name}</Text>
             <Text style={styles.cardText}>Email: {user.email}</Text>
             {/* Mostrar más detalles del usuario si es necesario */}
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </View>
@@ -50,32 +58,29 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  searchInput: {
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 8,
+  },
   section: {
-    marginBottom: 20,
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 16,
   },
   card: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-  },
-  cardText: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  searchInput: {
-    marginBottom: 10,
-    padding: 8,
+    marginBottom: 16,
     borderWidth: 1,
     borderColor: 'gray',
+    padding: 8,
     borderRadius: 5,
+  },
+  cardText: {
+    fontSize: 16,
   },
 });
 

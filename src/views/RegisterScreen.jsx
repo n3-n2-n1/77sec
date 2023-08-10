@@ -5,7 +5,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import {database} from '../database/firebaseC'
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -16,7 +16,7 @@ const RegisterScreen = ({ navigation }) => {
 
 
 
-  const handleRegister = async () => {
+  const   handleRegister = async () => {
     try {
       // Lógica para registrar un nuevo usuario...
       const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -25,8 +25,6 @@ const RegisterScreen = ({ navigation }) => {
       const userId = userCredential.user.uid;
 
       // Obtener el token de registro
-      const messaging = firebase.messaging();
-      const token = await messaging.getToken();
 
       // Guardamos el usuario en la colección "users" de Firestore junto con el token de registro
       await database.collection('users').doc(userId).set({
@@ -35,12 +33,11 @@ const RegisterScreen = ({ navigation }) => {
         role: role,
         location: location,
         uid: userId,
-        dni: dni,
-        pushToken: token, // Aquí guardamos el token de registro
+        dni: dni, // Aquí guardamos el token de registro
       });
 
       // Redirigimos al usuario a la pantalla de inicio de sesión
-      navigation.navigate('Login');
+      navigation.navigate('Profile');
     } catch (error) {
       console.error('Error al registrar el usuario:', error.message);
     }

@@ -29,9 +29,16 @@ const LoginScreen = ({navigation}) => {
       })
       .catch((error) => {
         console.error('Error al iniciar sesión:', error.message);
+        if (error.code === 'auth/invalid-email') {
+          alert('La dirección de correo electrónico tiene un formato incorrecto. Por favor, verifica tu correo electrónico.');
+        } else if (error.code === 'auth/wrong-password'){
+          alert('Ocurrió un error al iniciar sesión. Por favor, verifica tu contraseña');
+        } else{
+          alert ('Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.')
+
+        }
       });
-  };
-  
+    }      
 
   return (
     <View style={styles.container}>
@@ -54,10 +61,6 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
 
-
-      <TouchableOpacity style={styles.button} onPress={handleRegistration}>
-        <Text style={styles.buttonText}>Registrarme</Text>
-      </TouchableOpacity>
       </View>
     </View>
   );
@@ -69,6 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+    backgroundColor: 'black',
   },
   actions:{
     width: '40%',
@@ -79,6 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: 'white'
   },
   input: {
     width: '100%',
@@ -86,17 +91,18 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
+    borderRadius: 60,
+    backgroundColor: 'white'
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: 'yellow',
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 30,
     width: '100%',
     alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
     fontSize: 16,
   },
