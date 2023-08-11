@@ -27,6 +27,9 @@ import ChatScreen from './src/components/ChatScreen';
 import LoadingScreen from './src/views/LoadingScreen';
 import LoadPresentismo from './src/views/loadPresentismo';
 import CalendarScreen from './src/components/Calendar';
+import MarcarSalida from './src/views/loadSalida';
+
+import * as Font from 'expo-font'; // Importa expo-font
 const Stack = createStackNavigator();
 
 // Agrega la configuración de Firebase aquí si no lo has hecho aún
@@ -42,6 +45,16 @@ export default function App() {
     });
 
     return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'Epilogue-Variable': require('../formReport/assets/fonts/Epilogue-Variable.ttf'), // Ajusta la ruta si es necesario
+        // Agrega otras variantes si las necesitas
+      });
+    }
+    loadFonts();
   }, []);
 
     // En App.js o cualquier otro componente relevante:
@@ -76,16 +89,19 @@ export default function App() {
       <Stack.Screen name="qr" component={QRScanner} options={{ headerShown: false }}/>
       <Stack.Screen name="Alerta" component={AlertForm} options={{ headerShown: false }}/>
       <Stack.Screen name="qrGen" component={QRCodeGenerator} options={{ headerShown: false }}/>
-      <Stack.Screen name="AdminDashboard" component={AdminViewScreen} />
-      <Stack.Screen name="NotificationSender" component={NotificationSender} options={{ headerShown: false }}/>
+      <Stack.Screen name="AdminDashboard" component={AdminViewScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="NotificationSender" component={NotificationSender} />
       <Stack.Screen name="Empresas" component={EnterprisesView} options={{ headerShown: false }}/>
       <Stack.Screen name="vigilantesView" component={UserVigilantesView} options={{ headerShown: false }}/>
       <Stack.Screen name="ReportDetail" component={ReportDetailScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="EditEmpresa" component={EditEmpresaScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="ChatScreen" component={ChatScreen}/>
+      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="LoadPresentismo" component={LoadPresentismo}/>
+      <Stack.Screen name="LoadPresentismo" component={LoadPresentismo} options={{ headerShown: false }}/>
+      <Stack.Screen name="LoadSalida" component={MarcarSalida} options={{ headerShown: false }}/>
+     
+
 
 
 

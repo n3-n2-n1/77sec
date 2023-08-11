@@ -6,43 +6,25 @@ import 'firebase/compat/firestore';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const ReportsScreen = () => {
-
   const [reports, setReports] = useState([]);
-  const navigation = useNavigation();
   const [searchTerm, setSearchTerm] = useState('');
+  const navigation = useNavigation();
 
-
-    // Cargar la lista de reportes desde Firebase
-    const loadReports = () => {
-      const reportsRef = firebase.firestore().collection('form');
-      reportsRef.get().then((querySnapshot) => {
-        const reportList = [];
-        querySnapshot.forEach((doc) => {
-          const reportData = { id: doc.id, ...doc.data() };
-          reportList.push(reportData);
-          console.log('Report data:', reportData);
-        });
-        setReports(reportList);
-      });
-    };
-  
-    // Cargar la lista de reportes cuando la pantalla obtenga el enfoque
-    useFocusEffect(() => {
-      loadReports();
-    });
-
-  useEffect(() => {
-    // Cargar la lista de reportes desde Firebase
+  // Cargar la lista de reportes desde Firebase
+  const loadReports = () => {
     const reportsRef = firebase.firestore().collection('form');
     reportsRef.get().then((querySnapshot) => {
       const reportList = [];
       querySnapshot.forEach((doc) => {
         const reportData = { id: doc.id, ...doc.data() };
         reportList.push(reportData);
-        console.log('Report data:', reportData);
       });
       setReports(reportList);
     });
+  };
+
+  useEffect(() => {
+    loadReports();
   }, []);
 
   const filteredReports = reports.filter((report) => {
@@ -56,6 +38,7 @@ const ReportsScreen = () => {
     }
     return false;
   });
+
 
   return (
     <View style={styles.container}>
@@ -84,6 +67,7 @@ const ReportsScreen = () => {
     </View>
   );
 };
+
 
 
 const styles = StyleSheet.create({

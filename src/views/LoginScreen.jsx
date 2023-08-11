@@ -1,68 +1,93 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, KeyboardAvoidingView } from 'react-native';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { useNavigation } from '@react-navigation/native';
+import ErrorModal from '../components/ErrorModal'; // Importa el componente ErrorModal
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
 
 
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   const handleRegistration = () => {
     navigation.navigate('Register')
 
   }
-
   const handleLogin = () => {
-    // Lógica para iniciar sesión con Firebase Authentication
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        // Redirigimos al usuario a la pantalla principal (Home) si está autenticado
-      
-          navigation.navigate('Home');
-       
+        navigation.navigate('Home');
       })
       .catch((error) => {
         console.error('Error al iniciar sesión:', error.message);
         if (error.code === 'auth/invalid-email') {
-          alert('La dirección de correo electrónico tiene un formato incorrecto. Por favor, verifica tu correo electrónico.');
-        } else if (error.code === 'auth/wrong-password'){
-          alert('Ocurrió un error al iniciar sesión. Por favor, verifica tu contraseña');
-        } else{
-          alert ('Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.')
-
+          setErrorMessage('La dirección de correo electrónico tiene un formato incorrecto. Por favor, verifica tu correo electrónico.');
+        } else if (error.code === 'auth/wrong-password') {
+          setErrorMessage('Ocurrió un error al iniciar sesión. Por favor, verifica tu contraseña');
+        } else {
+          setErrorMessage('Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.');
         }
+        setErrorModalVisible(true);
       });
-    }      
+  };
+
+  const handleCloseErrorModal = () => {
+    setErrorModalVisible(false);
+  };
+
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Inicio de Sesión</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Correo electrónico"
-        onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        secureTextEntry
-        onChangeText={(text) => setPassword(text)}
-      />
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
 
-      <View style={styles.actions}>
-
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Iniciar Sesión</Text>
-      </TouchableOpacity>
+      <View style={styles.navbar}>
 
       </View>
-    </View>
+      <View style={styles.container}>
+        <View style={styles.titleContainer}>
+
+          <Text style={styles.title}>
+            Bienvenido de nuevo, ingresa tus datos para iniciar sesión.
+          </Text>
+        </View>
+
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Correo electrónico"
+            onChangeText={(text) => setEmail(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Contraseña"
+            secureTextEntry
+            onChangeText={(text) => setPassword(text)}
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.actions}>
+
+
+          <ErrorModal
+            visible={errorModalVisible}
+            message={errorMessage}
+            onClose={handleCloseErrorModal}
+          />
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -73,9 +98,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     backgroundColor: 'black',
+    gap: 20,
+    fontFamily: 'Epilogue-Variable'
   },
-  actions:{
-    width: '40%',
+  titleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  actions: {
     gap: 30,
     paddingTop: 30,
   },
@@ -83,29 +114,53 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: 'white'
+    color: 'white',
   },
-  input: {
-    width: '100%',
-    padding: 12,
+  inputContainer: {
+    width: 300,
     marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 60,
-    backgroundColor: 'white'
+    fontFamily: 'Epilogue-Variable',
+
   },
   button: {
-    backgroundColor: 'yellow',
-    padding: 12,
-    borderRadius: 30,
-    width: '100%',
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 25,
     alignItems: 'center',
+    backgroundColor: '#e0e0e0',
+
   },
   buttonText: {
     color: 'black',
     fontWeight: 'bold',
     fontSize: 16,
+    fontFamily: 'Epilogue-Variable',
+
+  },
+  input: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 25,
+    width: '100%',
+    marginBottom: 12,
+    fontFamily: 'Epilogue-Variable',
+
+  },
+  title: {
+    color: 'white',
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    fontFamily: 'Epilogue-Variable',
+    marginBottom: 25,
+
+
+  },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
 });
-
 export default LoginScreen;

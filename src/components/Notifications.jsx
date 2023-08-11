@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/messaging';
 import 'firebase/compat/firestore';
 
 const NotificationSender = () => {
   const [notificationTitle, setNotificationTitle] = useState('');
   const [notificationBody, setNotificationBody] = useState('');
   const [companyName, setCompanyName] = useState('');
+  requestForToken();
 
   const sendNotification = async () => {
     try {
@@ -23,8 +23,6 @@ const NotificationSender = () => {
         }
       });
       
-      // Envía la notificación a los tokens de registro
-      const messaging = firebase.messaging();
       const message = {
         notification: {
           title: notificationTitle,

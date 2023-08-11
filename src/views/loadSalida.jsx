@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import firebase from 'firebase/compat/app';
 import { database } from '../database/firebaseC';
-import * as Location from 'expo-location';
-import { useNavigation } from '@react-navigation/native';
-import QRCode from 'react-native-qrcode-svg';
-import moment from 'moment'; // Importa la librería moment para manipular fechas
 import { Svg, Path } from 'react-native-svg';
-import 'firebase/compat/auth';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import * as Location from 'expo-location';
+import QRCode from 'react-native-qrcode-svg';
 
-const LoadPresentismo = ({ route }) => {
+
+const MarcarSalida = ({ }) => {
     const [nombre, setNombre] = useState('');
     const [guardadoExitoso, setGuardadoExitoso] = useState(false);
     const [location, setLocation] = useState(null);
     const navigation = useNavigation();
     const [qrValue, setQRValue] = useState('');
+    const navigate = useNavigation();
 
+    
     useEffect(() => {
         // Pedir permiso para acceder a la ubicación
         (async () => {
@@ -37,47 +39,47 @@ const LoadPresentismo = ({ route }) => {
         }
     }, [location, nombre]);
 
-    const handleGuardarPresentismo = async () => {
+    const handleMarcarSalida = async () => {
         try {
-            if (!location) {
-                console.log('Aún no se ha obtenido la ubicación.');
-                return;
-            }
             const user = firebase.auth().currentUser;
             if (user) {
-                const userEmail = user.email; // Obtiene el correo electrónico del usuario actual
-                const presentismoData = {
-                    nombre: nombre,
-                    correo: userEmail, // Utiliza el correo electrónico del usuario
-                    entrada: firebase.firestore.Timestamp.now(),
-                    coordenadas: location.coords,
-                    qrData: 'Presente',
-                    salida: '',
-                };
+                const userEmail = user.email;
 
-                await database.collection('presentismo').add(presentismoData);
+                // Buscar el documento en 'presentismo' con el mismo nombre y sin campo 'salida'
+                const presentismoRef = database.collection('presentismo')
+                    .where('nombre', '==', nombre)
+                    .where('salida', '==', '');
 
-                setGuardadoExitoso(true);
-                console.log('Presentismo guardado con éxito.');
-                alert('Presentismo guardado con exito');
-                navigation.navigate('Home');
+                const querySnapshot = await presentismoRef.get();
+                if (!querySnapshot.empty) {
+                    // Actualizar el documento encontrado con la marca de salida
+                    const documentId = querySnapshot.docs[0].id;
+                    const salidaTimestamp = firebase.firestore.Timestamp.now();
+
+                    await database.collection('presentismo').doc(documentId).update({
+                        salida: salidaTimestamp,
+                    });
+
+                    console.log('Marca de salida registrada con éxito.');
+                    alert('Marca de salida registrada con éxito.');
+                    navigation.goBack();
+                } else {
+                    console.log('No se encontró registro de entrada para este nombre.');
+                }
             } else {
                 console.log('Usuario no autenticado.');
             }
         } catch (error) {
-            console.error('Error al guardar el presentismo:', error);
+            console.error('Error al marcar la salida:', error);
         }
     };
 
- 
     return (
-
-        
         <KeyboardAvoidingView behavior='padding' style={styles.container2}>
 
 
         <View style={styles.navbar}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => navigate.goBack()}>
                     <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
                         <Path
                             d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
@@ -106,10 +108,10 @@ const LoadPresentismo = ({ route }) => {
                     onChangeText={setNombre}
                     style={styles.input}
                 />
-                <TouchableOpacity style={styles.button} onPress={handleGuardarPresentismo}>
+                <TouchableOpacity style={styles.button} onPress={handleMarcarSalida}>
                     <Text style={styles.buttonText}>Guardar Presentismo</Text>
                 </TouchableOpacity>
-                {guardadoExitoso && <Text style={styles.successText}>Presentismo guardado con éxito.</Text>}
+                {guardadoExitoso && <Text style={styles.successText}>Salida guardado con éxito.</Text>}
             </View>
         </View>
         </KeyboardAvoidingView>
@@ -196,4 +198,5 @@ const styles = StyleSheet.create({
       },
 });
 
-export default LoadPresentismo;
+
+export default MarcarSalida;
