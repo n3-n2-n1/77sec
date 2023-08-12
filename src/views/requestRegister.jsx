@@ -5,14 +5,17 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { database } from '../database/firebaseC'
 import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 
-const RegisterScreen = ({ navigation, route }) => {
+const requestRegister = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [location, setLocation] = useState('');
   const [dni, setDNI] = useState('');
+  const [isRequested, setIsRequested] = useState(false); // Nuevo estado
+
   
 
 
@@ -20,28 +23,23 @@ const RegisterScreen = ({ navigation, route }) => {
 
   const handleRegister = async () => {
     try {
-      // Lógica para registrar un nuevo usuario...
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-      // Obtenemos el ID del usuario creado
-      const userId = userCredential.user.uid;
-
-      // Obtener el token de registro
-
-      // Guardamos el usuario en la colección "users" de Firestore junto con el token de registro
-      await database.collection('users').doc(userId).set({
+      // Guardar la solicitud en la colección "registrationRequests"
+      await database.collection('registrationRequests').add({
         name: name,
         email: email,
         role: role,
         location: location,
-        uid: userId,
-        dni: dni, // Aquí guardamos el token de registro
+        dni: dni,
+        timestamp: new Date(),
       });
 
-      // Redirigimos al usuario a la pantalla de inicio de sesión
-      navigation.navigate('Profile');
+      setIsRequested(true); // Marcar que se ha realizado la solicitud
+      alert('Se creo la solicitud. Seras notificado cuando se confirme.')
+      navigation.navigate('Login')
+
+      // Mostrar algún mensaje de confirmación o redirigir a otra pantalla
     } catch (error) {
-      console.error('Error al registrar el usuario:', error.message);
+      console.error('Error al registrar la solicitud:', error.message);
     }
   };
 
@@ -57,7 +55,7 @@ const RegisterScreen = ({ navigation, route }) => {
             />
           </Svg>
         </TouchableOpacity>
-        <Text style={styles.title}>Agregar Vigilante</Text>
+        <Text style={styles.title}>Solicitud</Text>
       </View>
 
       <ScrollView style={styles.container}>
@@ -141,6 +139,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     padding: 8,
+    color: 'white'
   },
   roleButtons: {
     flexDirection: 'row',
@@ -165,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default requestRegister;

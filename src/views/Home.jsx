@@ -86,9 +86,10 @@ const Home = () => {
   return (
     <ScrollView style={styles.container}>
       {isLoading ? (
-        <View style={styles.loading}>
-
+        <View style={styles.loadingContainer}>
+          
           <LoadingScreen />
+
         </View>
       ) : (
         <ScrollView>
@@ -97,6 +98,7 @@ const Home = () => {
             <Text style={styles.title}>
               ¡Bienvenido, {currentUserDisplayName ? currentUserDisplayName.charAt(0).toUpperCase() + currentUserDisplayName.slice(1) : 'Invitado'}!
             </Text>
+
 
             <TouchableOpacity onPress={() => setIsMenuVisible(true)}>
               {/* Replace "Perfil" text with SVG */}
@@ -125,14 +127,14 @@ const Home = () => {
                   stroke="#FDC826"
                   strokeLinecap="round"
                   strokeWidth={1.5}
-                />
+                  />
               </Svg>
             </TouchableOpacity>
-          </View>
 
 
+            </View>
           {isAdmin && (
-
+            
             <ScrollView>
 
               <TouchableOpacity
@@ -150,7 +152,7 @@ const Home = () => {
               <TouchableOpacity
                 onPress={() => navigation.navigate('NotificationSender')}
                 style={styles.gridButtonContainer2}
-              >
+                >
                 <Svg width={64} height={64} viewBox="0 0 24 24" fill="none">
                   <Path d="M21.2717 8.76172C21.2717 9.78172 20.8017 10.7017 20.0417 11.3017C19.4917 11.7517 18.7817 12.0217 18.0117 12.0217C16.2217 12.0217 14.7617 10.5617 14.7617 8.77172C14.7617 7.88172 15.1217 7.07172 15.7217 6.48172V6.47172C16.3117 5.88172 17.1217 5.51172 18.0117 5.51172C19.8117 5.51172 21.2717 6.97172 21.2717 8.76172Z" fill="#FDC826" />
                   <Path d="M20.1817 18.7289C19.1317 19.6889 17.7817 20.2189 16.3517 20.2189H5.97172C3.23172 20.0189 2.01172 17.9089 2.01172 16.0289C2.01172 14.3489 2.98172 12.4889 5.11172 11.9689C4.18172 8.38887 5.96172 5.88887 8.04172 4.69887C10.1017 3.52887 13.0017 3.33887 15.1817 4.94887C14.9917 5.08887 14.8217 5.23887 14.6517 5.40887L14.2217 5.85887V5.91887C13.6017 6.72887 13.2617 7.71887 13.2617 8.75887C13.2617 11.3789 15.4017 13.5089 18.0217 13.5089C19.1017 13.5089 20.1517 13.1389 20.9717 12.4689C21.1217 12.3489 21.2717 12.2189 21.4017 12.0789C22.3917 14.1589 22.2517 16.9189 20.1817 18.7289Z" fill="#292D32" />
@@ -194,8 +196,8 @@ const Home = () => {
           <TouchableOpacity
             style={styles.gridButtonContainer}
             onPress={() => navigation.navigate('LoadPresentismo')}
-          >
-            <Svg width={64} height={64} viewBox="0 0 16 16" fill="none">
+            >
+              <Svg width={64} height={64} viewBox="0 0 16 16" fill="none">
               <Path fill="#000000" d="M4.045 7.765a.75.75 0 11-1.09-1.03l4.25-4.5a.75.75 0 011.09 0l4.25 4.5a.75.75 0 01-1.09 1.03L8.5 4.636v8.614a.75.75 0 01-1.5 0V4.636L4.045 7.765z"></Path>
             </Svg>
             <Text style={styles.gridButtonText}>Marcar Entrada</Text>
@@ -205,7 +207,7 @@ const Home = () => {
           <TouchableOpacity
             style={styles.gridButtonContainer}
             onPress={() => navigation.navigate('LoadSalida')}
-          >
+            >
             <Svg width={64} height={64} viewBox="0 0 16 16" fill="none">
               <Path fill="#000000" d="M3.22 4.28a.75.75 0 011.06-1.06l7.22 7.22V6.75a.75.75 0 011.5 0v5.5a.747.747 0 01-.75.75h-5.5a.75.75 0 010-1.5h3.69L3.22 4.28z"></Path>
             </Svg>
@@ -243,12 +245,9 @@ const Home = () => {
         <View style={styles.modalContainer}>
           <TouchableOpacity onPress={() => setIsMenuVisible(false)} style={styles.closeButton}>
             <Text style={styles.closeButtonText}>Atras</Text>
-          </TouchableOpacity>
-          {/* Aquí puedes agregar los botones adicionales del menú desplegable */}
+          </TouchableOpacity>         
 
-          
-
-            <TouchableOpacity onPress={handleProfile} onPressOut={() => setIsMenuVisible(false)} style={styles.logoutButton2}>
+            <TouchableOpacity onPress={()=>navigation.navigate('Profile')} onPressOut={() => setIsMenuVisible(false)} style={styles.logoutButton2}>
               <Text style={styles.logoutButtonText2} >Perfil</Text>
             </TouchableOpacity>
 
@@ -272,10 +271,10 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
-    paddingHorizontal: 20,
-
+    padding: 15,
+    backgroundColor: '#f8f8f8',
     fontFamily: 'Epilogue-Variable',
+    backgroundColor: 'black',
   },
   main: {
     justifyContent: 'center',
@@ -293,8 +292,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     width: 'auto',
-
-
   },
   chatButton: {
     flex: 1,
@@ -320,15 +317,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center'
-
-
-
   },
   gridButtonContainer2: {
     borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-
+    padding: 15,
     backgroundColor: 'white',
     marginBottom: 20,
     justifyContent: 'center',
@@ -344,7 +336,6 @@ const styles = StyleSheet.create({
   },
   modalInContainer: {
     width: '100%',
-
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -397,8 +388,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Epilogue-Variable',
 
-
-
   },
   gridButtonText2: {
     color: 'black',
@@ -426,7 +415,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: 20,
     paddingHorizontal: 5,
     position: 'sticky',
     top: 0,
@@ -462,6 +451,7 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'black',
     fontSize: 18,
+    borderRadius: 25
   },
   menuButton: {
     backgroundColor: 'black',

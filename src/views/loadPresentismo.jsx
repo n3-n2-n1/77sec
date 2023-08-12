@@ -34,6 +34,7 @@ const LoadPresentismo = ({ route }) => {
             const currentDate = new Date().toLocaleString();
             const qrData = `Vigilador: ${nombre}\nUbicación: Lat ${location.coords.latitude}, Long ${location.coords.longitude}\nFecha y Hora: ${currentDate}`;
             setQRValue(qrData);
+            console.log(currentDate)
         }
     }, [location, nombre]);
 
@@ -53,6 +54,7 @@ const LoadPresentismo = ({ route }) => {
                     coordenadas: location.coords,
                     qrData: 'Presente',
                     salida: '',
+                    timestamp: firebase.firestore.Timestamp.now(),
                 };
 
                 await database.collection('presentismo').add(presentismoData);
@@ -99,6 +101,10 @@ const LoadPresentismo = ({ route }) => {
                 <Text style={styles.coordinatesText}>
                     Coordenadas: {location ? `Lat: ${location.coords.latitude}, Long: ${location.coords.longitude}` : 'Obteniendo ubicación...'}
                 </Text>
+                <Text>
+                    
+                </Text>
+
                 <Text style={styles.instructions}>Insertar Nombre del Vigilador</Text>
                 <TextInput
                     placeholder=""

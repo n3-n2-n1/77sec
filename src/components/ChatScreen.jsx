@@ -9,6 +9,7 @@ const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState('');
   const navigation = useNavigation();
+  const [unreadMessages, setUnreadMessages] = useState(false);
 
   useEffect(() => {
     const adminSender = 'quarzoengine@gmail.com';
@@ -18,15 +19,42 @@ const ChatScreen = () => {
       .orderBy('timestamp')
       .onSnapshot((querySnapshot) => {
         const messageList = [];
+        let hasUnreadMessages = false; // Agregar esta variable
+
         querySnapshot.forEach((doc) => {
           const messageData = doc.data();
           if (messageData.sender === adminSender) {
             messageList.push({ id: doc.id, ...messageData });
+            if (!messageData.read) {
+              hasUnreadMessages = true; // Marcar si hay mensajes no leídos
+            }
           }
         });
+
         setMessages(messageList);
+        setUnreadMessages(hasUnreadMessages); // Actualizar el estado de mensajes no leídos
       });
+
   }, []);
+
+  const markMessageAsRead = async (messageId) => {
+    try {
+      await firebase.firestore().collection('messages').doc(messageId).update({
+        read: true,
+      });
+
+      // Actualiza la lista de mensajes marcando el mensaje como leído
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message.id === messageId ? { ...message, read: true } : message
+        )
+      );
+    } catch (error) {
+      console.error('Error marking message as read:', error);
+    }
+  };
+
+
 
   const handleSendMessage = () => {
     const adminSender = 'quarzoengine@gmail.com'; // Cambiar a la dirección de correo del administrador
@@ -56,24 +84,32 @@ const ChatScreen = () => {
     <View style={styles.container}>
 
       <View style={styles.navbar}>
-        
+
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
             <Path
               d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
-              fill="#ffffff"
+              fill="#FDC826"
             />
           </Svg>
         </TouchableOpacity>
         <Text style={styles.title}>
           Chat General
         </Text>
+        {unreadMessages && ( // Mostrar la notificación solo si hay mensajes no leídos
+          <Text style={styles.unreadNotification}>¡Tienes mensajes no leídos!</Text>
+        )}
       </View>
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
+
+
+
+
           <View style={styles.messageContainer}>
+
             <Text style={styles.senderText}>{item.sender}</Text>
             <Text style={styles.messageText}>{item.message}</Text>
             <Text style={styles.timestampText}>
@@ -82,6 +118,10 @@ const ChatScreen = () => {
                 minute: '2-digit',
               })}
             </Text>
+            <TouchableOpacity onPress={() => markMessageAsRead(item.id)}>
+              <Text>
+                Leido
+              </Text></TouchableOpacity>
           </View>
         )}
       />
@@ -124,7 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingTop: 50,
     paddingLeft: 10,
-    
+
   },
   messageContainer: {
     flexDirection: 'column',
@@ -150,11 +190,25 @@ const styles = StyleSheet.create({
     marginTop: 20,
 
   },
+  unreadNotification: {
+    backgroundColor: 'red',
+    color: 'white',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+  },
   title: {
     fontSize: 30,
     color: 'white',
     fontWeight: 800,
-    paddingRight: 80,
+    paddingRight: 16,
+  },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingTop: 20,
   },
 
   senderText: {
@@ -190,7 +244,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  
+
 });
 
 export default ChatScreen;

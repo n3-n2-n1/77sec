@@ -75,6 +75,11 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('requestRegister')}>
+          <Text style={styles.buttonText}>Registrarse</Text>
+        </TouchableOpacity>
+
         </View>
 
         <View style={styles.actions}>
@@ -120,7 +125,6 @@ const styles = StyleSheet.create({
     width: 300,
     marginBottom: 12,
     fontFamily: 'Epilogue-Variable',
-
   },
   button: {
     backgroundColor: 'white',
@@ -128,6 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: 'center',
     backgroundColor: '#e0e0e0',
+    marginBottom: 15,
 
   },
   buttonText: {

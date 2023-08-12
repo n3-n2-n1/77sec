@@ -9,7 +9,7 @@ const LoadingScreen = () => {
       Animated.timing(progress, {
         toValue: 1,
         duration: 1500,
-        easing: Easing.linear,
+        easing: Easing.bounce,
         useNativeDriver: false,
       })
     );
@@ -37,18 +37,15 @@ const LoadingScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 300,
     flex: 1,
+    justifyContent: 'center', // Centra verticalmente
+    alignItems: 'center', // Centra horizontalmente
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    
-    paddingLeft: 100,
   },
-  loadingText:{
+  loadingText: {
     color: 'white',
     fontSize: 15,
     fontFamily: 'Epilogue-Variable',
-    alignContent: 'center',
-    justifyContent: 'center',
   },
   progressBar: {
     width: '50%',

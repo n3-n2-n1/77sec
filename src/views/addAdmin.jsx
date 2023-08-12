@@ -6,7 +6,7 @@ import 'firebase/compat/firestore';
 import { database } from '../database/firebaseC'
 import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
 
-const RegisterScreen = ({ navigation, route }) => {
+const AddAdmin = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -57,7 +57,7 @@ const RegisterScreen = ({ navigation, route }) => {
             />
           </Svg>
         </TouchableOpacity>
-        <Text style={styles.title}>Agregar Vigilante</Text>
+        <Text style={styles.title}>Agregar Admin</Text>
       </View>
 
       <ScrollView style={styles.container}>
@@ -103,12 +103,12 @@ const RegisterScreen = ({ navigation, route }) => {
 
       <Text style={styles.label}>Rol:</Text>
       <View style={styles.roleButtons}>
-        <Button
-          title="Vigilante"
-          onPress={() => setRole('vigilante')}
-          color={role === 'vigilante' ? '#007BFF' : '#C7C57D'}
-        />
 
+        <Button
+          title="Admin"
+          onPress={() => setRole('admin')}
+          color={role === 'admin' ? '#007BFF' : '#C7C57D'}
+        />
       </View>
 
       <Button title="Registrarse" onPress={handleRegister} />
@@ -165,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default AddAdmin;

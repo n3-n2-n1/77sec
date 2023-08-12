@@ -72,12 +72,16 @@ const EditEmpresaScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 15,
+    backgroundColor: '#f8f8f8',
+    fontFamily: 'Epilogue-Variable',
+    backgroundColor: 'black'
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 24,
+    color: 'white',
+    fontWeight: 800,
+    paddingRight: 80,
   },
   input: {
     borderWidth: 1,
@@ -95,6 +99,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingTop: 20,
+  },
+  
 });
 
 export default EditEmpresaScreen;

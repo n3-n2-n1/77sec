@@ -28,8 +28,12 @@ import LoadingScreen from './src/views/LoadingScreen';
 import LoadPresentismo from './src/views/loadPresentismo';
 import CalendarScreen from './src/components/Calendar';
 import MarcarSalida from './src/views/loadSalida';
+import AddAdmin from './src/views/addAdmin';
 
 import * as Font from 'expo-font'; // Importa expo-font
+import addAdmin from './src/views/addAdmin';
+import AdminApprovalScreen from './src/views/AdminApproval';
+import requestRegister from './src/views/requestRegister';
 const Stack = createStackNavigator();
 
 // Agrega la configuración de Firebase aquí si no lo has hecho aún
@@ -78,7 +82,7 @@ export default function App() {
         </>
       )}
 
-      <Stack.Screen name="Form" component={CrimeForm} />
+      <Stack.Screen name="Form" component={CrimeForm} options={{ headerShown: false }}/>
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false }} />
@@ -100,6 +104,10 @@ export default function App() {
       <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="LoadPresentismo" component={LoadPresentismo} options={{ headerShown: false }}/>
       <Stack.Screen name="LoadSalida" component={MarcarSalida} options={{ headerShown: false }}/>
+      <Stack.Screen name="AddAdmin" component={AddAdmin} options={{ headerShown: false }}/>
+      <Stack.Screen name="AdminApproval" component={AdminApprovalScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="requestRegister" component={requestRegister} options={{ headerShown: false }}/>
+
      
 
 
