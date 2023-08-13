@@ -120,6 +120,18 @@ const EnterprisesView = () => {
                   value={newData.chiefDNI || empresa.chiefDNI}
                   onChangeText={(text) => setNewData({ ...newData, chiefDNI: text })}
                 />
+                
+                <TextInput
+                  placeholder="Nuevo telefono"
+                  value={newData.tel || empresa.tel}
+                  onChangeText={(text) => setNewData({ ...newData, tel: text })}
+                />
+                
+                <TextInput
+                  placeholder="Nuevo telefono"
+                  value={newData.objectives || empresa.objectives}
+                  onChangeText={(text) => setNewData({ ...newData, objectives: text })}
+                />
                 {/* ... otros campos de edición ... */}
 
                 <Button title="Cancelar" onPress={handleCancelEdit} />
@@ -128,12 +140,12 @@ const EnterprisesView = () => {
             ) : (
               // Modo de visualización
               <View>
-                <Text style={styles.cardTitle}>{empresa.name}</Text>
-                <Text style={styles.cardText}>{empresa.address}</Text>
-                <Text style={styles.cardText}>{empresa.chief}</Text>
-                <Text style={styles.cardText}>{empresa.chiefDNI}</Text>
-                <Text style={styles.cardText}>{empresa.objectives}</Text>
-                <Text style={styles.cardText}>{empresa.tel}</Text>
+                <Text style={styles.cardTitle}>Nombre:{empresa.name}</Text>
+                <Text style={styles.cardText}>Direccion:{empresa.address}</Text>
+                <Text style={styles.cardText}>Encargado General:{empresa.chief}</Text>
+                <Text style={styles.cardText}>DNI Encargado General:{empresa.chiefDNI}</Text>
+                <Text style={styles.cardText}>Objetivos: {empresa.objectives}</Text>
+                <Text style={styles.cardText}>Contacto: {empresa.tel}</Text>
                 {/* ... otros campos ... */}
                 <Button title="Editar" onPress={() => handleEditClick(empresa.id)} />
                 <Button title="Eliminar" onPress={() => handleDeleteEmpresa(empresa.name)} />

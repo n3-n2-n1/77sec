@@ -73,7 +73,11 @@ const ReportsScreen = () => {
           >
             <Text style={styles.reportText}>
               
-              <View>ID: {item.id}</View>
+              <View>
+                <Text style={styles.reportText}>
+                  ID: {item.id}
+                  </Text>
+                  </View>
               
               </Text>
             <Text style={styles.reportText}>Novedad: {item.dataToSend.tipoNovedad}</Text>

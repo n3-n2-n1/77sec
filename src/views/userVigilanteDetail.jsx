@@ -1,7 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 const UserDetailsScreen = ({ route }) => {
+
+  const navigation = useNavigation();
   const { user } = route.params;
 
   return (

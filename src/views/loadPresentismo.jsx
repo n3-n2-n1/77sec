@@ -38,39 +38,58 @@ const LoadPresentismo = ({ route }) => {
         }
     }, [location, nombre]);
 
+    
     const handleGuardarPresentismo = async () => {
         try {
             if (!location) {
                 console.log('Aún no se ha obtenido la ubicación.');
                 return;
             }
+    
             const user = firebase.auth().currentUser;
-            if (user) {
-                const userEmail = user.email; // Obtiene el correo electrónico del usuario actual
-                const presentismoData = {
-                    nombre: nombre,
-                    correo: userEmail, // Utiliza el correo electrónico del usuario
-                    entrada: firebase.firestore.Timestamp.now(),
-                    coordenadas: location.coords,
-                    qrData: 'Presente',
-                    salida: '',
-                    timestamp: firebase.firestore.Timestamp.now(),
-                };
-
-                await database.collection('presentismo').add(presentismoData);
-
-                setGuardadoExitoso(true);
-                console.log('Presentismo guardado con éxito.');
-                alert('Presentismo guardado con exito');
-                navigation.navigate('Home');
-            } else {
+    
+            if (!user) {
                 console.log('Usuario no autenticado.');
+                return;
             }
+    
+            const userEmail = user.email;
+            const userSnapshot = await database.collection('users').where('email', '==', userEmail).get();
+    
+            if (userSnapshot.empty) {
+                console.log('No se encontró información del usuario.');
+                return;
+            }
+    
+            const userDoc = userSnapshot.docs[0];
+            const userData = userDoc.data();
+    
+            if (userData.name !== nombre) {
+                alert('No puedes marcar bajo el nombre de otro vigilante')
+                console.log('El nombre ingresado no coincide con el nombre del usuario autenticado.');
+                return;
+            }
+    
+            const presentismoData = {
+                nombre: userData.name,
+                correo: userEmail,
+                entrada: firebase.firestore.Timestamp.now(),
+                coordenadas: location.coords,
+                qrData: 'Presente',
+                salida: '',
+                timestamp: firebase.firestore.Timestamp.now(),
+            };
+    
+            await database.collection('presentismo').add(presentismoData);
+    
+            setGuardadoExitoso(true);
+            console.log('Presentismo guardado con éxito.');
+            alert('Presentismo guardado con éxito');
+            navigation.navigate('Home');
         } catch (error) {
             console.error('Error al guardar el presentismo:', error);
         }
     };
-
  
     return (
 
