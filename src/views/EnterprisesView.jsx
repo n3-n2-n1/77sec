@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity, Touchable } from 'react-native';
 import { database } from '../database/firebaseC';
 import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
 
@@ -98,57 +98,93 @@ const EnterprisesView = () => {
               <View>
                 {/* Aquí puedes renderizar campos de edición según tus necesidades */}
                 {/* Por ejemplo: */}
+
+                <Text style={styles.cardText}>
+                  Nuevo nombre:
+                </Text>
                 <TextInput
                   placeholder="Nuevo nombre"
                   value={newData.name || empresa.name}
                   onChangeText={(text) => setNewData({ ...newData, name: text })}
+                  style={styles.input}
                 />
+
+                <Text style={styles.cardText}>
+                  Nueva direccion:
+                </Text>
                 <TextInput
                   placeholder="Nueva direccion"
                   value={newData.address || empresa.address}
                   onChangeText={(text) => setNewData({ ...newData, address: text })}
+                  style={styles.input}
                 />
 
+
+                <Text style={styles.cardText}>
+                  Nuevo encargado:
+                </Text>
                 <TextInput
                   placeholder="Nuevo Encargado"
                   value={newData.chief || empresa.chief}
                   onChangeText={(text) => setNewData({ ...newData, chief: text })}
+                  style={styles.input}
                 />
-                
+
+
+                <Text style={styles.cardText}>
+                  Nuevo DNI:
+                </Text>
                 <TextInput
                   placeholder="Nuevo DNI"
                   value={newData.chiefDNI || empresa.chiefDNI}
                   onChangeText={(text) => setNewData({ ...newData, chiefDNI: text })}
+                  style={styles.input}
                 />
-                
+
+
+                <Text style={styles.cardText}>
+                  Nuevo telefono:
+                </Text>
                 <TextInput
+                  placeholderTextColor={'white'}
                   placeholder="Nuevo telefono"
                   value={newData.tel || empresa.tel}
                   onChangeText={(text) => setNewData({ ...newData, tel: text })}
+                  style={styles.input}
                 />
-                
+
+                <Text style={styles.cardText}>
+                  Nuevo objetivo:
+                </Text>
                 <TextInput
-                  placeholder="Nuevo telefono"
+                  placeholder="Nuevo objetivo"
                   value={newData.objectives || empresa.objectives}
                   onChangeText={(text) => setNewData({ ...newData, objectives: text })}
+                  style={styles.input}
                 />
                 {/* ... otros campos de edición ... */}
 
-                <Button title="Cancelar" onPress={handleCancelEdit} />
-                <Button title="Guardar" onPress={() => handleSaveEdit(empresa.id)} />
+                <TouchableOpacity title="Cancelar" onPress={handleCancelEdit} />
+                <TouchableOpacity title="Guardar" onPress={() => handleSaveEdit(empresa.id)} />
               </View>
             ) : (
               // Modo de visualización
               <View>
-                <Text style={styles.cardTitle}>Nombre:{empresa.name}</Text>
-                <Text style={styles.cardText}>Direccion:{empresa.address}</Text>
-                <Text style={styles.cardText}>Encargado General:{empresa.chief}</Text>
-                <Text style={styles.cardText}>DNI Encargado General:{empresa.chiefDNI}</Text>
+                <Text style={styles.cardTitle}>Nombre: {empresa.name}</Text>
+                <Text style={styles.cardText}>Direccion: {empresa.address}</Text>
+                <Text style={styles.cardText}>Encargado General: {empresa.chief}</Text>
+                <Text style={styles.cardText}>DNI Encargado General: {empresa.chiefDNI}</Text>
                 <Text style={styles.cardText}>Objetivos: {empresa.objectives}</Text>
                 <Text style={styles.cardText}>Contacto: {empresa.tel}</Text>
                 {/* ... otros campos ... */}
-                <Button title="Editar" onPress={() => handleEditClick(empresa.id)} />
-                <Button title="Eliminar" onPress={() => handleDeleteEmpresa(empresa.name)} />
+                <TouchableOpacity title="Editar" onPress={() => handleEditClick(empresa.id)} style={styles.button} >
+                  <Text style={styles.buttonText}> Editar </Text>
+                </TouchableOpacity>
+                <TouchableOpacity title="Eliminar" style={styles.buttonD} onPress={() => handleDeleteEmpresa(empresa.name)} >
+                  <Text style={styles.buttonText}>
+                    Eliminar
+                  </Text>
+                </TouchableOpacity>
               </View>
             )}
           </View>
@@ -168,11 +204,38 @@ const styles = StyleSheet.create({
     fontFamily: 'Epilogue-Variable',
     backgroundColor: 'black'
   },
+  input: {
+    borderRadius: 25,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: 'gray',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontFamily: 'Epilogue-Variable',
+  },
+  buttonD: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 25,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: 'gray',
+    padding: 10,
+    borderRadius: 25,
+    alignItems: 'center',
+  },
   title: {
     fontSize: 24,
     color: 'white',
     fontWeight: 800,
     paddingRight: 16,
+    fontFamily: 'Epilogue-Variable',
+
   },
   card: {
     backgroundColor: '#fff',
@@ -191,10 +254,15 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Epilogue-Variable',
+
   },
   cardText: {
     fontSize: 14,
     marginBottom: 8,
+    fontFamily: 'Epilogue-Variable',
+    marginTop: 8,
+
   },
   navbar: {
     flexDirection: 'row',

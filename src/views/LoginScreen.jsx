@@ -76,7 +76,7 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('requestRegister')}>
+          <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('AddAdmin')}>
           <Text style={styles.buttonText}>Registrarse</Text>
         </TouchableOpacity>
 

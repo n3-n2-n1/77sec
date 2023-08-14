@@ -13,7 +13,8 @@ const AddAdmin = ({ navigation, route }) => {
   const [role, setRole] = useState('');
   const [location, setLocation] = useState('');
   const [dni, setDNI] = useState('');
-  
+  const [cuil, setCuil] = useState('');
+
 
 
 
@@ -35,7 +36,9 @@ const AddAdmin = ({ navigation, route }) => {
         role: role,
         location: location,
         uid: userId,
-        dni: dni, // Aquí guardamos el token de registro
+        dni: dni,
+        cuil: cuil,
+        horasTrabajadas: []
       });
 
       // Redirigimos al usuario a la pantalla de inicio de sesión
@@ -62,60 +65,66 @@ const AddAdmin = ({ navigation, route }) => {
 
       <ScrollView style={styles.container}>
 
-      <Text style={styles.label}>Nombre:</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
-
-
-      <Text style={styles.label}>DNI:</Text>
-      <TextInput
-        style={styles.input}
-        value={dni}
-        onChangeText={(text) => setDNI(text)}
-      />
-
-
-
-      <Text style={styles.label}>Correo electrónico:</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-
-      <Text style={styles.label}>Predio</Text>
-      <TextInput
-        style={styles.input}
-        value={location}
-        onChangeText={(text) => setLocation(text)}
-      />
-
-      <Text style={styles.label}>Contraseña:</Text>
-      <TextInput
-        style={styles.input}
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-
-      <Text style={styles.label}>Rol:</Text>
-      <View style={styles.roleButtons}>
-
-        <Button
-          title="Admin"
-          onPress={() => setRole('admin')}
-          color={role === 'admin' ? '#007BFF' : '#C7C57D'}
+        <Text style={styles.label}>Nombre:</Text>
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={(text) => setName(text)}
         />
-      </View>
-
-      <Button title="Registrarse" onPress={handleRegister} />
 
 
+        <Text style={styles.label}>DNI:</Text>
+        <TextInput
+          style={styles.input}
+          value={dni}
+          onChangeText={(text) => setDNI(text)}
+        />
 
-    </ScrollView>
+        <Text style={styles.label}>CUIL:</Text>
+        <TextInput
+          style={styles.input}
+          value={cuil}
+          onChangeText={(text) => setCuil(text)}
+        />
+
+
+        <Text style={styles.label}>Correo electrónico:</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+
+        <Text style={styles.label}>Predio</Text>
+        <TextInput
+          style={styles.input}
+          value={location}
+          onChangeText={(text) => setLocation(text)}
+        />
+
+        <Text style={styles.label}>Contraseña:</Text>
+        <TextInput
+          style={styles.input}
+          secureTextEntry
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+
+        <Text style={styles.label}>Rol:</Text>
+        <View style={styles.roleButtons}>
+
+          <Button
+            title="Admin"
+            onPress={() => setRole('admin')}
+            color={role === 'admin' ? '#007BFF' : '#C7C57D'}
+          />
+        </View>
+
+        <Button title="Registrarse" onPress={handleRegister} />
+
+
+
+      </ScrollView>
     </View>
 
   );
@@ -141,6 +150,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     padding: 8,
+    backgroundColor: 'white'
   },
   roleButtons: {
     flexDirection: 'row',

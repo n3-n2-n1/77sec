@@ -45,6 +45,7 @@ const AdminApprovalScreen = ({ navigation }) => {
       await firebase.firestore().collection('registrationRequests').doc(request.uid).delete();
       const updatedRequests = requests.filter((req) => req.uid !== request.uid);
       setRequests(updatedRequests);
+      console.log('Requests after approve:', updatedRequests);
       // Mostrar mensaje de éxito o redirigir a otra pantalla
     } catch (error) {
       console.error('Error al aprobar la solicitud:', error);
@@ -53,13 +54,10 @@ const AdminApprovalScreen = ({ navigation }) => {
 
   const handleReject = async (request) => {
     try {
-      // Eliminar la solicitud rechazada de la colección "registrationRequests"
       await firebase.firestore().collection('registrationRequests').doc(request.uid).delete();
-     
-      // Mostrar mensaje de éxito o redirigir a otra pantalla
       const updatedRequests = requests.filter((req) => req.uid !== request.uid);
       setRequests(updatedRequests);
-
+      console.log('Requests after reject:', updatedRequests);
     } catch (error) {
       console.error('Error al rechazar la solicitud:', error);
     }

@@ -34,6 +34,7 @@ import * as Font from 'expo-font'; // Importa expo-font
 import addAdmin from './src/views/addAdmin';
 import AdminApprovalScreen from './src/views/AdminApproval';
 import requestRegister from './src/views/requestRegister';
+import CalculateHoursScreen from './src/views/CalculateHours';
 const Stack = createStackNavigator();
 
 // Agrega la configuración de Firebase aquí si no lo has hecho aún
@@ -74,7 +75,7 @@ export default function App() {
     <Stack.Navigator initialRouteName="CrimeForm">
       {user ? (
         <>
-          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false, title: 'Home - 77Report' }}/>
         </>
       ) : (
         <>
@@ -82,7 +83,7 @@ export default function App() {
         </>
       )}
 
-      <Stack.Screen name="Form" component={CrimeForm} options={{ headerShown: false }}/>
+      <Stack.Screen name="Form" component={CrimeForm} options={{ headerShown: false, title: 'Nuevo Reporte - 77Report'}}/>
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false }} />
@@ -101,13 +102,12 @@ export default function App() {
       <Stack.Screen name="EditEmpresa" component={EditEmpresaScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false, title: 'Cargando...' }}/>
       <Stack.Screen name="LoadPresentismo" component={LoadPresentismo} options={{ headerShown: false }}/>
       <Stack.Screen name="LoadSalida" component={MarcarSalida} options={{ headerShown: false }}/>
       <Stack.Screen name="AddAdmin" component={AddAdmin} options={{ headerShown: false }}/>
       <Stack.Screen name="AdminApproval" component={AdminApprovalScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="requestRegister" component={requestRegister} options={{ headerShown: false }}/>
-
      
 
 

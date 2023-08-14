@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, View, Image,KeyboardAvoidingView } from 'react-native';
+import { Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, View, Image, KeyboardAvoidingView } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import firebase from 'firebase/compat/app';
 import { database } from '../database/firebaseC'
-import storage from 'firebase/storage';
+import { getStorage, uploadBytesResumable, ref, uploadString, getDownloadURL } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import Svg, { Path } from 'react-native-svg';
 
@@ -37,10 +37,15 @@ const CrimeForm = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
+    const storage = getStorage();
+    const [selectedImages, setSelectedImages] = useState([]);
 
 
 
-
+    const [image, setImage] = useState("");
+    const [video, setVideo] = useState("");
+    const [progress, setProgress] = useState(0);
+    const [files, setFiles] = useState([]);
 
 
 
@@ -54,43 +59,56 @@ const CrimeForm = () => {
                     aspect: [4, 3],
                     quality: 1,
                 });
-
+    
                 if (!result.canceled) {
-                    setSelectedImage(result.assets[0].uri);
+                    if (result.assets.length > 0) {
+                        const selectedAssets = result.assets;
+                        // Call the uploadImage function for each selected image asset
+                        for (const asset of selectedAssets) {
+                            await uploadImage(asset.uri, 'image/jpg'); // Adjust the file type as needed
+                            setSelectedImages((prevSelectedImages) => [...prevSelectedImages, asset.uri]);
+                        }
+                    }
                 }
             } else {
-                console.log('Permiso denegado para acceder a la galería');
+                console.log('Permission denied to access the gallery');
             }
         } catch (error) {
-            console.error('Error en ImagePicker:', error);
+            console.error('Error in ImagePicker:', error);
         }
     };
 
-    const handleImageUpload = async () => {
-        try {
-            if (!selectedImage) {
-                console.log('No se ha seleccionado ninguna imagen');
-                return;
+    async function uploadImage(uri, fileType) {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+    
+        const storageRef = ref(storage, "Stuff/" + new Date().getTime());
+        const uploadTask = uploadBytesResumable(storageRef, blob);
+    
+        // listen for events
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log("Upload is " + progress + "% done");
+                setProgress(progress.toFixed()); // Make sure you have a state variable to hold the progress
+            },
+            (error) => {
+                // handle error
+                console.error('Error uploading:', error);
+            },
+            async () => {
+                try {
+                    const downloadURL = await getDownloadURL(storageRef);
+                    console.log("File available at:", downloadURL);
+                    setUploadedImages((prevUploadedImages) => [...prevUploadedImages, downloadURL]);
+                } catch (error) {
+                    console.error('Error getting download URL:', error);
+                }
             }
-
-            const imageUri = selectedImage;
-            const imageExtension = imageUri.split('.').pop(); // Obtener la extensión de la imagen
-
-            const storageRef = storage().ref(`uploads/${Date.now()}.${imageExtension}`);
-            await storageRef.putFile(imageUri);
-
-            const downloadURL = await storageRef.getDownloadURL();
-            console.log('URL de descarga:', downloadURL);
-
-            // Agregar la URL de descarga a la lista de imágenes subidas
-            setUploadedImages((prevUploadedImages) => [...prevUploadedImages, downloadURL]);
-
-            setSelectedImage(null); // Limpiar la imagen seleccionada
-        } catch (error) {
-            console.error('Error al cargar la imagen:', error);
-        }
-    };
-
+        );
+    }
+    
     const handleFormRestart = () => {
         setSelectedOptions([]);
         setSelectedTipoNovedad([]);
@@ -120,14 +138,7 @@ const CrimeForm = () => {
 
     const handleFormSubmit = async (data) => {
         try {
-
-            const fileDownloadURLs = await Promise.all(selectedFiles.map(async (file) => {
-                const storageRef = firebase.storage().ref(`uploads/${file.name}`);
-                await storageRef.putFile(file.uri);
-                return storageRef.getDownloadURL();
-            }));
-
-
+            // Crear el objeto de datos a enviar a Firestore
             const dataToSend = {
                 vigilador: data.vigilador,
                 vigiladorNovedad: data.vigiladorNovedad,
@@ -139,25 +150,31 @@ const CrimeForm = () => {
                 predioOtro: formData.predioOtro || '',
                 empresaOtro: formData.empresaOtro || '',
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                archivosAdjuntos: fileDownloadURLs,
+                archivosAdjuntos: uploadedImages,
+                idReport: '', // Placeholder for the report ID
             };
-
-            setFormArray((prevFormArray) => {
-                const newFormArray = [dataToSend, ...prevFormArray];
-                return newFormArray;
-            });
-
-            console.log('Form data added to the formArray:', dataToSend);
-
-            await database.collection('form').add({ dataToSend });
-            alert('Form made', dataToSend);
-
+    
+            // Guardar los datos en Firestore and capture the report ID
+            const formRef = await database.collection('form').add(dataToSend);
+            const id = formRef.id; // Capture the ID
+    
+            // Update the id field in the dataToSend object
+            dataToSend.idReport = id;
+    
+            console.log('Form data added to Firestore with ID:', dataToSend.idReport);
+            console.log(dataToSend.archivosAdjuntos);
+    
+            // Navigate to ThankYou screen with report ID
+            handleFormRestart();
+    
             navigation.navigate('ThankYou', { onFormRestart: handleFormRestart });
         } catch (error) {
             console.error('Error saving form data:', error);
         }
     };
-
+    
+    
+    
     const handleTipoNovedadChange = (selectedOption) => {
         setSelectedTipoNovedad((prevSelectedTipoNovedad) => {
             if (prevSelectedTipoNovedad.includes(selectedOption)) {
@@ -233,12 +250,12 @@ const CrimeForm = () => {
                     render={({ field: { onChange, onBlur, value } }) => (
                         <View style={styles.containerR}>
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Nombre Completo"
-                            onChangeText={onChange}
-                            value={value}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Nombre Completo"
+                                onChangeText={onChange}
+                                value={value}
+                            />
                         </View>
                     )}
                     name="vigilador"
@@ -255,12 +272,12 @@ const CrimeForm = () => {
                     render={({ field: { onChange, onBlur, value } }) => (
                         <View style={styles.containerR}>
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Nombre Completo"
-                            onChangeText={onChange}
-                            value={value}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Nombre Completo"
+                                onChangeText={onChange}
+                                value={value}
+                            />
                         </View>
                     )}
                     name="vigiladorNovedad"
@@ -274,20 +291,20 @@ const CrimeForm = () => {
                 <Text style={styles.container}>Tipo de novedad</Text>
                 {news.map((newSuccess, index) => (
                     <View style={styles.containerR}>
-                    <TouchableOpacity
-                        key={index}
-                        style={styles.radio}
-                        onPress={() => {
-                            handleTipoNovedadChange(newSuccess);
-                        }}
-                    >
-                        <View style={styles.radioCircle}>
-                            <Text>
-                                {selectedTipoNovedad.includes(newSuccess) && <View style={styles.selectedRb} />}
-                            </Text>
-                        </View>
-                        <Text style={styles.radioText}>{newSuccess}</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.radio}
+                            onPress={() => {
+                                handleTipoNovedadChange(newSuccess);
+                            }}
+                        >
+                            <View style={styles.radioCircle}>
+                                <Text>
+                                    {selectedTipoNovedad.includes(newSuccess) && <View style={styles.selectedRb} />}
+                                </Text>
+                            </View>
+                            <Text style={styles.radioText}>{newSuccess}</Text>
+                        </TouchableOpacity>
                     </View>
                 ))}
                 <Controller
@@ -296,15 +313,15 @@ const CrimeForm = () => {
                     render={({ field: { onChange, onBlur, value } }) => (
                         <KeyboardAvoidingView style={styles.containerR}>
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Otro"
-                            onChangeText={(text) => {
-                                onChange(text);
-                                setFormData((prevData) => ({ ...prevData, tipoNovedadOtro: text }));
-                            }}
-                            value={value}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Otro"
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    setFormData((prevData) => ({ ...prevData, tipoNovedadOtro: text }));
+                                }}
+                                value={value}
+                            />
                         </KeyboardAvoidingView>
                     )}
                     name="tipoNovedadOtro"
@@ -318,21 +335,21 @@ const CrimeForm = () => {
                 {hours.map((hour, index) => (
                     <View style={styles.containerR}>
 
-                    <TouchableOpacity
-                        key={index}
-                        style={styles.radio}
-                        onPress={() => {
-                            handleHourChange(hour)
-                        }}
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.radio}
+                            onPress={() => {
+                                handleHourChange(hour)
+                            }}
                         >
-                        <View style={styles.radioCircle}>
-                            <Text>
-                                {selectedHour.includes(hour) && <View style={styles.selectedRb} />}
-                            </Text>
-                        </View>
-                        <Text style={styles.radioText}>{hour}</Text>
-                    </TouchableOpacity>
-                        </View>
+                            <View style={styles.radioCircle}>
+                                <Text>
+                                    {selectedHour.includes(hour) && <View style={styles.selectedRb} />}
+                                </Text>
+                            </View>
+                            <Text style={styles.radioText}>{hour}</Text>
+                        </TouchableOpacity>
+                    </View>
                 ))}
             </KeyboardAvoidingView>
 
@@ -342,35 +359,35 @@ const CrimeForm = () => {
                 <Text style={styles.container}>Empresa</Text>
                 {empresas.map((empresaItem, index) => (
                     <View style={styles.containerR}>
-                    <TouchableOpacity
-                        key={index}
-                        style={styles.radio}
-                        onPress={() => {
-                            handleEmpresaChange(empresaItem.name);
-                        }}
-                    >
-                        <View style={styles.radioCircle}>
-                            <Text>
-                                {selectedEmpresa.includes(empresaItem.name) && <View style={styles.selectedRb} />}
-                            </Text>
-                        </View>
-                        <Text style={styles.radioText}>{empresaItem.name}</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            key={index}
+                            style={styles.radio}
+                            onPress={() => {
+                                handleEmpresaChange(empresaItem.name);
+                            }}
+                        >
+                            <View style={styles.radioCircle}>
+                                <Text>
+                                    {selectedEmpresa.includes(empresaItem.name) && <View style={styles.selectedRb} />}
+                                </Text>
+                            </View>
+                            <Text style={styles.radioText}>{empresaItem.name}</Text>
+                        </TouchableOpacity>
                     </View>
                 ))}
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                         <KeyboardAvoidingView style={styles.containerR}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Otro"
-                            onChangeText={(text) => {
-                                onChange(text);
-                                setFormData((prevData) => ({ ...prevData, empresaOtro: text }));
-                            }}
-                            value={value}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Otro"
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    setFormData((prevData) => ({ ...prevData, empresaOtro: text }));
+                                }}
+                                value={value}
+                            />
                         </KeyboardAvoidingView>
                     )}
                     name="empresaOtro"
@@ -383,49 +400,49 @@ const CrimeForm = () => {
                 <Text style={styles.container}>Predio</Text>
 
 
-                    
+
 
                 {empresaPredios.map((predio, index) => (
-                <View style={styles.containerR}>
+                    <View style={styles.containerR}>
 
-                    <TouchableOpacity
-                    
-                        key={index}
-                        style={styles.radio}
-                        onPress={() => {
-                            handlePredioChange(predio);
-                        }}
+                        <TouchableOpacity
+
+                            key={index}
+                            style={styles.radio}
+                            onPress={() => {
+                                handlePredioChange(predio);
+                            }}
                         >
-                        <View style={styles.radioCircle}>
-                            <Text>
-                                {selectedPredio.includes(predio) && <View style={styles.selectedRb} />}
-                            </Text>
-                        </View>
-                        <Text style={styles.radioText}>{predio}</Text>
-                    </TouchableOpacity>
+                            <View style={styles.radioCircle}>
+                                <Text>
+                                    {selectedPredio.includes(predio) && <View style={styles.selectedRb} />}
+                                </Text>
+                            </View>
+                            <Text style={styles.radioText}>{predio}</Text>
+                        </TouchableOpacity>
                     </View>
                 ))}
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                    <KeyboardAvoidingView style={styles.containerR}>
+                        <KeyboardAvoidingView style={styles.containerR}>
 
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Otro"
-                            onChangeText={(text) => {
-                                onChange(text);
-                                setFormData((prevData) => ({ ...prevData, predioOtro: text }));
-                            }}
-                            value={value}
-                        />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Otro"
+                                onChangeText={(text) => {
+                                    onChange(text);
+                                    setFormData((prevData) => ({ ...prevData, predioOtro: text }));
+                                }}
+                                value={value}
+                            />
                         </KeyboardAvoidingView>
                     )}
                     name="predioOtro"
                     defaultValue=""
-                    />
-            
-                    </View>
+                />
+
+            </View>
 
 
 
@@ -437,15 +454,15 @@ const CrimeForm = () => {
                     style={styles.container}
                     render={({ field: { onChange, onBlur, value } }) => (
 
-                    <KeyboardAvoidingView style={styles.containerR}>
+                        <KeyboardAvoidingView style={styles.containerR}>
 
-                        
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Novedad"
-                            onChangeText={onChange}
-                            value={value}
-                        />
+
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Novedad"
+                                onChangeText={onChange}
+                                value={value}
+                            />
                         </KeyboardAvoidingView>
                     )}
                     name="novedad1"
@@ -459,13 +476,14 @@ const CrimeForm = () => {
                 <Button title="Seleccionar Imagen" onPress={handleFilePick} />
                 {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
 
-                {/* Mostrar las imágenes subidas */}
-                {uploadedImages.map((imageUrl, index) => (
-                    <Image key={index} source={{ uri: imageUrl }} style={styles.uploadedImage} />
-                ))}
+                <View style={styles.imagePreviewContainer}>
+                    {selectedImages.map((imageUri, index) => (
+                        <Image key={index} source={{ uri: imageUri }} style={styles.imagePreview} />
+                    ))}
+                </View>
             </View>
             <View style={styles.box}>
-                <TouchableOpacity style={styles.button} onPress={handleSubmit(handleFormSubmit)}>
+                <TouchableOpacity style={styles.button} onPress={handleSubmit(handleFormSubmit)} onPressOut={uploadImage}>
                     <Text style={styles.submitButtonText}>Submit</Text>
                 </TouchableOpacity>
             </View>
@@ -481,8 +499,18 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 25,
         fontFamily: 'Epilogue-Variable',
-        
 
+
+    },
+    imagePreviewContainer: {
+        flexDirection: 'row', // Arrange images in a row
+        flexWrap: 'wrap',     // Wrap images to the next line if needed
+        marginTop: 20,
+    },
+    imagePreview: {
+        width: 100,
+        height: 100,
+        margin: 5, // Add some margin between images
     },
     containerR: {
         flex: 1,
@@ -495,7 +523,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontFamily: 'Epilogue-Variable',
         marginBottom: 12, // Añado marginBottom para separar de la sección anterior
-      },
+    },
 
     containerScroll: {
         width: '100%',
@@ -511,7 +539,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingHorizontal: 15,
 
-      },
+    },
     input: {
         borderRadius: 60,
         height: 40,
@@ -540,7 +568,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
         paddingTop: 30,
-      },
+    },
     radio: {
         flexDirection: 'row',
         alignItems: 'center',

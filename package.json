@@ -28,6 +28,7 @@
     "expo-image-picker": "^14.3.2",
     "expo-location": "^16.1.0",
     "expo-permissions": "^14.2.1",
+    "expo-print": "^12.4.2",
     "expo-status-bar": "~1.4.4",
     "firebase": "^10.1.0",
     "moment": "^2.29.4",
@@ -40,9 +41,11 @@
     "react-native-countdown-circle-timer": "^3.2.1",
     "react-native-document-picker": "^9.0.1",
     "react-native-file-picker": "^0.0.21",
+    "react-native-pdf-lib": "^1.0.0",
     "react-native-qrcode-svg": "^6.2.0",
     "react-native-svg": "^13.11.0",
     "react-native-web": "~0.18.11",
+    "react-pdf": "^7.3.3",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

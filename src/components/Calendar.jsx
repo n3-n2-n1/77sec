@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, SafeAreaView} from 'react-native';
+import { View, StyleSheet, Text, ScrollView, SafeAreaView } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
@@ -10,33 +10,42 @@ const CalendarScreen = () => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
-    const fetchPresentismoData = async () => {
+    const fetchHorasTrabajadas = async () => {
       try {
-        const presentismoSnapshot = await firebase.firestore().collection('presentismo').get();
-        const presentismoData = {};
+        if (selectedDate) {
+          const date = new Date(selectedDate);
+          date.setHours(0, 0, 0, 0);
 
-        presentismoSnapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data.timestamp) { // Verifica si la propiedad 'timestamp' existe en el objeto
-            const timestamp = data.timestamp.toDate();
-            const date = timestamp.toISOString().split('T')[0];
+          const usersSnapshot = await firebase.firestore().collection('users').get();
+          const presentismoData = {};
 
-            if (!presentismoData[date]) {
-              presentismoData[date] = [];
-            }
+          for (const userDoc of usersSnapshot.docs) {
+            const userDni = userDoc.data().dni;
+            const horasTrabajadasSnapshot = await userDoc.ref.collection('horasTrabajadas')
+              .where('entrada', '>=', date)
+              .where('entrada', '<', new Date(date.getTime() + 24 * 60 * 60 * 1000))
+              .get();
 
-            presentismoData[date].push(data); // Agregar 'data' directamente a la matriz
+            horasTrabajadasSnapshot.forEach((doc) => {
+              const data = doc.data();
+              presentismoData[userDni] = presentismoData[userDni] || [];
+              presentismoData[userDni].push({
+                entrada: data.entrada.toDate(),
+                salida: data.salida.toDate(),
+                dni: userDni,
+              });
+            });
           }
-        });
-
-        setEvents(presentismoData);
+          console.log(setEvents)
+          setEvents(presentismoData);
+        }
       } catch (error) {
-        console.error('Error al cargar los datos de presentismo:', error);
+        console.error('Error al cargar los datos de horasTrabajadas:', error);
       }
     };
 
-    fetchPresentismoData();
-  }, []);
+    fetchHorasTrabajadas();
+  }, [selectedDate]);
 
   return (
     <View style={styles.container}>
@@ -47,26 +56,23 @@ const CalendarScreen = () => {
         }}
       />
       <SafeAreaView style={styles.contentContainer}>
-  {selectedDate && events[selectedDate] && (
-    <ScrollView style={styles.eventContainer}>
-      <Text style={styles.eventTitle}>Presentes el {selectedDate}:</Text>
-      {events[selectedDate].map((event, eventId) => (
-        <View key={eventId} style={styles.eventCard}>
-          <Text style={styles.cardText}>Nombre: {event.nombre}</Text>
-          <Text style={styles.cardText}>Coordenadas:</Text>
-          <Text style={styles.coordText}>Latitud: {event.coordenadas.latitude}</Text>
-          <Text style={styles.coordText}>Longitud: {event.coordenadas.longitude}</Text>
-          <Text style={styles.coordText}>Exactitud: {event.coordenadas.accuracy}</Text>
-          <Text style={styles.coordText}>Altitud: {event.coordenadas.altitude}</Text>
-          <Text style={styles.coordText}>Exactitud de Altitud: {event.coordenadas.altitudeAccuracy}</Text>
-          <Text style={styles.coordText}>Rumbo: {event.coordenadas.heading}</Text>
-          <Text style={styles.coordText}>Velocidad: {event.coordenadas.speed}</Text>
-          <Text style={styles.cardText}>Fecha: {event.timestamp.toDate().toLocaleString()}</Text>
-        </View>
-      ))}
-    </ScrollView>
-  )}
-</SafeAreaView>
+        {selectedDate && events[selectedDate] && (
+          <ScrollView style={styles.eventContainer}>
+            <Text style={styles.eventTitle}>Registros el {selectedDate}:</Text>
+            {Object.entries(events[selectedDate]).map(([dni, registros]) => (
+              <View key={dni} style={styles.eventCard}>
+                <Text style={styles.cardText}>DNI: {dni}</Text>
+                {registros.map((registro, index) => (
+                  <View key={index}>
+                    <Text style={styles.cardText}>Entrada: {registro.entrada.toString()}</Text>
+                    <Text style={styles.cardText}>Salida: {registro.salida.toString()}</Text>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </ScrollView>
+        )}
+      </SafeAreaView>
     </View>
   );
 };
@@ -78,24 +84,19 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
   },
-  coordText:{
-    color:'#4F7942',
-  },
   eventContainer: {
-    marginTop: 20,
-    padding: 10,
+    flex: 1,
   },
   eventTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginVertical: 10,
   },
   eventCard: {
-    backgroundColor: 'white',
-    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
     padding: 10,
     marginBottom: 10,
-    elevation: 3,
   },
   cardText: {
     fontSize: 16,

@@ -7,17 +7,17 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import * as Location from 'expo-location';
 import QRCode from 'react-native-qrcode-svg';
+import moment from 'moment'; // Importa la librería moment para manipular fechas
+
 
 
 const MarcarSalida = ({ }) => {
-    const [nombre, setNombre] = useState('');
+    const [dni, setDni] = useState('');
     const [guardadoExitoso, setGuardadoExitoso] = useState(false);
     const [location, setLocation] = useState(null);
     const navigation = useNavigation();
     const [qrValue, setQRValue] = useState('');
-    const navigate = useNavigation();
 
-    
     useEffect(() => {
         // Pedir permiso para acceder a la ubicación
         (async () => {
@@ -32,42 +32,57 @@ const MarcarSalida = ({ }) => {
 
     useEffect(() => {
         if (location) {
-            // Genera la información del QR con el nombre del vigilador, la ubicación y la hora actual
+            // Genera la información del QR con el DNI del vigilante, la ubicación y la hora actual
             const currentDate = new Date().toLocaleString();
-            const qrData = `Vigilador: ${nombre}\nUbicación: Lat ${location.coords.latitude}, Long ${location.coords.longitude}\nFecha y Hora: ${currentDate}`;
+            const qrData = `DNI: ${dni}\nUbicación: Lat ${location.coords.latitude}, Long ${location.coords.longitude}\nFecha y Hora: ${currentDate}`;
             setQRValue(qrData);
         }
-    }, [location, nombre]);
+    }, [location, dni]);
 
     const handleMarcarSalida = async () => {
         try {
+            if (!location) {
+                console.log('Aún no se ha obtenido la ubicación.');
+                return;
+            }
+
             const user = firebase.auth().currentUser;
-            if (user) {
-                const userEmail = user.email;
-
-                // Buscar el documento en 'presentismo' con el mismo nombre y sin campo 'salida'
-                const presentismoRef = database.collection('presentismo')
-                    .where('nombre', '==', nombre)
-                    .where('salida', '==', '');
-
-                const querySnapshot = await presentismoRef.get();
-                if (!querySnapshot.empty) {
-                    // Actualizar el documento encontrado con la marca de salida
-                    const documentId = querySnapshot.docs[0].id;
-                    const salidaTimestamp = firebase.firestore.Timestamp.now();
-
-                    await database.collection('presentismo').doc(documentId).update({
-                        salida: salidaTimestamp,
-                    });
-
-                    console.log('Marca de salida registrada con éxito.');
-                    alert('Marca de salida registrada con éxito.');
-                    navigation.goBack();
-                } else {
-                    console.log('No se encontró registro de entrada para este nombre.');
-                }
-            } else {
+            if (!user) {
                 console.log('Usuario no autenticado.');
+                return;
+            }
+
+            const userDni = dni;
+            const userSnapshot = await database.collection('users').where('dni', '==', userDni).get();
+
+            if (userSnapshot.empty) {
+                console.log('No se encontró información del usuario.');
+                return;
+            }
+
+            const userDoc = userSnapshot.docs[0];
+            const userData = userDoc.data();
+
+            const horasTrabajadasRef = userDoc.ref.collection('horasTrabajadas');
+            
+            // Buscar el último registro de entrada sin salida para el DNI del vigilante
+            const querySnapshot = await horasTrabajadasRef.where('salida', '==', '').orderBy('entrada', 'desc').limit(1).get();
+
+            if (!querySnapshot.empty) {
+                // Actualizar el registro de entrada encontrado con la marca de salida
+                const documentId = querySnapshot.docs[0].id;
+                const salidaTimestamp = firebase.firestore.Timestamp.now();
+
+                await horasTrabajadasRef.doc(documentId).update({
+                    salida: moment(salidaTimestamp.toDate()).format('hh:mm:ss A'),
+                });
+
+                setGuardadoExitoso(true);
+                console.log('Marca de salida registrada con éxito.');
+                alert('Marca de salida registrada con éxito.');
+                navigation.goBack();
+            } else {
+                console.log('No se encontró registro de entrada sin salida para este DNI.');
             }
         } catch (error) {
             console.error('Error al marcar la salida:', error);
@@ -101,11 +116,11 @@ const MarcarSalida = ({ }) => {
                 <Text style={styles.coordinatesText}>
                     Coordenadas: {location ? `Lat: ${location.coords.latitude}, Long: ${location.coords.longitude}` : 'Obteniendo ubicación...'}
                 </Text>
-                <Text style={styles.instructions}>Insertar Nombre del Vigilador</Text>
+                <Text style={styles.instructions}>Insertar Dni del Vigilador</Text>
                 <TextInput
                     placeholder=""
-                    value={nombre}
-                    onChangeText={setNombre}
+                    value={dni}
+                    onChangeText={setDni}
                     style={styles.input}
                 />
                 <TouchableOpacity style={styles.button} onPress={handleMarcarSalida}>
@@ -123,11 +138,19 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5F5F5',
+        backgroundColor: 'black',
+    },
+    qr:{
+        padding: 15,
+        borderColor: 'white',
+        borderWidth: 2,
+        borderRadius: 25,
+        justifyContent: 'center'
+
     },
     container2: {
         flex: 1,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: 'black',
     },
     containerIn: {
         alignItems: 'center',
@@ -145,13 +168,16 @@ const styles = StyleSheet.create({
 
     },
     instructions: {
-        fontSize: 18,
+        fontSize: 16,
         textAlign: 'center',
+        marginTop: 20,
         marginBottom: 20,
         color: '#333',
+        fontFamily: 'Epilogue-Variable',
+        color: 'white'
+
     },
     qrContainer: {
-        marginBottom: 20,
     },
     qrText: {
         fontSize: 16,
@@ -159,14 +185,21 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'Epilogue-Variable',
     },
+    coordinatesContainer:{
+        borderColor: 'black',
+        borderWidth: 3,
+        padding: 15,
+        marginTop: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBotton: 15,
+    },
     coordinatesText: {
         fontSize: 16,
-        marginBottom: 20,
         color: '#666',
         fontFamily: 'Epilogue-Variable',
         width: 178,
-        textAlign: 'left'
-
+        textAlign: 'center'
     },
     successText: {
         fontSize: 16,
@@ -176,11 +209,13 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        backgroundColor: 'black',
+        flex: 1,
+        backgroundColor: 'green',
         padding: 15,
         borderRadius: 25,
         alignItems: 'center',
         width: 245,
+        marginTop: 26,
     },
     buttonText: {
         color: 'white',

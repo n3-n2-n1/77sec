@@ -13,33 +13,40 @@ const ReportsScreen = () => {
   const navigation = useNavigation();
 
   // Cargar la lista de reportes desde Firebase
-  const loadReports = () => {
+  const loadReports = async () => {
     const reportsRef = firebase.firestore().collection('form');
-    reportsRef.get().then((querySnapshot) => {
+    try {
+      const querySnapshot = await reportsRef.get();
       const reportList = [];
       querySnapshot.forEach((doc) => {
         const reportData = { id: doc.id, ...doc.data() };
         reportList.push(reportData);
       });
       setReports(reportList);
-    });
+      console.log(reportList)
+    } catch (error) {
+      console.error('Error loading reports:', error);
+    }
   };
+
+
 
   useEffect(() => {
     loadReports();
   }, []);
-
+  
   const filteredReports = reports.filter((report) => {
-    for (const key in report.dataToSend) {
-      if (report.dataToSend.hasOwnProperty(key) && report.dataToSend[key]) {
-        const fieldValue = report.dataToSend[key].toString().toLowerCase();
-        if (fieldValue.includes(searchTerm.toLowerCase())) {
-          return true;
-        }
+    // Filtrar por empresaSeleccionada
+    const empresas = report.empresaSeleccionada || []; // Asegúrate de manejar el caso en que empresaSeleccionada sea null o undefined
+    for (const empresa of empresas) {
+      const fieldValue = empresa.toString().toLowerCase();
+      if (fieldValue.includes(searchTerm.toLowerCase())) {
+        return true;
       }
     }
     return false;
   });
+  
 
 
   return (
@@ -54,7 +61,7 @@ const ReportsScreen = () => {
             />
           </Svg>
         </TouchableOpacity>
-      <Text style={styles.title}>Lista de Reportes</Text>
+        <Text style={styles.title}>Lista de Reportes</Text>
       </View>
       <TextInput
         style={styles.searchInput}
@@ -65,27 +72,19 @@ const ReportsScreen = () => {
       />
       <FlatList
         data={filteredReports}
-        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.reportItem}
             onPress={() => navigation.navigate('ReportDetail', { report: item })}
           >
-            <Text style={styles.reportText}>
-              
-              <View>
-                <Text style={styles.reportText}>
-                  ID: {item.id}
-                  </Text>
-                  </View>
-              
-              </Text>
-            <Text style={styles.reportText}>Novedad: {item.dataToSend.tipoNovedad}</Text>
-            <Text style={styles.reportText}>Descripción: {item.dataToSend.predio}</Text>
-            <Text style={styles.reportText}>Vigilador: {item.dataToSend.vigilador}</Text>
+            <Text style={styles.reportText}>ID: {item.id}</Text>
+            <Text style={styles.reportText}>Novedad: {item.tipoNovedad}</Text>
+            <Text style={styles.reportText}>Descripción: {item.predio}</Text>
+            <Text style={styles.reportText}>Vigilador: {item.vigilador}</Text>
           </TouchableOpacity>
         )}
       />
+
     </View>
   );
 };
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white'
   },
-  
+
   title: {
     fontSize: 24,
     color: 'white',
