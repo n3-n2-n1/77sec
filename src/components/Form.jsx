@@ -24,17 +24,13 @@ const CrimeForm = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const { control, handleSubmit, reset } = useForm();
     const [formData, setFormData] = useState({});
-    const [formArray, setFormArray] = useState([]);
     const navigation = useNavigation();
     const [selectedTipoNovedad, setSelectedTipoNovedad] = useState([]);
     const [selectedPredio, setSelectedPredio] = useState([]);
     const [selectedEmpresa, setSelectedEmpresa] = useState([]);
     const [selectedHour, setSelectedHour] = useState([]);
-    const [selectedDocument, setSelectedDocument] = useState([]);
-    const [selectedFile, setSelectedFile] = useState(null);
     const [empresas, setEmpresas] = useState([]);
     const [empresaPredios, setEmpresaPredios] = useState([]);
-    const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([]);
     const storage = getStorage();
@@ -42,10 +38,7 @@ const CrimeForm = () => {
 
 
 
-    const [image, setImage] = useState("");
-    const [video, setVideo] = useState("");
     const [progress, setProgress] = useState(0);
-    const [files, setFiles] = useState([]);
 
 
 
@@ -78,7 +71,7 @@ const CrimeForm = () => {
         }
     };
 
-    async function uploadImage(uri, fileType) {
+    const uploadImage = async(uri, fileType) => {
         const response = await fetch(uri);
         const blob = await response.blob();
     
@@ -141,17 +134,15 @@ const CrimeForm = () => {
             // Crear el objeto de datos a enviar a Firestore
             const dataToSend = {
                 vigilador: data.vigilador,
-                vigiladorNovedad: data.vigiladorNovedad,
                 tipoNovedad: selectedTipoNovedad,
                 horaHecho: selectedHour,
                 predio: selectedPredio,
-                empresaSeleccionada: selectedEmpresa,
+                empresa: selectedEmpresa,
                 novedad1: data.novedad1,
                 predioOtro: formData.predioOtro || '',
                 empresaOtro: formData.empresaOtro || '',
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 archivosAdjuntos: uploadedImages,
-                idReport: '', // Placeholder for the report ID
             };
     
             // Guardar los datos en Firestore and capture the report ID
@@ -244,6 +235,7 @@ const CrimeForm = () => {
                 </Text>
             </View>
             <KeyboardAvoidingView style={styles.box}>
+
                 <Text style={styles.container}>Vigilador de turno</Text>
                 <Controller
                     control={control}
@@ -264,27 +256,7 @@ const CrimeForm = () => {
                 />
             </KeyboardAvoidingView>
 
-            {/* Vigilador que detecta la novedad */}
-            <KeyboardAvoidingView style={styles.box}>
-                <Text style={styles.container}>Vigilador que detecta</Text>
-                <Controller
-                    control={control}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <View style={styles.containerR}>
-
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Nombre Completo"
-                                onChangeText={onChange}
-                                value={value}
-                            />
-                        </View>
-                    )}
-                    name="vigiladorNovedad"
-                    rules={{ required: true, maxLength: 80 }}
-                    defaultValue=""
-                />
-            </KeyboardAvoidingView>
+         
 
             {/* Notice Type */}
             <KeyboardAvoidingView style={styles.box}>
@@ -484,7 +456,7 @@ const CrimeForm = () => {
             </View>
             <View style={styles.box}>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit(handleFormSubmit)} onPressOut={uploadImage}>
-                    <Text style={styles.submitButtonText}>Submit</Text>
+                    <Text style={styles.submitButtonText}>Enviar reporte</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -499,7 +471,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 25,
         fontFamily: 'Epilogue-Variable',
-
+        justifyContent: 'center'
 
     },
     imagePreviewContainer: {
@@ -511,6 +483,15 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         margin: 5, // Add some margin between images
+    },
+    button: {
+        flex: 1,
+        backgroundColor: 'green',
+        padding: 15,
+        borderRadius: 25,
+        alignItems: 'center',
+        width: 245,
+        marginTop: 26,
     },
     containerR: {
         flex: 1,
@@ -602,18 +583,7 @@ const styles = StyleSheet.create({
         height: 200,
         marginTop: 20,
     },
-    button: {
-        backgroundColor: 'blue',
-        borderRadius: 2,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        color: 'white',
-        marginBottom: 30,
-        marginTop: 30,
-        display: 'flex',
-        alignItems: 'center',
-        cursor: 'pointer',
-    },
+
     box: {
         backgroundColor: 'black'
     }

@@ -45,38 +45,47 @@ const LoadPresentismo = ({ route }) => {
                 console.log('Aún no se ha obtenido la ubicación.');
                 return;
             }
-
+            
             const user = firebase.auth().currentUser;
-
+    
             if (!user) {
                 console.log('Usuario no autenticado.');
                 return;
             }
-
+    
             const userDni = dni; // Usar el DNI ingresado
             const userSnapshot = await database.collection('users').where('dni', '==', userDni).get();
-
+    
             if (userSnapshot.empty) {
                 console.log('No se encontró información del usuario.');
+                // Muestra un alert indicando que el DNI ingresado no coincide con ningún usuario
+                alert('DNI ingresado no válido. Verifica el DNI.');
                 return;
             }
-
-            const userDoc = userSnapshot.docs[0];
-            const userData = userDoc.data();
-
-            const horasTrabajadasRef = userDoc.ref.collection('horasTrabajadas'); // Obtener la referencia a la subcolección
-
+            
+            const userData = userSnapshot.docs[0].data();
+            
+            if (userDni !== userData.dni) {
+                console.log(userData.dni)
+                console.log('DNI ingresado no coincide con el DNI del usuario.');
+                // Muestra un alert indicando que el DNI ingresado no coincide con el usuario autenticado
+                alert('El DNI ingresado no coincide con el DNI del usuario autenticado.');
+                return;
+            }
+    
+            const horasTrabajadasRef = userSnapshot.docs[0].ref.collection('horasTrabajadas'); // Obtener la referencia a la subcolección
             const presentismoData = {
-                fecha: moment().format('LL'),
-                entrada: moment().format('LTS'),
+                fecha: moment().format('YYYY-MM-DD'), // Formato de fecha YYYY-MM-DD
+                entrada: moment().format('HH:mm:ss'), // Formato de hora HH:mm:ss
                 salida: '',
-                dni: userDni
-            };
-
-            console.log(presentismoData)
-
+                dni: userDni,
+                coordenadas: location
+              };    
+    
+            console.log(presentismoData)    
+    
             await horasTrabajadasRef.add(presentismoData); // Agregar a la subcolección
-
+    
             setGuardadoExitoso(true);
             console.log('Horas trabajadas guardadas con éxito.');
             alert('Horas trabajadas guardadas con éxito');
@@ -85,7 +94,7 @@ const LoadPresentismo = ({ route }) => {
             console.error('Error al guardar las horas trabajadas:', error);
         }
     };
-
+    
 
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container2}>
@@ -110,12 +119,7 @@ const LoadPresentismo = ({ route }) => {
                             <Text style={styles.instructions}>Generando Código QR...</Text>
                         )}
                     </View>
-                    <View style={styles.coordinatesContainer}>
-                        <Text style={styles.coordinatesText}>
-                            Coordenadas: {location ? `Lat: ${location.coords.latitude}, Long: ${location.coords.longitude}` : 'Obteniendo ubicación...'}
-                        </Text>
-                    </View>
-                    <Text style={styles.instructions}>Insertar DNI del Vigilador</Text>
+                    <Text style={styles.instructions}>Insertar DNI</Text>
                     <TextInput
                         placeholder="Ingrese el DNI"
                         value={dni}
@@ -123,7 +127,7 @@ const LoadPresentismo = ({ route }) => {
                         style={styles.input}
                         keyboardType="numeric"
                     />
-                    <TouchableOpacity style={styles.button} onPress={handleGuardarPresentismo} onFocus={'white'}>
+                    <TouchableOpacity style={styles.button} onPress={handleGuardarPresentismo}>
                         <Text style={styles.buttonText}>Guardar Presentismo</Text>
                     </TouchableOpacity>
                     {guardadoExitoso && <Text style={styles.successText}>Presentismo guardado con éxito.</Text>}

@@ -71,19 +71,19 @@ const ReportsScreen = () => {
         onChangeText={(text) => setSearchTerm(text)}
       />
       <FlatList
-        data={filteredReports}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.reportItem}
-            onPress={() => navigation.navigate('ReportDetail', { report: item })}
-          >
-            <Text style={styles.reportText}>ID: {item.id}</Text>
-            <Text style={styles.reportText}>Novedad: {item.tipoNovedad}</Text>
-            <Text style={styles.reportText}>Descripción: {item.predio}</Text>
-            <Text style={styles.reportText}>Vigilador: {item.vigilador}</Text>
-          </TouchableOpacity>
-        )}
-      />
+      data={filteredReports}
+      keyExtractor={(item) => item.id} // Utiliza el campo "id" como clave
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          style={styles.reportItem}
+          onPress={() => navigation.navigate('ReportDetail', { report: item })}
+        >
+          <Text style={styles.reportText}>ID: {item.id}</Text>
+          <Text style={styles.reportText}>Descripción: {item.predio}</Text>
+          <Text style={styles.reportText}>Empresa: {item.predio}</Text>
+        </TouchableOpacity>
+      )}
+    />
 
     </View>
   );

@@ -73,9 +73,12 @@ export default function App() {
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName="CrimeForm">
-      {user ? (
+      {user && isUserAdmin? (
         <>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false, title: 'Home - 77Report' }}/>
+         
+
+
         </>
       ) : (
         <>
@@ -87,27 +90,28 @@ export default function App() {
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="addCompany" component={AddCompanyScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="Vigilantes" component={VigilantesScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="reportHistory" component={ReportsScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="calendar" component={CalendarScreen}/>
       <Stack.Screen name="qr" component={QRScanner} options={{ headerShown: false }}/>
       <Stack.Screen name="Alerta" component={AlertForm} options={{ headerShown: false }}/>
       <Stack.Screen name="qrGen" component={QRCodeGenerator} options={{ headerShown: false }}/>
+      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false, title: 'Cargando...' }}/>
+      <Stack.Screen name="LoadPresentismo" component={LoadPresentismo} options={{ headerShown: false }}/>
+      <Stack.Screen name="LoadSalida" component={MarcarSalida} options={{ headerShown: false }}/>
       <Stack.Screen name="AdminDashboard" component={AdminViewScreen} options={{ headerShown: false }} />
       <Stack.Screen name="NotificationSender" component={NotificationSender} />
       <Stack.Screen name="Empresas" component={EnterprisesView} options={{ headerShown: false }}/>
       <Stack.Screen name="vigilantesView" component={UserVigilantesView} options={{ headerShown: false }}/>
       <Stack.Screen name="ReportDetail" component={ReportDetailScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="EditEmpresa" component={EditEmpresaScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false, title: 'Cargando...' }}/>
-      <Stack.Screen name="LoadPresentismo" component={LoadPresentismo} options={{ headerShown: false }}/>
-      <Stack.Screen name="LoadSalida" component={MarcarSalida} options={{ headerShown: false }}/>
+      <Stack.Screen name="addCompany" component={AddCompanyScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="Vigilantes" component={VigilantesScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="reportHistory" component={ReportsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="AddAdmin" component={AddAdmin} options={{ headerShown: false }}/>
       <Stack.Screen name="AdminApproval" component={AdminApprovalScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="requestRegister" component={requestRegister} options={{ headerShown: false }}/>
+      <Stack.Screen name="calendar" component={CalendarScreen}/>
+      <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
+      
      
 
 

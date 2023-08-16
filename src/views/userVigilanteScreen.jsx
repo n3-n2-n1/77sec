@@ -45,21 +45,23 @@ const UserVigilantesView = () => {
       <TextInput
         style={styles.searchInput}
         placeholder="Buscar usuario..."
-        placeholderTextColor={'white'}
+        placeholderTextColor={'gray'}
         value={searchTerm}
         onChangeText={(text) => setSearchTerm(text)}
       />
       <View style={styles.section}>
         {filteredUsers.map((user) => (
           <TouchableOpacity
-            key={user.id}
+            key={user.name}
             style={styles.card}
             onPress={() => {
-              navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
+              alert('Usuario creado')
+              navigation.navigate('Home', { user }); // Navegar a la pantalla UserDetailsScreen
             }}
           >
             <Text style={styles.cardText}>{user.name}</Text>
-            <Text style={styles.cardText}>Email: {user.email}</Text>
+            <Text style={styles.cardText}>{user.dni}</Text>
+            <Text style={styles.cardText}>{user.email}</Text>
             {/* Mostrar más detalles del usuario si es necesario */}
           </TouchableOpacity>
         ))}
@@ -72,13 +74,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: 'black'
+    backgroundColor: '#3780C3'
   },
   searchInput: {
     marginBottom: 16,
     borderWidth: 1,
     borderColor: 'gray',
     padding: 8,
+    borderRadius: 25,
+    fontFamily: 'Epilogue-Variable',
+    backgroundColor: 'white'
+
   },
   section: {
     flex: 1,
@@ -87,24 +93,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: 'white'
+    color: 'black'
   },
   card: {
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: 'gray',
+    marginBottom: 8,
+    backgroundColor: 'white',
+    borderWidth: 0.3,
+    borderColor: 'white',
     padding: 8,
-    borderRadius: 5,
+    borderRadius: 15,
   },
   cardText: {
+    paddingLeft: 5,
     fontSize: 16,
-    color: 'white'
+    color: 'black',
+    fontFamily: 'Epilogue-Variable',
+
   },
   title: {
     fontSize: 24,
     color: 'white',
     fontWeight: 800,
     paddingRight: 14,
+    fontFamily: 'Epilogue-Variable',
+
   },
   navbar: {
     flexDirection: 'row',

@@ -47,9 +47,6 @@ const LoginScreen = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
 
-      <View style={styles.navbar}>
-
-      </View>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
 
@@ -76,9 +73,7 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('AddAdmin')}>
-          <Text style={styles.buttonText}>Registrarse</Text>
-        </TouchableOpacity>
+
 
         </View>
 
@@ -102,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: 'black',
+    backgroundColor: '#004764',
     gap: 20,
     fontFamily: 'Epilogue-Variable'
   },
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 25,
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: 'white',
     marginBottom: 15,
 
   },
@@ -153,7 +148,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'left',
     fontFamily: 'Epilogue-Variable',

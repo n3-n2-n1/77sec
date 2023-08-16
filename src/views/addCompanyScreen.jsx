@@ -141,7 +141,7 @@ const AddCompanyScreen = () => {
                 placeholder="Ingrese un objetivo"
                 
               />
-              <TouchableOpacity style={styles.input} onPress={() => handleRemoveObjective(index)} >
+              <TouchableOpacity style={styles.input2} onPress={() => handleRemoveObjective(index)} >
                 <Text style={styles.actionText}>
                   Eliminar objetivo
                 </Text>
@@ -164,9 +164,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#5DC2BF',
     fontFamily: 'Epilogue-Variable',
-    backgroundColor: 'black'
   },
   objectiveContainer: {
     padding: 15,
@@ -186,7 +185,9 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 12,
     fontFamily: 'Epilogue-Variable',
-    borderColor: 'gray',
+    borderColor: 'white',
+    backgroundColor: 'white',
+    
     borderWidth: 2,
   },
 
@@ -214,27 +215,31 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   action: {
-    backgroundColor: 'white',
+    backgroundColor: '#F89A53',
     padding: 15,
     borderRadius: 25,
     width: '100%',
     marginBottom: 12,
     fontFamily: 'Epilogue-Variable',
-    borderColor: 'black',
+    borderColor: 'white',
     borderWidth: 2,
     color: 'black',
     justifyContent:'center',
     alignItems:'center'
   },
   actionText2: {
-    color: 'black', // Color del texto del título
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  actionText: {
     color: 'white', // Color del texto del título
     fontWeight: 'bold',
     fontSize: 16,
+    fontFamily: 'Epilogue-Variable',
+
+  },
+  actionText: {
+    color: 'black', // Color del texto del título
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Epilogue-Variable',
+
   },
   navbar: {
     flexDirection: 'row',
@@ -251,6 +256,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 800,
     paddingRight: 16,
+    fontFamily: 'Epilogue-Variable',
+
   },
 });
 

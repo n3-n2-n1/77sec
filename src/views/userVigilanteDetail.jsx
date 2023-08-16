@@ -8,6 +8,24 @@ const UserDetailsScreen = ({ route }) => {
   const navigation = useNavigation();
   const { user } = route.params;
 
+  
+  const handleDeleteUser = async () => {
+    try {
+      // Eliminar el usuario de Firebase
+      await database.collection('users').doc(user.id).delete();
+
+      // Mostrar una alerta de éxito
+      Alert.alert('Usuario Eliminado', 'El usuario ha sido eliminado exitosamente.');
+
+      // Navegar de regreso a la pantalla anterior
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+      // Mostrar una alerta de error si la eliminación falla
+      Alert.alert('Error', 'Hubo un error al intentar eliminar el usuario.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.navbar}>
@@ -25,6 +43,10 @@ const UserDetailsScreen = ({ route }) => {
       </View>
       <Text>Nombre: {user.name}</Text>
       <Text>Email: {user.email}</Text>
+
+      <TouchableOpacity onPress={handleDeleteUser} style={styles.deleteButton}>
+        <Text style={styles.deleteButtonText}>Eliminar Usuario</Text>
+      </TouchableOpacity>
       {/* Mostrar más detalles del usuario aquí si es necesario */}
     </View>
   );
@@ -54,6 +76,16 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingLeft: 10,
     
+  },deleteButton: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
