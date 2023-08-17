@@ -134,44 +134,101 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#3780C3',
     fontFamily: 'Epilogue-Variable',
-    backgroundColor: 'black'
   },
+  objectiveContainer: {
+    padding: 15,
+  },
+
   label: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
+    fontFamily: 'Epilogue-Variable',
     color: 'white'
+
   },
   input: {
-    fontSize: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 8,
-    backgroundColor: 'white'
+    padding: 15,
+    borderRadius: 25,
+    width: '100%',
+    marginBottom: 12,
+    fontFamily: 'Epilogue-Variable',
+    borderColor: 'white',
+    backgroundColor: 'white',
+    
+    borderWidth: 2,
   },
-  roleButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
+
+  action2:{
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 25,
+    width: '100%',
+    marginBottom: 12,
+    fontFamily: 'Epilogue-Variable',
+    borderColor: 'black',
+    borderWidth: 2,
+    color: 'black',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  input2: {
+    padding: 15,
+    borderRadius: 25,
+    width: '100%',
+    marginBottom: 12,
+    fontFamily: 'Epilogue-Variable',
+    borderColor: 'gray',
+    borderWidth: 2,
+    color: 'black',
+  },
+  action: {
+    backgroundColor: '#F89A53',
+    padding: 15,
+    borderRadius: 25,
+    width: '100%',
+    marginBottom: 12,
+    fontFamily: 'Epilogue-Variable',
+    borderColor: 'white',
+    borderWidth: 2,
+    color: 'black',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  actionText2: {
+    color: 'white', // Color del texto del título
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Epilogue-Variable',
+
+  },
+  actionText: {
+    color: 'black', // Color del texto del título
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Epilogue-Variable',
+
   },
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 40,
     paddingHorizontal: 5,
     position: 'sticky',
     top: 0,
     zIndex: 100,
   },
+
   title: {
     fontSize: 24,
     color: 'white',
     fontWeight: 800,
     paddingRight: 16,
+    fontFamily: 'Epilogue-Variable',
+
   },
 });
 

@@ -92,6 +92,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     paddingTop: 20,
+    marginBottom: 20,
+
   },
 
 });

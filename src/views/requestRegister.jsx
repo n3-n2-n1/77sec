@@ -150,17 +150,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 40,
     paddingHorizontal: 5,
     position: 'sticky',
     top: 0,
     zIndex: 100,
   },
+
   title: {
     fontSize: 24,
     color: 'white',
     fontWeight: 800,
     paddingRight: 16,
+    fontFamily: 'Epilogue-Variable',
+
   },
 });
 

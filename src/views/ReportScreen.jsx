@@ -66,7 +66,7 @@ const ReportsScreen = () => {
       <TextInput
         style={styles.searchInput}
         placeholder="Buscar..."
-        placeholderTextColor={'white'}
+        placeholderTextColor={'gray'}
         value={searchTerm}
         onChangeText={(text) => setSearchTerm(text)}
       />
@@ -75,12 +75,13 @@ const ReportsScreen = () => {
       keyExtractor={(item) => item.id} // Utiliza el campo "id" como clave
       renderItem={({ item }) => (
         <TouchableOpacity
-          style={styles.reportItem}
+        
+            style={styles.card}
           onPress={() => navigation.navigate('ReportDetail', { report: item })}
         >
-          <Text style={styles.reportText}>ID: {item.id}</Text>
-          <Text style={styles.reportText}>Descripción: {item.predio}</Text>
-          <Text style={styles.reportText}>Empresa: {item.predio}</Text>
+          <Text style={styles.cardText}>ID: {item.id}</Text>
+          <Text style={styles.cardText}>Descripción: {item.predio}</Text>
+          <Text style={styles.cardText}>Empresa: {item.predio}</Text>
         </TouchableOpacity>
       )}
     />
@@ -94,42 +95,42 @@ const ReportsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: 'black'
-  },
-  navbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-    paddingTop: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: 'white'
+    padding: 15,
+    backgroundColor: '#3780C3'
   },
   searchInput: {
     marginBottom: 16,
     borderWidth: 1,
     borderColor: 'gray',
     padding: 8,
-    borderRadius: 25
-  },
-  reportItem: {
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 8,
-    borderRadius: 10,
+    borderRadius: 25,
+    fontFamily: 'Epilogue-Variable',
+    backgroundColor: 'white'
 
   },
-  reportText: {
-    fontSize: 16,
-    fontFamily: 'Epilogue-Variable',
+  section: {
+    flex: 1,
+  },
+  sectionTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'white'
+    marginBottom: 16,
+    color: 'black'
+  },
+  card: {
+    marginBottom: 8,
+    backgroundColor: 'white',
+    borderWidth: 0.3,
+    borderColor: 'white',
+    padding: 8,
+    borderRadius: 15,
+  },
+  cardText: {
+    paddingLeft: 5,
+    fontSize: 16,
+    color: 'black',
+    fontFamily: 'Epilogue-Variable',
+
   },
 
   title: {
@@ -137,6 +138,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 800,
     paddingRight: 16,
+    fontFamily: 'Epilogue-Variable',
+
+  },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingTop: 40,
   },
 });
 export default ReportsScreen;

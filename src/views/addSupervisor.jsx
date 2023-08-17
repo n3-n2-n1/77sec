@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView, TouchableHighlightBase } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import firebase from '../database/firebaseC'
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { database } from '../database/firebaseC'
 import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
 
-const RegisterScreen = ({ navigation, route }) => {
+const AddSupervisor = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -14,13 +14,12 @@ const RegisterScreen = ({ navigation, route }) => {
   const [location, setLocation] = useState('');
   const [dni, setDNI] = useState('');
   const [cuil, setCuil] = useState('');
-  const [direction, setDirection] = useState('');
 
 
 
 
 
-  const handleRegister = async () => {
+  const handleRegisterSupervisor = async () => {
     try {
       // Lógica para registrar un nuevo usuario...
       const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -34,17 +33,12 @@ const RegisterScreen = ({ navigation, route }) => {
       await database.collection('users').doc(userId).set({
         name: name,
         email: email,
-        role: 'vigilante',
-        empresa: location,
+        role: 'supervisor',
+        location: location,
         uid: userId,
         dni: dni,
         cuil: cuil,
-        direccion: direction
-      });
-
-      // Crear la subcolección "horasTrabajadas" dentro del documento del usuario
-      await database.collection('users').doc(userId).collection('horasTrabajadas').add({
-        // Puedes agregar campos relevantes para la subcolección aquí
+        horasTrabajadas: []
       });
 
       // Redirigimos al usuario a la pantalla de inicio de sesión
@@ -62,11 +56,11 @@ const RegisterScreen = ({ navigation, route }) => {
           <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
             <Path
               d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
-              fill="#ffffff"
+              fill="#FDC826"
             />
           </Svg>
         </TouchableOpacity>
-        <Text style={styles.title}>Agregar Vigilante</Text>
+        <Text style={styles.title}>Agregar Supervisor</Text>
       </View>
 
       <ScrollView style={styles.container}>
@@ -75,9 +69,9 @@ const RegisterScreen = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           value={name}
-          placeholderTextColor='gray'
-          placeholder='Nombre'
           onChangeText={(text) => setName(text)}
+          placeholderTextColor='gray'
+          placeholder='Ingrese su nombre'
         />
 
 
@@ -85,48 +79,41 @@ const RegisterScreen = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           value={dni}
-          placeholderTextColor='gray'
-          placeholder='DNI del vigilante'
           onChangeText={(text) => setDNI(text)}
-        />
+          placeholderTextColor='gray'
+          placeholder='Ingrese DNI del supervisor'
 
+        />
 
         <Text style={styles.label}>CUIL:</Text>
         <TextInput
           style={styles.input}
           value={cuil}
-          placeholderTextColor='gray'
-          placeholder='CUIT del vigilante'
           onChangeText={(text) => setCuil(text)}
-        />
-
-        <Text style={styles.label}>Direccion:</Text>
-        <TextInput
-          style={styles.input}
-          value={direction}
           placeholderTextColor='gray'
-          placeholder='Dirección del vigilante'
-          onChangeText={(text) => setDirection(text)}
-        />
+          placeholder='Ingrese CUIL del supervisor'
 
+        />
 
 
         <Text style={styles.label}>Correo electrónico:</Text>
         <TextInput
           style={styles.input}
           value={email}
-          placeholderTextColor='gray'
-          placeholder='Email del vigilante'
           onChangeText={(text) => setEmail(text)}
+          placeholderTextColor='gray'
+          placeholder='Ingrese email del supervisor'
+
         />
 
-        <Text style={styles.label}>Empresa:</Text>
+        <Text style={styles.label}>Predio</Text>
         <TextInput
           style={styles.input}
           value={location}
-          placeholderTextColor='gray'
-          placeholder='Empresa'
           onChangeText={(text) => setLocation(text)}
+          placeholderTextColor='gray'
+          placeholder='Ingrese predio a cargo del supervisor'
+
         />
 
         <Text style={styles.label}>Contraseña:</Text>
@@ -134,12 +121,13 @@ const RegisterScreen = ({ navigation, route }) => {
           style={styles.input}
           secureTextEntry
           value={password}
+          placeholder='Ingrese contraseña del supervisor'
           placeholderTextColor='gray'
-          placeholder='Contraseña'
           onChangeText={(text) => setPassword(text)}
         />
 
-        <TouchableOpacity title="Registrarse" onPress={handleRegister} style={styles.action}>
+
+        <TouchableOpacity title="Registrarse" onPress={handleRegisterSupervisor} style={styles.action}>
           <Text style={styles.actionText2}>Registrar</Text>
         </TouchableOpacity>
 
@@ -149,13 +137,8 @@ const RegisterScreen = ({ navigation, route }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-    backgroundColor: '#3780C3',
-    fontFamily: 'Epilogue-Variable',
-  },
   container: {
     flex: 1,
     padding: 15,
@@ -246,6 +229,7 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 100,
   },
+
   title: {
     fontSize: 24,
     color: 'white',
@@ -256,4 +240,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default AddSupervisor;

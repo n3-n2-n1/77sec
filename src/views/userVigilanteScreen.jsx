@@ -55,8 +55,7 @@ const UserVigilantesView = () => {
             key={user.name}
             style={styles.card}
             onPress={() => {
-              alert('Usuario creado')
-              navigation.navigate('Home', { user }); // Navegar a la pantalla UserDetailsScreen
+              navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
             }}
           >
             <Text style={styles.cardText}>{user.name}</Text>
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-    paddingTop: 20,
+    paddingTop: 40,
   },
 });
 

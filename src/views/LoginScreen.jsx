@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, KeyboardAvoidingView, Image } from 'react-native';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { useNavigation } from '@react-navigation/native';
@@ -48,7 +48,12 @@ const LoginScreen = ({ navigation }) => {
     <KeyboardAvoidingView style={styles.container} behavior="padding">
 
       <View style={styles.container}>
+        <Image
+            source={require('../../assets/logo.png')} // Cambia la ruta a la ubicación de tu logotipo
+            style={styles.logo}
+          />
         <View style={styles.titleContainer}>
+
 
           <Text style={styles.title}>
             Bienvenido de nuevo, ingresa tus datos para iniciar sesión.
@@ -96,10 +101,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 15,
     backgroundColor: '#004764',
     gap: 20,
     fontFamily: 'Epilogue-Variable'
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    shadowColor:'white',
+    marginBottom: 120,// Ajusta según sea necesario
   },
   titleContainer: {
     justifyContent: 'center',
@@ -149,6 +160,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 24,
+    padding: 15,
     fontWeight: 'bold',
     textAlign: 'left',
     fontFamily: 'Epilogue-Variable',

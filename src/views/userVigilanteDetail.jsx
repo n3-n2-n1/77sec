@@ -41,8 +41,17 @@ const UserDetailsScreen = ({ route }) => {
           Detalles del Usuario
         </Text>
       </View>
-      <Text>Nombre: {user.name}</Text>
-      <Text>Email: {user.email}</Text>
+
+      <View style={styles.container}>
+
+      <Text style= {styles.textDetail}>Nombre: {user.name}</Text>
+      <Text style= {styles.textDetail}>Email: {user.email}</Text>
+      <Text style= {styles.textDetail}>Cuil: {user.cuil}</Text>
+      <Text style= {styles.textDetail}>DNI: {user.dni}</Text>
+      <Text style= {styles.textDetail}>Empresa: {user.empresa}</Text>
+      <Text style= {styles.textDetail}>Rol: {user.role}</Text>
+
+      </View>
 
       <TouchableOpacity onPress={handleDeleteUser} style={styles.deleteButton}>
         <Text style={styles.deleteButtonText}>Eliminar Usuario</Text>
@@ -55,32 +64,38 @@ const UserDetailsScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 15,
+    backgroundColor: '#3780C3'
   },
-  title: {
+  textDetail:{
+
+    
     fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 5,
+    color:'white'
+
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
     color: 'white',
     fontWeight: 800,
-    paddingRight: 80,
+    paddingRight: 16,
+    fontFamily: 'Epilogue-Variable',
+
   },
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-    paddingTop: 50,
+    paddingTop: 40,
     paddingLeft: 10,
     
   },deleteButton: {
     backgroundColor: 'red',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
+    padding: 15,
+    borderRadius: 25,
+    marginTop: 20,
     alignItems: 'center',
   },
   deleteButtonText: {

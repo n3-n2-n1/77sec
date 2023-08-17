@@ -7,6 +7,7 @@ import { database } from '../database/firebaseC'
 import { getStorage, uploadBytesResumable, ref, uploadString, getDownloadURL } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import Svg, { Path } from 'react-native-svg';
+import { Platform } from 'react-native';
 
 
 
@@ -52,7 +53,7 @@ const CrimeForm = () => {
                     aspect: [4, 3],
                     quality: 1,
                 });
-    
+
                 if (!result.canceled) {
                     if (result.assets.length > 0) {
                         const selectedAssets = result.assets;
@@ -71,13 +72,13 @@ const CrimeForm = () => {
         }
     };
 
-    const uploadImage = async(uri, fileType) => {
+    const uploadImage = async (uri, fileType) => {
         const response = await fetch(uri);
         const blob = await response.blob();
-    
+
         const storageRef = ref(storage, "Stuff/" + new Date().getTime());
         const uploadTask = uploadBytesResumable(storageRef, blob);
-    
+
         // listen for events
         uploadTask.on(
             "state_changed",
@@ -101,7 +102,7 @@ const CrimeForm = () => {
             }
         );
     }
-    
+
     const handleFormRestart = () => {
         setSelectedOptions([]);
         setSelectedTipoNovedad([]);
@@ -144,28 +145,28 @@ const CrimeForm = () => {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 archivosAdjuntos: uploadedImages,
             };
-    
+
             // Guardar los datos en Firestore and capture the report ID
             const formRef = await database.collection('form').add(dataToSend);
             const id = formRef.id; // Capture the ID
-    
+
             // Update the id field in the dataToSend object
             dataToSend.idReport = id;
-    
+
             console.log('Form data added to Firestore with ID:', dataToSend.idReport);
             console.log(dataToSend.archivosAdjuntos);
-    
+
             // Navigate to ThankYou screen with report ID
             handleFormRestart();
-    
+
             navigation.navigate('ThankYou', { onFormRestart: handleFormRestart });
         } catch (error) {
             console.error('Error saving form data:', error);
         }
     };
-    
-    
-    
+
+
+
     const handleTipoNovedadChange = (selectedOption) => {
         setSelectedTipoNovedad((prevSelectedTipoNovedad) => {
             if (prevSelectedTipoNovedad.includes(selectedOption)) {
@@ -219,24 +220,28 @@ const CrimeForm = () => {
     };
 
     return (
-        <ScrollView style={styles.containerScroll}>
+        <ScrollView style={styles.container}>
+
 
             <View style={styles.navbar}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
                         <Path
                             d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
-                            fill="#FDC826"
+                            fill="#3780C3"
                         />
                     </Svg>
                 </TouchableOpacity>
                 <Text style={styles.title}>
-                    Nuevo Reporte
+                    Detalles
                 </Text>
             </View>
+
+
+
             <KeyboardAvoidingView style={styles.box}>
 
-                <Text style={styles.container}>Vigilador de turno</Text>
+                <Text style={styles.titleForm}>Vigilador de turno</Text>
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -245,6 +250,7 @@ const CrimeForm = () => {
                             <TextInput
                                 style={styles.input}
                                 placeholder="Nombre Completo"
+                                placeholderTextColor='gray'
                                 onChangeText={onChange}
                                 value={value}
                             />
@@ -256,11 +262,11 @@ const CrimeForm = () => {
                 />
             </KeyboardAvoidingView>
 
-         
+
 
             {/* Notice Type */}
             <KeyboardAvoidingView style={styles.box}>
-                <Text style={styles.container}>Tipo de novedad</Text>
+                <Text style={styles.titleForm}>Tipo de novedad</Text>
                 {news.map((newSuccess, index) => (
                     <View style={styles.containerR}>
                         <TouchableOpacity
@@ -283,11 +289,15 @@ const CrimeForm = () => {
                     style={styles.box}
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <KeyboardAvoidingView style={styles.containerR}>
+                        <KeyboardAvoidingView 
+                        
+                        style={styles.containerR}>
 
                             <TextInput
                                 style={styles.input}
                                 placeholder="Otro"
+                                placeholderTextColor='gray'
+
                                 onChangeText={(text) => {
                                     onChange(text);
                                     setFormData((prevData) => ({ ...prevData, tipoNovedadOtro: text }));
@@ -303,7 +313,7 @@ const CrimeForm = () => {
 
             {/* Hora del hecho */}
             <KeyboardAvoidingView style={styles.box}>
-                <Text style={styles.container}>Horario de alerta</Text>
+                <Text style={styles.titleForm}>Horario de alerta</Text>
                 {hours.map((hour, index) => (
                     <View style={styles.containerR}>
 
@@ -328,7 +338,7 @@ const CrimeForm = () => {
 
             {/* Empresa */}
             <View style={styles.box}>
-                <Text style={styles.container}>Empresa</Text>
+                <Text style={styles.titleForm}>Empresa</Text>
                 {empresas.map((empresaItem, index) => (
                     <View style={styles.containerR}>
                         <TouchableOpacity
@@ -350,10 +360,15 @@ const CrimeForm = () => {
                 <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <KeyboardAvoidingView style={styles.containerR}>
+                        <KeyboardAvoidingView
+                            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                            keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0} // Ajusta el valor según sea necesario
+                            style={styles.containerR}>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Otro"
+                                placeholderTextColor='gray'
+
                                 onChangeText={(text) => {
                                     onChange(text);
                                     setFormData((prevData) => ({ ...prevData, empresaOtro: text }));
@@ -369,7 +384,7 @@ const CrimeForm = () => {
 
 
             <View style={styles.box}>
-                <Text style={styles.container}>Predio</Text>
+                <Text style={styles.titleForm}>Predio</Text>
 
 
 
@@ -384,6 +399,7 @@ const CrimeForm = () => {
                             onPress={() => {
                                 handlePredioChange(predio);
                             }}
+
                         >
                             <View style={styles.radioCircle}>
                                 <Text>
@@ -402,6 +418,8 @@ const CrimeForm = () => {
                             <TextInput
                                 style={styles.input}
                                 placeholder="Otro"
+                                placeholderTextColor='gray'
+
                                 onChangeText={(text) => {
                                     onChange(text);
                                     setFormData((prevData) => ({ ...prevData, predioOtro: text }));
@@ -420,18 +438,20 @@ const CrimeForm = () => {
 
 
             <View style={styles.box}>
-                <Text style={styles.container}>Descripcion</Text>
+                <Text style={styles.titleForm}>Descripcion</Text>
                 <Controller
                     control={control}
                     style={styles.container}
                     render={({ field: { onChange, onBlur, value } }) => (
 
-                        <KeyboardAvoidingView style={styles.containerR}>
+                        <KeyboardAvoidingView style={styles.container}>
 
 
                             <TextInput
                                 style={styles.input}
                                 placeholder="Novedad"
+                                placeholderTextColor='gray'
+
                                 onChangeText={onChange}
                                 value={value}
                             />
@@ -441,11 +461,10 @@ const CrimeForm = () => {
                     rules={{ required: true, maxLength: 80 }}
                     defaultValue=""
                 />
-            </View>
 
-
-            <View>
-                <Button title="Seleccionar Imagen" onPress={handleFilePick} />
+                <TouchableOpacity title="Seleccionar Imagen" onPress={handleFilePick} >
+                    <Text>Seleccionar Imagen</Text>
+                </TouchableOpacity>
                 {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
 
                 <View style={styles.imagePreviewContainer}>
@@ -454,26 +473,72 @@ const CrimeForm = () => {
                     ))}
                 </View>
             </View>
-            <View style={styles.box}>
+            <View style={styles.container}>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit(handleFormSubmit)} onPressOut={uploadImage}>
                     <Text style={styles.submitButtonText}>Enviar reporte</Text>
                 </TouchableOpacity>
             </View>
+
+
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'black',
-        padding: 15,
-        color: 'white',
         flex: 1,
-        fontSize: 25,
-        fontFamily: 'Epilogue-Variable',
-        justifyContent: 'center'
-
+        padding: 15,
+        backgroundColor: 'white'
     },
+    topBar: {
+        position: 'sticky',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 50,
+        backgroundColor: '#318ADB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: 'white',
+        shadowOpacity: 0.9,
+        elevation: 1,
+        borderWidth: 0.2,
+        borderBottomColor: 'white',
+        borderColor: 'white'
+    },
+    bottomBar: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 100,
+        backgroundColor: '#318ADB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: 'white',
+        shadowOffset: '30, 20, 10, 0',
+        shadowOpacity: 0.9,
+        elevation: 1
+    },
+    titleForm: {
+        fontSize: 20,
+        color: '#3780C3',
+        padding: 10,
+        paddingLeft: 16,
+        paddingBottom: 15,
+    },
+    navbar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 40,
+        paddingHorizontal: 5,
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+    },
+
+
     imagePreviewContainer: {
         flexDirection: 'row', // Arrange images in a row
         flexWrap: 'wrap',     // Wrap images to the next line if needed
@@ -490,17 +555,17 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 25,
         alignItems: 'center',
-        width: 245,
-        marginTop: 26,
+        marginTop: 20,
+        marginBottom: 20,
     },
     containerR: {
         flex: 1,
-        paddingBottom: 20,
+        paddingBottom: 10,
+        paddingTop: 10,
         botton: 0,
         paddingHorizontal: 15,
         flexDirection: 'column', // Cambio el flexDirection a 'column'
-        backgroundColor: 'black',
-        color: 'white',
+        color: 'black',
         fontSize: 25,
         fontFamily: 'Epilogue-Variable',
         marginBottom: 12, // Añado marginBottom para separar de la sección anterior
@@ -509,28 +574,26 @@ const styles = StyleSheet.create({
     containerScroll: {
         width: '100%',
         padding: 15,
-        backgroundColor: 'black',
         fontFamily: 'Epilogue-Variable',
     },
+
     title: {
-        fontSize: 30,
-        color: 'white',
+        fontSize: 24,
+        color: '#3780C3',
         fontWeight: 800,
+        paddingRight: 16,
         fontFamily: 'Epilogue-Variable',
-        paddingLeft: 15,
-        paddingHorizontal: 15,
 
     },
     input: {
         borderRadius: 60,
         height: 40,
         width: 312,
-        borderColor: 'gray',
+        borderColor: '#3780C3',
         borderWidth: 1,
         paddingHorizontal: 10,
-        color: 'white',
+        color: 'black',
         fontFamily: 'Epilogue-Variable',
-        backgroundColor: 'black'
     },
     submitButton: {
         backgroundColor: 'blue',
@@ -539,7 +602,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     submitButtonText: {
-        color: 'white',
+        color: 'black',
         fontFamily: 'Epilogue-Variable',
         fontWeight: 'bold',
     },
@@ -554,11 +617,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 8,
-        color: 'white',
+        color: 'black',
     },
     radioText: {
         marginLeft: 8,
-        color: 'white',
+        color: 'black',
         fontFamily: 'Epilogue-Variable',
         fontSize: 15
     },
@@ -567,16 +630,24 @@ const styles = StyleSheet.create({
         width: 20,
         borderRadius: 10,
         borderWidth: 2,
-        borderColor: '#FDC826',
+        borderColor: '#3780C3',
         alignItems: 'center',
         justifyContent: 'center',
         alignContent: 'center'
     },
+    label: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 8,
+        fontFamily: 'Epilogue-Variable',
+        color: 'black'
+
+    },
     selectedRb: {
-        width: 10,
-        height: 10,
-        borderRadius: 10,
-        backgroundColor: '#FDC826',
+        width: 20,
+        height: 20,
+        borderRadius: 20,
+        backgroundColor: '#3780C3',
     },
     image: {
         width: 200,
@@ -585,7 +656,7 @@ const styles = StyleSheet.create({
     },
 
     box: {
-        backgroundColor: 'black'
+        backgroundColor: 'white'
     }
 });
 export default CrimeForm

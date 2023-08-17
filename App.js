@@ -35,6 +35,7 @@ import addAdmin from './src/views/addAdmin';
 import AdminApprovalScreen from './src/views/AdminApproval';
 import requestRegister from './src/views/requestRegister';
 import CalculateHoursScreen from './src/views/CalculateHours';
+import AddSupervisor from './src/views/addSupervisor';
 const Stack = createStackNavigator();
 
 // Agrega la configuración de Firebase aquí si no lo has hecho aún
@@ -87,7 +88,7 @@ export default function App() {
       )}
 
       <Stack.Screen name="Form" component={CrimeForm} options={{ headerShown: false, title: 'Nuevo Reporte - 77Report'}}/>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false }} />
       <Stack.Screen name="qr" component={QRScanner} options={{ headerShown: false }}/>
@@ -111,6 +112,7 @@ export default function App() {
       <Stack.Screen name="requestRegister" component={requestRegister} options={{ headerShown: false }}/>
       <Stack.Screen name="calendar" component={CalendarScreen}/>
       <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="addSupervisor" component={AddSupervisor} options={{ headerShown: false }}/>
       
      
 

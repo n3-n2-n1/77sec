@@ -64,7 +64,7 @@ const MarcarSalida = ({ }) => {
             const userData = userDoc.data();
 
             const horasTrabajadasRef = userDoc.ref.collection('horasTrabajadas');
-            
+
             // Buscar el último registro de entrada sin salida para el DNI del vigilante
             const querySnapshot = await horasTrabajadasRef.where('salida', '==', '').orderBy('entrada', 'desc').limit(1).get();
 
@@ -90,10 +90,10 @@ const MarcarSalida = ({ }) => {
     };
 
     return (
-        <KeyboardAvoidingView behavior='padding' style={styles.container2}>
+        <KeyboardAvoidingView behavior='padding' style={styles.container}>
 
 
-        <View style={styles.navbar}>
+            <View style={styles.navbar}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
                         <Path
@@ -102,33 +102,37 @@ const MarcarSalida = ({ }) => {
                         />
                     </Svg>
                 </TouchableOpacity>
+                <Text style={styles.title}>Marcar salida</Text>
+
             </View>
-        <View style={styles.container}>
-            
-            <View style={styles.containerIn}>
-                {qrValue ? (
-                    <View style={styles.qrContainer}>
-                        <QRCode value={qrValue} size={200} />
+
+            <View style={styles.container2}>
+                <View style={styles.containerIn}>
+                    <View style={styles.qr}>
+                        {qrValue ? (
+                            <View style={styles.qrContainer}>
+                                <QRCode value={qrValue} size={200} />
+                            </View>
+                        ) : (
+                            <Text style={styles.instructions}>Generando Código QR...</Text>
+                        )}
                     </View>
-                ) : (
-                    <Text style={styles.instructions}>Generando Código QR...</Text>
-                )}
-                <Text style={styles.coordinatesText}>
-                    Coordenadas: {location ? `Lat: ${location.coords.latitude}, Long: ${location.coords.longitude}` : 'Obteniendo ubicación...'}
-                </Text>
-                <Text style={styles.instructions}>Insertar Dni del Vigilador</Text>
-                <TextInput
-                    placeholder=""
-                    value={dni}
-                    onChangeText={setDni}
-                    style={styles.input}
-                />
-                <TouchableOpacity style={styles.button} onPress={handleMarcarSalida}>
-                    <Text style={styles.buttonText}>Guardar Presentismo</Text>
-                </TouchableOpacity>
-                {guardadoExitoso && <Text style={styles.successText}>Salida guardado con éxito.</Text>}
+                    <Text style={styles.instructions}>Ingresa tu DNI</Text>
+                    <TextInput
+                        placeholder="Ingrese el DNI"
+                        value={dni}
+                        onChangeText={setDni}
+                        style={styles.input}
+                        keyboardType="numeric"
+                    />
+                    <TouchableOpacity style={styles.button} onPress={handleMarcarSalida}>
+                        <Text style={styles.buttonText}>Guardar salida</Text>
+                    </TouchableOpacity>
+                    {guardadoExitoso && <Text style={styles.successText}>Presentismo guardado con éxito.</Text>}
+                </View>
             </View>
-        </View>
+
+            
         </KeyboardAvoidingView>
     );
 };
@@ -136,21 +140,33 @@ const MarcarSalida = ({ }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'black',
+        backgroundColor: '#3780C3',
+        padding: 15
     },
-    qr:{
+
+    title: {
+        fontSize: 24,
+        color: 'white',
+        fontWeight: 800,
+        paddingRight: 16,
+        fontFamily: 'Epilogue-Variable',
+    
+      },
+    qr: {
         padding: 15,
         borderColor: 'white',
         borderWidth: 2,
         borderRadius: 25,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: 'white',
 
     },
     container2: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: '#3780C3',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15
     },
     containerIn: {
         alignItems: 'center',
@@ -175,7 +191,6 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'Epilogue-Variable',
         color: 'white'
-
     },
     qrContainer: {
     },
@@ -185,7 +200,7 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'Epilogue-Variable',
     },
-    coordinatesContainer:{
+    coordinatesContainer: {
         borderColor: 'black',
         borderWidth: 3,
         padding: 15,
@@ -209,14 +224,14 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        flex: 1,
-        backgroundColor: 'green',
-        padding: 15,
+        backgroundColor: '#F89A53',
+        padding: 10,
+        marginTop: 20,
         borderRadius: 25,
         alignItems: 'center',
-        width: 245,
-        marginTop: 26,
-    },
+        borderWidth: 2,
+        borderColor: 'white'
+      },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
@@ -227,9 +242,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
-        paddingTop: 30,
-        paddingLeft: 30,
+        paddingTop: 40,
+        paddingHorizontal: 5,
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
       },
 });
 

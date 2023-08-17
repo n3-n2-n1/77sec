@@ -5,7 +5,7 @@ import firebase from '../database/firebaseC';
 import 'firebase/compat/auth'
 import { useEffect } from 'react';
 import LoadingScreen from './LoadingScreen';
-import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
+import Svg, { Path, Circle, ClipPath, Rect, G } from 'react-native-svg';
 import CalendarScreen from '../components/Calendar';
 
 
@@ -88,25 +88,21 @@ const Home = () => {
 
   return (
 
-    <ScrollView style={styles.container}
-      showsVerticalScrollIndicator={false}
-      indicatorStyle="white">
-      {isLoading ? (
-        <View style={styles.loadingContainer}>
+    <View>
+
+      <View style={styles.topBar}>
+      </View>
+
+      <View style={styles.container}>
 
 
-        </View>
-      ) : (
-        <ScrollView>
+        <View>
 
           {isAdmin && (
-
-            <ScrollView>
-
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {/* {Navbar} */}
               <TouchableOpacity style={styles.navbar} stickyHeaderIndices={[0]} onPress={() => setIsMenuVisible(true)}>
-
                 <View style={styles.profileButton}>
-
                   <TouchableOpacity onPress={() => setIsMenuVisible(true)}>
                     {/* Replace "Perfil" text with SVG */}
                     <Svg width={30} height={30} viewBox="0 0 24 24" fill="#ffffff">
@@ -139,63 +135,70 @@ const Home = () => {
 
                   </TouchableOpacity>
                 </View>
-
                 <Text style={styles.title}>
                   ¡Bienvenido, Jefe de Operaciones!
                 </Text>
-
-
               </TouchableOpacity>
 
+              {/* Menu Horizontal */}
 
               <View horizontal>
-
                 <View style={styles.gridButtonContainer}>
                   <View style={styles.gridButtonContainer2}>
-
-
                     <View style={{ justifyContent: 'center' }}>
-
                       <TouchableOpacity style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} onPress={() => { navigation.navigate('vigilantesView') }}>
                         <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
+                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', shadowColor: 'black', shadowOffset: '30', shadowOpacity: 0.3, elevation: 1 }} >
 
-                            <Svg fill="#000000" width={40} height={40} viewBox="0 0 48 48">
-                              <Path d="M24,21A10,10,0,1,1,34,11,10,10,0,0,1,24,21ZM24,5a6,6,0,1,0,6,6A6,6,0,0,0,24,5Z"></Path>
-                              <Path d="M42,47H6a2,2,0,0,1-2-2V39A16,16,0,0,1,20,23h8A16,16,0,0,1,44,39v6A2,2,0,0,1,42,47ZM8,43H40V39A12,12,0,0,0,28,27H20A12,12,0,0,0,8,39Z"></Path>
+                            <Svg
+                              width="40px"
+                              height="40px"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <G stroke="#1C274C" strokeWidth={1.5}>
+                                <Path
+                                  d="M9 4.46A9.84 9.84 0 0112 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20c-4.182 0-7.028-2.5-8.725-4.704C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296A14.465 14.465 0 015 6.821"
+                                  strokeLinecap="round"
+                                />
+                                <Path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </G>
                             </Svg>
+
+
                           </View>
                         </View>
-
                         <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold' }} > Vigilantes </Text>
+                          <Text style={{ fontSize: 11, padding: 0, fontWeight: '600', alignItems: 'center', alignContent: 'center', fontFamily: 'Epilogue-Variable' }}  > Vigilantes </Text>
                         </View>
                       </TouchableOpacity>
-
                     </View>
-
-
                     <View style={{ justifyContent: 'center' }}>
 
                       <TouchableOpacity onPress={() => { navigation.navigate('reportHistory') }} style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', fontFamily: 'Epilogue-Variable' }} >
                         <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
-
-                            <Svg fill="#000000" width={40} height={40} viewBox="0 0 48 48">
-                              <Path d="M40,47H8a2,2,0,0,1-2-2V3A2,2,0,0,1,8,1H40a2,2,0,0,1,2,2V45A2,2,0,0,1,40,47ZM10,43H38V5H10Z"></Path>
-                              <Path d="M15,19a2,2,0,0,1-1.41-3.41l4-4a2,2,0,0,1,2.31-.37l2.83,1.42,5-4.16A2,2,0,0,1,30.2,8.4l4,3a2,2,0,1,1-2.4,3.2l-2.73-2.05-4.79,4a2,2,0,0,1-2.17.25L19.4,15.43l-3,3A2,2,0,0,1,15,19Z"></Path>
-                              <Circle cx="15" cy="24" r="2"></Circle>
-                              <Circle cx="15" cy="31" r="2"></Circle>
-                              <Circle cx="15" cy="38" r="2"></Circle>
-                              <Path d="M33,26H22a2,2,0,0,1,0-4H33a2,2,0,0,1,0,4Z"></Path>
-                              <Path d="M33,33H22a2,2,0,0,1,0-4H33a2,2,0,0,1,0,4Z"></Path>
-                              <Path d="M33,40H22a2,2,0,0,1,0-4H33a2,2,0,0,1,0,4Z"></Path>
+                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', shadowColor: 'black', shadowOffset: '30', shadowOpacity: 0.3, elevation: 1 }} >
+                            <Svg
+                              width="40px"
+                              height="40px"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
+                                <Path d="M11.777 10l4.83 1.294M11 12.898l2.898.776M20.312 12.647c-.605 2.255-.907 3.383-1.592 4.114a4 4 0 01-2.01 1.161c-.097.023-.195.04-.295.052-.915.113-2.032-.186-4.064-.73-2.255-.605-3.383-.907-4.114-1.592a4 4 0 01-1.161-2.011c-.228-.976.074-2.103.679-4.358l.517-1.932.244-.905c.455-1.666.761-2.583 1.348-3.21a4 4 0 012.01-1.16c.976-.228 2.104.074 4.36.679 2.254.604 3.382.906 4.113 1.59a4 4 0 011.161 2.012c.161.69.057 1.456-.231 2.643" />
+                                <Path
+                                  d="M3.272 16.647c.604 2.255.907 3.383 1.592 4.114a4 4 0 002.01 1.161c.976.227 2.104-.075 4.36-.679 2.254-.604 3.382-.906 4.113-1.591a4 4 0 001.068-1.678M8.516 6.445c-.352.091-.739.195-1.165.31-2.255.604-3.383.906-4.114 1.59a4 4 0 00-1.161 2.012c-.161.69-.057 1.456.231 2.643"
+                                  strokeLinejoin="round"
+                                />
+                              </G>
                             </Svg>
                           </View>
                         </View>
 
                         <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold', alignItems: 'center', alignContent: 'center', fontFamily: 'Epilogue-Variable' }} > Reportes </Text>
+                          <Text style={{ fontSize: 11, padding: 0, fontWeight: '600', alignItems: 'center', alignContent: 'center', fontFamily: 'Epilogue-Variable' }} > Reportes </Text>
                         </View>
                       </TouchableOpacity>
 
@@ -205,21 +208,48 @@ const Home = () => {
 
                       <TouchableOpacity onPress={() => { navigation.navigate('Empresas') }} style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', fontFamily: 'Epilogue-Variable' }} >
                         <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
-
-                            <Svg fill="#000000" width={42} height={42} viewBox="0 0 48 48">
-                              <Path d="M47,12a2,2,0,0,0-2-2H24a2,2,0,0,0,0,4H45A2,2,0,0,0,47,12Z"></Path>
-                              <Path d="M3,14H8.35a6,6,0,1,0,0-4H3a2,2,0,0,0,0,4Zm11-4a2,2,0,1,1-2,2A2,2,0,0,1,14,10Z"></Path>
-                              <Path d="M45,22H37.65a6,6,0,1,0,0,4H45a2,2,0,0,0,0-4ZM32,26a2,2,0,1,1,2-2A2,2,0,0,1,32,26Z"></Path>
-                              <Path d="M22,22H3a2,2,0,0,0,0,4H22a2,2,0,0,0,0-4Z"></Path>
-                              <Path d="M45,34H28a2,2,0,0,0,0,4H45a2,2,0,0,0,0-4Z"></Path>
-                              <Path d="M18,30a6,6,0,0,0-5.65,4H3a2,2,0,0,0,0,4h9.35A6,6,0,1,0,18,30Zm0,8a2,2,0,1,1,2-2A2,2,0,0,1,18,38Z"></Path>
+                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', shadowColor: 'black', shadowOffset: '30', shadowOpacity: 0.3, elevation: 1 }} >
+                            <Svg
+                              width="40px"
+                              height="40px"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <Path
+                                d="M22 22H2"
+                                stroke="#1C274C"
+                                strokeWidth={1.5}
+                                strokeLinecap="round"
+                              />
+                              <Path
+                                d="M17 22V6c0-1.886 0-2.828-.586-3.414C15.828 2 14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586C7 3.172 7 4.114 7 6v16"
+                                stroke="#1C274C"
+                                strokeWidth={1.5}
+                              />
+                              <Path
+                                d="M12 22v-3M10 12h4M5.5 11H7M5.5 14H7M17 11h1.5M17 14h1.5M5.5 8H7M17 8h1.5"
+                                stroke="#1C274C"
+                                strokeWidth={1.5}
+                                strokeLinecap="round"
+                              />
+                              <Circle cx={12} cy={7} r={2} stroke="#1C274C" strokeWidth={1.5} />
+                              <Path
+                                d="M20.25 11.5a.75.75 0 001.5 0h-1.5zm-.139-3.163l-.416.624.416-.624zm.552.552l-.624.417.624-.417zM21.75 15.5a.75.75 0 00-1.5 0h1.5zM17.5 8.75c.718 0 1.2 0 1.567.038.355.036.519.1.628.173l.833-1.248c-.396-.264-.835-.369-1.309-.417-.461-.047-1.032-.046-1.719-.046v1.5zm4.25 2.75c0-.687 0-1.258-.046-1.719-.048-.473-.153-.913-.418-1.309l-1.247.834c.073.108.137.272.173.627.037.367.038.85.038 1.567h1.5zm-2.055-2.54c.136.092.253.209.344.346l1.247-.834c-.2-.3-.458-.558-.758-.759l-.833 1.248zm.555 6.54V22h1.5v-6.5h-1.5zM3.889 8.337l.417.624-.417-.624zm-.552.552l.624.417-.624-.417zM3.75 20a.75.75 0 00-1.5 0h1.5zm-1.5-4a.75.75 0 001.5 0h-1.5zM6.5 7.25c-.687 0-1.258 0-1.719.046-.473.048-.913.153-1.309.417l.834 1.248c.108-.073.272-.137.627-.173.367-.037.85-.038 1.567-.038v-1.5zM3.75 11.5c0-.718 0-1.2.038-1.567.036-.355.1-.519.173-.627l-1.248-.834c-.264.396-.369.836-.417 1.309-.047.461-.046 1.032-.046 1.719h1.5zm-.278-3.787c-.3.201-.558.459-.759.76l1.248.833a1.25 1.25 0 01.345-.345l-.834-1.248zM2.25 20v2h1.5v-2h-1.5zm0-8.5V16h1.5v-4.5h-1.5z"
+                                fill="#1C274C"
+                              />
+                              <Path
+                                d="M10 15h.5m3.5 0h-1.5"
+                                stroke="#1C274C"
+                                strokeWidth={1.5}
+                                strokeLinecap="round"
+                              />
                             </Svg>
                           </View>
                         </View>
 
                         <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold', fontFamily: 'Epilogue-Variable' }} > Empresas </Text>
+                          <Text style={{ fontSize: 11, padding: 0, fontWeight: '600', alignItems: 'center', alignContent: 'center', fontFamily: 'Epilogue-Variable' }}  > Empresas </Text>
                         </View>
                       </TouchableOpacity>
 
@@ -229,17 +259,29 @@ const Home = () => {
 
                       <TouchableOpacity onPress={() => { navigation.navigate('Profile') }} style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', fontFamily: 'Epilogue-Variable' }} >
                         <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
-
-                            <Svg fill="#000000" width={40} height={40} viewBox="0 0 48 48">
-                              <Path d="M8,1A2,2,0,0,0,6,3V45a2,2,0,0,0,4,0V3A2,2,0,0,0,8,1Z"></Path>
-                              <Path d="M43.55,13.74C38.22,7.18,32.71,7.62,27.84,8c-4.63.37-8.29.66-12.29-4.27A2,2,0,0,0,12,5V22a2,2,0,0,0,.94,1.7,9.09,9.09,0,0,0,4.91,1.46c4,0,7.8-2.62,11.28-5,5.14-3.53,8.49-5.52,11.81-3.45a2,2,0,0,0,2.61-3ZM26.87,16.85C22.22,20,19,22,16,20.78V9.66c4.18,3,8.37,2.63,12.16,2.33,2.54-.2,4.79-.38,7,.31C32.23,13.17,29.46,15.07,26.87,16.85Z"></Path>
+                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', shadowColor: 'black', shadowOffset: 30, shadowOpacity: 0.3, elevation: 1 }} >
+                            <Svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <G stroke="#1C274C" strokeWidth={1.5}>
+                                <Circle cx={12} cy={9} r={3} />
+                                <Path
+                                  d="M17.97 20c-.16-2.892-1.045-5-5.97-5s-5.81 2.108-5.97 5"
+                                  strokeLinecap="round"
+                                />
+                                <Path
+                                  d="M7 3.338A9.954 9.954 0 0112 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"
+                                  strokeLinecap="round"
+                                />
+                              </G>
                             </Svg>
                           </View>
                         </View>
 
                         <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold', fontFamily: 'Epilogue-Variable' }} > Admin </Text>
+                          <Text style={{ fontSize: 11, padding: 0, fontWeight: '600', alignItems: 'center', alignContent: 'center', fontFamily: 'Epilogue-Variable' }}  > Perfil </Text>
                         </View>
                       </TouchableOpacity>
 
@@ -247,8 +289,8 @@ const Home = () => {
                   </View>
 
 
-                  <View style={{ alignContent: 'flex-start', flex: 1, width: 280, alignSelf: 'flex-start', paddingTop: 20, }}>
-                    <TouchableOpacity style={{ padding: 15, borderRadius: 25, backgroundColor: '#F89A53' }}>
+                  <View style={{ alignContent: 'flex-start', flex: 1, width: 280, alignSelf: 'flex-start', paddingTop: 20, shadowColor: '#004764', shadowOffset: '30', shadowOpacity: 0.9 }}>
+                    <TouchableOpacity style={{ padding: 15, borderRadius: 25, backgroundColor: '#F89A53', }} onPress={() => { navigation.navigate('calendar') }}>
                       <Text style={styles.secondaryText}> Evalúa el presentismo ahora!</Text>
                     </TouchableOpacity>
                   </View>
@@ -257,147 +299,235 @@ const Home = () => {
                 </View>
               </View>
 
-              <View style={{ flexDirection: 'row', gap: 30 }}>
 
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('Register')}>
-                  <Svg width={64} height={64} viewBox="0 0 64 64" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center', fontFamily: 'Epilogue-Variable' }}>
-                    <Path
-                      d="M32 28C29.3629 28 26.785 27.218 24.5924 25.7529C22.3997 24.2878 20.6907 22.2055 19.6816 19.7691C18.6724 17.3328 18.4084 14.6519 18.9228 12.0655C19.4373 9.47905 20.7072 7.10328 22.5719 5.23858C24.4366 3.37388 26.8123 2.104 29.3988 1.58953C31.9852 1.07506 34.6661 1.33911 37.1024 2.34827C39.5388 3.35744 41.6211 5.06641 43.0862 7.25906C44.5513 9.45172 45.3333 12.0296 45.3333 14.6667C45.3333 18.2029 43.9285 21.5943 41.4281 24.0948C38.9276 26.5952 35.5362 28 32 28ZM32 6.66667C30.4177 6.66667 28.871 7.13586 27.5554 8.01491C26.2398 8.89396 25.2144 10.1434 24.6089 11.6052C24.0034 13.067 23.845 14.6755 24.1537 16.2274C24.4624 17.7792 25.2243 19.2047 26.3431 20.3235C27.4619 21.4423 28.8874 22.2043 30.4392 22.513C31.9911 22.8216 33.5996 22.6632 35.0614 22.0577C36.5232 21.4522 37.7727 20.4268 38.6517 19.1112C39.5308 17.7956 40 16.2489 40 14.6667C40 12.5449 39.1571 10.5101 37.6568 9.00981C36.1565 7.50952 34.1217 6.66667 32 6.66667Z"
-                      fill="black"
-                    />
-                    <Path
-                      d="M56 62.6667H7.99998C7.29274 62.6667 6.61446 62.3857 6.11436 61.8856C5.61426 61.3855 5.33331 60.7072 5.33331 60V52C5.33331 46.342 7.58093 40.9158 11.5817 36.9151C15.5825 32.9143 21.0087 30.6667 26.6666 30.6667H37.3333C42.9913 30.6667 48.4175 32.9143 52.4183 36.9151C56.419 40.9158 58.6666 46.342 58.6666 52V60C58.6666 60.7072 58.3857 61.3855 57.8856 61.8856C57.3855 62.3857 56.7072 62.6667 56 62.6667ZM10.6666 57.3333H53.3333V52C53.3333 47.7565 51.6476 43.6869 48.647 40.6863C45.6464 37.6857 41.5768 36 37.3333 36H26.6666C22.4232 36 18.3535 37.6857 15.3529 40.6863C12.3524 43.6869 10.6666 47.7565 10.6666 52V57.3333Z"
-                      fill="black"
-                    />
-                    <Path
-                      d="M47 7L57 7"
-                      stroke="black"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                    <Path
-                      d="M52 2L52 12"
-                      stroke="black"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Agregar Vigilante</Text>
+              <View style={{ justifyContent: 'center', alignContent: 'center' }}>
 
-                </TouchableOpacity>
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1, }}>
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('Register')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5}>
+                          <Circle cx={10} cy={6} r={4} />
+                          <Path
+                            d="M21 10h-2m0 0h-2m2 0V8m0 2v2M17.997 18c.003-.164.003-.331.003-.5 0-2.485-3.582-4.5-8-4.5s-8 2.015-8 4.5S2 22 10 22c2.231 0 3.84-.157 5-.437"
+                            strokeLinecap="round"
+                          />
+                        </G>
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Agregar Vigilante</Text>
+
+                  </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('addCompany')} >
-                  <Svg width={64} height={64} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path
-                      d="M62.6667 16C62.6667 15.2928 62.3857 14.6145 61.8856 14.1144C61.3855 13.6143 60.7072 13.3333 60 13.3333H32C31.2927 13.3333 30.6145 13.6143 30.1144 14.1144C29.6143 14.6145 29.3333 15.2928 29.3333 16C29.3333 16.7072 29.6143 17.3855 30.1144 17.8856C30.6145 18.3857 31.2927 18.6667 32 18.6667H60C60.7072 18.6667 61.3855 18.3857 61.8856 17.8856C62.3857 17.3855 62.6667 16.7072 62.6667 16Z"
-                      fill="black"
-                    />
-                    <Path
-                      d="M3.99998 18.6667H11.1333C11.7624 20.4459 13.0002 21.9455 14.6279 22.9004C16.2557 23.8552 18.1686 24.2039 20.0286 23.8848C21.8886 23.5657 23.5759 22.5993 24.7923 21.1564C26.0086 19.7136 26.6758 17.8872 26.6758 16C26.6758 14.1128 26.0086 12.2864 24.7923 10.8436C23.5759 9.40072 21.8886 8.43434 20.0286 8.11521C18.1686 7.79609 16.2557 8.14478 14.6279 9.09965C13.0002 10.0545 11.7624 11.5541 11.1333 13.3333H3.99998C3.29274 13.3333 2.61446 13.6143 2.11436 14.1144C1.61426 14.6145 1.33331 15.2928 1.33331 16C1.33331 16.7072 1.61426 17.3855 2.11436 17.8856C2.61446 18.3857 3.29274 18.6667 3.99998 18.6667ZM18.6666 13.3333C19.1941 13.3333 19.7096 13.4897 20.1482 13.7827C20.5867 14.0758 20.9285 14.4922 21.1303 14.9795C21.3322 15.4668 21.385 16.003 21.2821 16.5202C21.1792 17.0375 20.9252 17.5127 20.5523 17.8856C20.1793 18.2586 19.7042 18.5125 19.1869 18.6154C18.6696 18.7183 18.1334 18.6655 17.6462 18.4637C17.1589 18.2618 16.7424 17.9201 16.4494 17.4815C16.1564 17.043 16 16.5274 16 16C16 15.2928 16.2809 14.6145 16.781 14.1144C17.2811 13.6143 17.9594 13.3333 18.6666 13.3333Z"
-                      fill="black"
-                    />
-                    <Path
-                      d="M60 29.3333H50.2C49.571 27.5541 48.3332 26.0545 46.7054 25.0997C45.0776 24.1448 43.1647 23.7961 41.3047 24.1152C39.4447 24.4343 37.7574 25.4007 36.5411 26.8436C35.3247 28.2864 34.6575 30.1128 34.6575 32C34.6575 33.8872 35.3247 35.7136 36.5411 37.1564C37.7574 38.5993 39.4447 39.5657 41.3047 39.8848C43.1647 40.2039 45.0776 39.8552 46.7054 38.9004C48.3332 37.9455 49.571 36.4459 50.2 34.6667H60C60.7072 34.6667 61.3855 34.3857 61.8856 33.8856C62.3857 33.3855 62.6667 32.7072 62.6667 32C62.6667 31.2928 62.3857 30.6145 61.8856 30.1144C61.3855 29.6143 60.7072 29.3333 60 29.3333ZM42.6667 34.6667C42.1393 34.6667 41.6237 34.5103 41.1852 34.2173C40.7466 33.9242 40.4048 33.5078 40.203 33.0205C40.0012 32.5332 39.9484 31.997 40.0512 31.4798C40.1541 30.9625 40.4081 30.4873 40.7811 30.1144C41.154 29.7414 41.6291 29.4875 42.1464 29.3846C42.6637 29.2817 43.1999 29.3345 43.6872 29.5363C44.1744 29.7382 44.5909 30.0799 44.8839 30.5185C45.1769 30.957 45.3333 31.4726 45.3333 32C45.3333 32.7072 45.0524 33.3855 44.5523 33.8856C44.0522 34.3857 43.3739 34.6667 42.6667 34.6667Z"
-                      fill="black"
-                    />
-                    <Path
-                      d="M29.3333 29.3333H3.99998C3.29274 29.3333 2.61446 29.6143 2.11436 30.1144C1.61426 30.6145 1.33331 31.2928 1.33331 32C1.33331 32.7073 1.61426 33.3855 2.11436 33.8856C2.61446 34.3857 3.29274 34.6667 3.99998 34.6667H29.3333C30.0406 34.6667 30.7188 34.3857 31.2189 33.8856C31.719 33.3855 32 32.7073 32 32C32 31.2928 31.719 30.6145 31.2189 30.1144C30.7188 29.6143 30.0406 29.3333 29.3333 29.3333Z"
-                      fill="black"
-                    />
-                    <Path
-                      d="M60 45.3333H37.3333C36.626 45.3333 35.9478 45.6143 35.4477 46.1144C34.9476 46.6145 34.6666 47.2928 34.6666 48C34.6666 48.7072 34.9476 49.3855 35.4477 49.8856C35.9478 50.3857 36.626 50.6667 37.3333 50.6667H60C60.7072 50.6667 61.3855 50.3857 61.8856 49.8856C62.3857 49.3855 62.6666 48.7072 62.6666 48C62.6666 47.2928 62.3857 46.6145 61.8856 46.1144C61.3855 45.6143 60.7072 45.3333 60 45.3333Z"
-                      fill="black"
-                    />
-                    <Path
-                      d="M24 40C22.3472 40.0019 20.7355 40.5157 19.3866 41.4707C18.0376 42.4257 17.0176 43.7751 16.4666 45.3333H3.99998C3.29274 45.3333 2.61446 45.6143 2.11436 46.1144C1.61426 46.6145 1.33331 47.2928 1.33331 48C1.33331 48.7073 1.61426 49.3855 2.11436 49.8856C2.61446 50.3857 3.29274 50.6667 3.99998 50.6667H16.4666C16.9557 52.0498 17.8156 53.2719 18.9524 54.1992C20.0892 55.1265 21.4591 55.7233 22.9123 55.9245C24.3655 56.1256 25.846 55.9233 27.1919 55.3396C28.5379 54.7559 29.6974 53.8134 30.5437 52.6151C31.39 51.4167 31.8906 50.0088 31.9905 48.5452C32.0905 47.0815 31.7861 45.6186 31.1106 44.3163C30.435 43.014 29.4144 41.9226 28.1604 41.1613C26.9063 40.4001 25.467 39.9983 24 40ZM24 50.6667C23.4726 50.6667 22.957 50.5103 22.5185 50.2173C22.0799 49.9242 21.7381 49.5078 21.5363 49.0205C21.3345 48.5332 21.2817 47.997 21.3846 47.4798C21.4874 46.9625 21.7414 46.4873 22.1144 46.1144C22.4873 45.7414 22.9625 45.4875 23.4797 45.3846C23.997 45.2817 24.5332 45.3345 25.0205 45.5363C25.5077 45.7382 25.9242 46.08 26.2172 46.5185C26.5102 46.957 26.6666 47.4726 26.6666 48C26.6666 48.7073 26.3857 49.3855 25.8856 49.8856C25.3855 50.3857 24.7072 50.6667 24 50.6667Z"
-                      fill="black"
-                    />
-                    <Path d="M51 6L61 6" stroke="black" stroke-width="4" stroke-linecap="round" />
-                    <Path d="M56 1L56 11" stroke="black" stroke-width="4" stroke-linecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Agregar Empresa</Text>
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('AddAdmin')}>
 
-                </TouchableOpacity>
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5}>
+                          <Path d="M17 6c0-1.886 0-2.828-.586-3.414C15.828 2 14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586C7 3.172 7 4.114 7 6M11.146 11.023c.38-.682.57-1.023.854-1.023.284 0 .474.34.854 1.023l.098.176c.108.194.162.29.246.354.085.064.19.088.4.135l.19.044c.738.167 1.107.25 1.195.532.088.283-.164.577-.667 1.165l-.13.152c-.143.167-.215.25-.247.354-.032.104-.021.215 0 .438l.02.203c.076.785.114 1.178-.115 1.352-.23.174-.576.015-1.267-.303l-.178-.082c-.197-.09-.295-.135-.399-.135-.104 0-.202.045-.399.135l-.178.082c-.691.319-1.037.477-1.267.303-.23-.174-.191-.567-.115-1.352l.02-.203c.021-.223.032-.334 0-.438-.032-.103-.104-.187-.247-.354l-.13-.152c-.503-.588-.755-.882-.667-1.165.088-.282.457-.365 1.195-.532l.19-.044c.21-.047.315-.07.4-.135.084-.064.138-.16.246-.354l.098-.176z" />
+                          <Path
+                            d="M15.578 20.211c-1.756.878-2.634 1.317-3.578 1.317s-1.822-.439-3.578-1.317c-2.151-1.076-3.227-1.614-3.825-2.58C4 16.664 4 15.46 4 13.056V12c0-2.828 0-4.243.879-5.121C5.757 6 7.172 6 10 6h4c2.828 0 4.243 0 5.121.879C20 7.757 20 9.172 20 12v1.056c0 2.405 0 3.608-.597 4.575a3.078 3.078 0 01-.403.517"
+                            strokeLinecap="round"
+                          />
+                        </G>
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Agregar Admin</Text>
+
+                  </TouchableOpacity>
+
+                </View>
+
+
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1 }}>
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('addSupervisor')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5}>
+                          <Path
+                            d="M22 15c0 3.771 0 4.657-1.172 5.828C19.657 22 17.771 22 14 22M10 2C6.229 2 4.343 2 3.172 3.172 2 4.343 2 5.229 2 9M12 7C9.073 7 7.08 8.562 5.892 9.94 5.297 10.63 5 10.975 5 12c0 1.025.297 1.37.892 2.06C7.08 15.438 9.072 17 12 17c2.927 0 4.92-1.562 6.108-2.94.595-.69.892-1.035.892-2.06 0-1.025-.297-1.37-.892-2.06A9.067 9.067 0 0016 8.125"
+                            strokeLinecap="round"
+                          />
+                          <Circle cx={12} cy={12} r={2} />
+                          <Path
+                            d="M10 22H9m-7-7c0 3.771 0 4.657 1.172 5.828.653.654 1.528.943 2.828 1.07M14 2h1m7 7c0-3.771 0-4.657-1.172-5.828-.653-.654-1.528-.943-2.828-1.07"
+                            strokeLinecap="round"
+                          />
+                        </G>
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Agregar Supervisor</Text>
+
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('addCompany')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
+                          <Path d="M20.628 9.094c1.248-3.745 1.873-5.618.884-6.606-.988-.989-2.86-.364-6.606.884L10.24 4.927M5.575 6.482c-2.082.694-3.123 1.041-3.439 1.804-.074.18-.12.37-.133.564-.059.824.717 1.6 2.269 3.151l.283.283c.254.254.382.382.478.523.19.28.297.607.31.945.008.171-.019.35-.072.705-.196 1.304-.294 1.956-.179 2.458.23 1 1.004 1.785 2 2.028.5.123 1.154.034 2.46-.143l.072-.01c.368-.05.552-.075.729-.064.32.019.63.124.898.303.147.098.279.23.541.492l.252.252c1.51 1.51 2.265 2.265 3.066 2.226.22-.011.438-.063.64-.152.734-.323 1.072-1.336 1.747-3.362l1.566-4.696M6 18l3.75-3.75M21 3l-8.5 8.5" />
+                        </G>
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Agregar Empresa</Text>
+
+                  </TouchableOpacity>
+
+
+                </View>
+
+
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1 }}>
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('ChatScreen')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
+                          <Path d="M20.628 9.094c1.248-3.745 1.873-5.618.884-6.606-.988-.989-2.86-.364-6.606.884L10.24 4.927M5.575 6.482c-2.082.694-3.123 1.041-3.439 1.804-.074.18-.12.37-.133.564-.059.824.717 1.6 2.269 3.151l.283.283c.254.254.382.382.478.523.19.28.297.607.31.945.008.171-.019.35-.072.705-.196 1.304-.294 1.956-.179 2.458.23 1 1.004 1.785 2 2.028.5.123 1.154.034 2.46-.143l.072-.01c.368-.05.552-.075.729-.064.32.019.63.124.898.303.147.098.279.23.541.492l.252.252c1.51 1.51 2.265 2.265 3.066 2.226.22-.011.438-.063.64-.152.734-.323 1.072-1.336 1.747-3.362l1.566-4.696M6 18l3.75-3.75M21 3l-8.5 8.5" />
+                        </G>
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Ordenes</Text>
+
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('calendar')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
+                          <Path d="M21 7v-.63c0-1.193 0-1.79-.158-2.27a3.045 3.045 0 00-1.881-1.937C18.493 2 17.914 2 16.755 2h-9.51c-1.159 0-1.738 0-2.206.163a3.046 3.046 0 00-1.881 1.936C3 4.581 3 5.177 3 6.37V15m18-4v9.374c0 .858-.985 1.314-1.608.744a.946.946 0 00-1.284 0l-.483.442a1.657 1.657 0 01-2.25 0 1.657 1.657 0 00-2.25 0 1.657 1.657 0 01-2.25 0 1.657 1.657 0 00-2.25 0 1.657 1.657 0 01-2.25 0l-.483-.442a.946.946 0 00-1.284 0c-.623.57-1.608.114-1.608-.744V19" />
+                          <Path d="M9.5 10.4l1.429 1.6L14.5 8" strokeLinejoin="round" />
+                          <Path d="M7.5 15.5H9m7.5 0H12" />
+                        </G>
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Presentismo</Text>
+
+                  </TouchableOpacity>
+
+                </View>
+
+
+
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1 }}>
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadPresentismo')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <Path
+                          d="M12 4.5l5 5m-5-5l-5 5m5-5V11m0 3.5c0 1.667-1 5-5 5"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Marcar entrada</Text>
+
+                  </TouchableOpacity>
+
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadSalida')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <Path
+                          d="M12 19.5l5-5m-5 5l-5-5m5 5V13m0-3.5c0-1.667-1-5-5-5"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    </View>
+                    <Text style={styles.gridButtonText}>Marcar salida</Text>
+
+                  </TouchableOpacity>
+
+
+                </View>
+
+
 
               </View>
 
-              <View style={{ flexDirection: 'row', gap: 30 }}>
+              <View style={{ paddingBottom: 120 }}>
 
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('ChatScreen')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Agregar Supervisor</Text>
+                <View style={styles.gridButtonContainer}>
 
-                </TouchableOpacity>
+                  <CalendarScreen />
 
-
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('ChatScreen')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Ordenes Generales</Text>
-
-                </TouchableOpacity>
-
-
-              </View>
-
-              <View style={{ flexDirection: 'row', gap: 30 }}>
-
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadPresentismo')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Marcar Entrada</Text>
-
-                </TouchableOpacity>
-
-
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadSalida')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Marcar Salida</Text>
-
-                </TouchableOpacity>
-
-
-              </View>
-
-              <View style={{paddingBottom: 15}}>
-
-              <View style={styles.gridButtonContainer}>
-
-                <CalendarScreen />
-
-              </View>
+                </View>
 
               </View>
 
             </ScrollView>
 
 
+
           )}
 
-
-
-
-
-
           {!isAdmin && (
-            <ScrollView>
-
-
-              <View style={styles.navbar} stickyHeaderIndices={[0]}>
-
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {/* {Navbar} */}
+              <TouchableOpacity style={styles.navbar} stickyHeaderIndices={[0]} onPress={() => setIsMenuVisible(true)}>
                 <View style={styles.profileButton}>
-
                   <TouchableOpacity onPress={() => setIsMenuVisible(true)}>
                     {/* Replace "Perfil" text with SVG */}
                     <Svg width={30} height={30} viewBox="0 0 24 24" fill="#ffffff">
@@ -430,242 +560,248 @@ const Home = () => {
 
                   </TouchableOpacity>
                 </View>
-
                 <Text style={styles.title}>
-                  ¡Bienvenido, Vigilador!
+                  ¡Bienvenido!
                 </Text>
-              </View>
-              <View horizontal>
+              </TouchableOpacity>
 
-                <View style={styles.gridButtonContainer}>
-                  <View style={styles.gridButtonContainer2}>
+              <ScrollView showsVerticalScrollIndicator={false}>
 
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1, }}>
 
-                    <View style={{ justifyContent: 'center' }}>
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('Form')}>
 
-                      <TouchableOpacity style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} onPress={() => { navigation.navigate('vigilantesView') }}>
-                        <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
+                    <View style={{ padding: 15 }}>
 
-                            <Svg fill="#000000" width={40} height={40} viewBox="0 0 48 48">
-                              <Path d="M24,21A10,10,0,1,1,34,11,10,10,0,0,1,24,21ZM24,5a6,6,0,1,0,6,6A6,6,0,0,0,24,5Z"></Path>
-                              <Path d="M42,47H6a2,2,0,0,1-2-2V39A16,16,0,0,1,20,23h8A16,16,0,0,1,44,39v6A2,2,0,0,1,42,47ZM8,43H40V39A12,12,0,0,0,28,27H20A12,12,0,0,0,8,39Z"></Path>
-                            </Svg>
-                          </View>
-                        </View>
-
-                        <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold' }} > Reportar </Text>
-                        </View>
-                      </TouchableOpacity>
-
-                    </View>
-
-
-                    <View style={{ justifyContent: 'center' }}>
-
-                      <TouchableOpacity style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} onPress={() => { navigation.navigate('vigilantesView') }}>
-                        <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
-
-                            <Svg fill="#000000" width={40} height={40} viewBox="0 0 48 48">
-                              <Path d="M24,21A10,10,0,1,1,34,11,10,10,0,0,1,24,21ZM24,5a6,6,0,1,0,6,6A6,6,0,0,0,24,5Z"></Path>
-                              <Path d="M42,47H6a2,2,0,0,1-2-2V39A16,16,0,0,1,20,23h8A16,16,0,0,1,44,39v6A2,2,0,0,1,42,47ZM8,43H40V39A12,12,0,0,0,28,27H20A12,12,0,0,0,8,39Z"></Path>
-                            </Svg>
-                          </View>
-                        </View>
-
-                        <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold' }} > Reportar </Text>
-                        </View>
-                      </TouchableOpacity>
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5}>
+                          <Circle cx={10} cy={6} r={4} />
+                          <Path
+                            d="M21 10h-2m0 0h-2m2 0V8m0 2v2M17.997 18c.003-.164.003-.331.003-.5 0-2.485-3.582-4.5-8-4.5s-8 2.015-8 4.5S2 22 10 22c2.231 0 3.84-.157 5-.437"
+                            strokeLinecap="round"
+                          />
+                        </G>
+                      </Svg>
 
                     </View>
+                    <Text style={styles.gridButtonText}>Reportar</Text>
+
+                  </TouchableOpacity>
 
 
-                    <View style={{ justifyContent: 'center' }}>
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('Profile')}>
 
-                      <TouchableOpacity onPress={() => { navigation.navigate('reportHistory') }} style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', fontFamily: 'Epilogue-Variable' }} >
-                        <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
+                    <View style={{ padding: 15 }}>
 
-                            <Svg fill="#000000" width={40} height={40} viewBox="0 0 48 48">
-                              <Path d="M40,47H8a2,2,0,0,1-2-2V3A2,2,0,0,1,8,1H40a2,2,0,0,1,2,2V45A2,2,0,0,1,40,47ZM10,43H38V5H10Z"></Path>
-                              <Path d="M15,19a2,2,0,0,1-1.41-3.41l4-4a2,2,0,0,1,2.31-.37l2.83,1.42,5-4.16A2,2,0,0,1,30.2,8.4l4,3a2,2,0,1,1-2.4,3.2l-2.73-2.05-4.79,4a2,2,0,0,1-2.17.25L19.4,15.43l-3,3A2,2,0,0,1,15,19Z"></Path>
-                              <Circle cx="15" cy="24" r="2"></Circle>
-                              <Circle cx="15" cy="31" r="2"></Circle>
-                              <Circle cx="15" cy="38" r="2"></Circle>
-                              <Path d="M33,26H22a2,2,0,0,1,0-4H33a2,2,0,0,1,0,4Z"></Path>
-                              <Path d="M33,33H22a2,2,0,0,1,0-4H33a2,2,0,0,1,0,4Z"></Path>
-                              <Path d="M33,40H22a2,2,0,0,1,0-4H33a2,2,0,0,1,0,4Z"></Path>
-                            </Svg>
-                          </View>
-                        </View>
-
-                        <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold', alignItems: 'center', alignContent: 'center', fontFamily: 'Epilogue-Variable' }} > Camara </Text>
-                        </View>
-                      </TouchableOpacity>
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5}>
+                          <Path d="M17 6c0-1.886 0-2.828-.586-3.414C15.828 2 14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586C7 3.172 7 4.114 7 6M11.146 11.023c.38-.682.57-1.023.854-1.023.284 0 .474.34.854 1.023l.098.176c.108.194.162.29.246.354.085.064.19.088.4.135l.19.044c.738.167 1.107.25 1.195.532.088.283-.164.577-.667 1.165l-.13.152c-.143.167-.215.25-.247.354-.032.104-.021.215 0 .438l.02.203c.076.785.114 1.178-.115 1.352-.23.174-.576.015-1.267-.303l-.178-.082c-.197-.09-.295-.135-.399-.135-.104 0-.202.045-.399.135l-.178.082c-.691.319-1.037.477-1.267.303-.23-.174-.191-.567-.115-1.352l.02-.203c.021-.223.032-.334 0-.438-.032-.103-.104-.187-.247-.354l-.13-.152c-.503-.588-.755-.882-.667-1.165.088-.282.457-.365 1.195-.532l.19-.044c.21-.047.315-.07.4-.135.084-.064.138-.16.246-.354l.098-.176z" />
+                          <Path
+                            d="M15.578 20.211c-1.756.878-2.634 1.317-3.578 1.317s-1.822-.439-3.578-1.317c-2.151-1.076-3.227-1.614-3.825-2.58C4 16.664 4 15.46 4 13.056V12c0-2.828 0-4.243.879-5.121C5.757 6 7.172 6 10 6h4c2.828 0 4.243 0 5.121.879C20 7.757 20 9.172 20 12v1.056c0 2.405 0 3.608-.597 4.575a3.078 3.078 0 01-.403.517"
+                            strokeLinecap="round"
+                          />
+                        </G>
+                      </Svg>
 
                     </View>
+                    <Text style={styles.gridButtonText}>Perfil</Text>
 
-                    <View style={{ justifyContent: 'center' }}>
+                  </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => { navigation.navigate('vigilantesView') }} style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', fontFamily: 'Epilogue-Variable' }} >
-                        <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }} >
+                </View>
 
-                            <Svg fill="#000000" width={42} height={42} viewBox="0 0 48 48">
-                              <Path d="M47,12a2,2,0,0,0-2-2H24a2,2,0,0,0,0,4H45A2,2,0,0,0,47,12Z"></Path>
-                              <Path d="M3,14H8.35a6,6,0,1,0,0-4H3a2,2,0,0,0,0,4Zm11-4a2,2,0,1,1-2,2A2,2,0,0,1,14,10Z"></Path>
-                              <Path d="M45,22H37.65a6,6,0,1,0,0,4H45a2,2,0,0,0,0-4ZM32,26a2,2,0,1,1,2-2A2,2,0,0,1,32,26Z"></Path>
-                              <Path d="M22,22H3a2,2,0,0,0,0,4H22a2,2,0,0,0,0-4Z"></Path>
-                              <Path d="M45,34H28a2,2,0,0,0,0,4H45a2,2,0,0,0,0-4Z"></Path>
-                              <Path d="M18,30a6,6,0,0,0-5.65,4H3a2,2,0,0,0,0,4h9.35A6,6,0,1,0,18,30Zm0,8a2,2,0,1,1,2-2A2,2,0,0,1,18,38Z"></Path>
-                            </Svg>
-                          </View>
-                        </View>
 
-                        <View style={{ justifyContent: 'center', margin: 0 }}>
-                          <Text style={{ fontSize: 13, padding: 0, fontWeight: 'bold', fontFamily: 'Epilogue-Variable' }} > Perfil </Text>
-                        </View>
-                      </TouchableOpacity>
+
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1 }}>
+
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('ChatScreen')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
+                          <Path d="M20.628 9.094c1.248-3.745 1.873-5.618.884-6.606-.988-.989-2.86-.364-6.606.884L10.24 4.927M5.575 6.482c-2.082.694-3.123 1.041-3.439 1.804-.074.18-.12.37-.133.564-.059.824.717 1.6 2.269 3.151l.283.283c.254.254.382.382.478.523.19.28.297.607.31.945.008.171-.019.35-.072.705-.196 1.304-.294 1.956-.179 2.458.23 1 1.004 1.785 2 2.028.5.123 1.154.034 2.46-.143l.072-.01c.368-.05.552-.075.729-.064.32.019.63.124.898.303.147.098.279.23.541.492l.252.252c1.51 1.51 2.265 2.265 3.066 2.226.22-.011.438-.063.64-.152.734-.323 1.072-1.336 1.747-3.362l1.566-4.696M6 18l3.75-3.75M21 3l-8.5 8.5" />
+                        </G>
+                      </Svg>
 
                     </View>
+                    <Text style={styles.gridButtonText}>Ordenes</Text>
 
-
-                  </View>
-
-
-                  <View style={{ alignContent: 'flex-start', flex: 1, width: 280, alignSelf: 'flex-start', paddingTop: 20, }}>
-                    <TouchableOpacity style={{ padding: 15, borderRadius: 25, backgroundColor: '#F89A53' }}>
-                      <Text style={styles.secondaryText}> No olvides marcar horario!</Text>
-                    </TouchableOpacity>
-                  </View>
+                  </TouchableOpacity>
 
 
                 </View>
-              </View>
-
-              <View style={{ flexDirection: 'row', gap: 30 }}>
 
 
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('ChatScreen')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Ordenes Generales</Text>
 
-                </TouchableOpacity>
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1 }}>
 
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadPresentismo')}>
 
-              </View>
+                    <View style={{ padding: 15 }}>
 
-              <View style={{ flexDirection: 'row', gap: 30 }}>
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <Path
+                          d="M12 4.5l5 5m-5-5l-5 5m5-5V11m0 3.5c0 1.667-1 5-5 5"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
 
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadPresentismo')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Marcar Entrada</Text>
+                    </View>
+                    <Text style={styles.gridButtonText}>Marcar entrada</Text>
 
-                </TouchableOpacity>
-
-
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadSalida')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Marcar Salida</Text>
-
-                </TouchableOpacity>
+                  </TouchableOpacity>
 
 
-              </View>
+                  <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadSalida')}>
 
-              <View style={{ flexDirection: 'row', gap: 30 }}>
+                    <View style={{ padding: 15 }}>
 
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadPresentismo')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Reportar</Text>
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <Path
+                          d="M12 19.5l5-5m-5 5l-5-5m5 5V13m0-3.5c0-1.667-1-5-5-5"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+                    </View>
+                    <Text style={styles.gridButtonText}>Marcar salida</Text>
 
-                </TouchableOpacity>
-
-
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadSalida')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Alerta</Text>
-
-                </TouchableOpacity>
-
-
-              </View>
-
-              <View style={{ flexDirection: 'row', gap: 30 }}>
+                  </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadSalida')}>
-                  <Svg width={64} height={64} viewBox="0 0 24 24" fill="none" style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', alignSelf: 'center' }}>
-                    <Path d="M9 12.08L11 14L15 10" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-                    <Path d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7" stroke="#000000" strokeWidth={1.5} strokeLinecap="round" />
-                  </Svg>
-                  <Text style={styles.gridButtonText}>Alerta</Text>
+                </View>
+                <View style={{ gap: 30, flexDirection: 'row', paddingBottom: 120, flex: 1, }}>
 
-                </TouchableOpacity>
+                  <TouchableOpacity style={styles.gridButtonContainerAlert} onPress={() => navigation.navigate('Alert')}>
+
+                    <View style={{ padding: 15 }}>
+
+                      <Svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <Path
+                          d="M12 4.5l5 5m-5-5l-5 5m5-5V11m0 3.5c0 1.667-1 5-5 5"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </Svg>
+
+                    </View>
+                    <Text style={styles.gridButtonText}>Alerta</Text>
+
+                  </TouchableOpacity>
 
 
-              </View>
 
+                </View>
+
+              </ScrollView>
             </ScrollView>
+
+
+
           )}
 
 
-
-        </ScrollView>
-      )}
-
-      {/* Modal para el menú desplegable */}
-      <Modal visible={isMenuVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity onPress={() => setIsMenuVisible(false)} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Atras</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Profile')} onPressOut={() => setIsMenuVisible(false)} >
-            <Text style={styles.logoutButtonText} >Perfil</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.logoutButton}>
-            <Text style={styles.logoutButtonText}>Soporte Tecnico</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-            <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
-          </TouchableOpacity>
-
-
         </View>
-      </Modal>
+        {/* Modal para el menú desplegable */}
+        <Modal visible={isMenuVisible} animationType="slide" transparent={true}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity onPress={() => setIsMenuVisible(false)} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Atras</Text>
+            </TouchableOpacity>
 
-    </ScrollView>
+            <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Profile')} onPressOut={() => setIsMenuVisible(false)} >
+              <Text style={styles.logoutButtonText} >Perfil</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.logoutButton}>
+              <Text style={styles.logoutButtonText}>Soporte Tecnico</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+              <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
+            </TouchableOpacity>
+
+
+          </View>
+        </Modal>
+
+      </View>
+      <View style={styles.bottomBar}>
+      </View>
+    </View>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingBottom: 20,
     backgroundColor: '#3780C3',
     fontFamily: 'Epilogue-Variable',
+  },
+  topBar: {
+    position: 'sticky',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 50,
+    backgroundColor: '#318ADB',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: 'white',
+    shadowOpacity: 0.9,
+    elevation: 1,
+    borderWidth: 0.2,
+    borderBottomColor: 'white',
+    borderColor: 'white'
+  },
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 100,
+    backgroundColor: '#318ADB',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: 'white',
+    shadowOffset: '30',
+    shadowOpacity: 0.9,
+    elevation: 1
   },
   secondaryText: {
     fontFamily: 'Epilogue-Variable',
@@ -753,6 +889,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignContent: 'center',
   },
+  gridButtonContainerAlert: {
+
+    borderRadius: 10,
+    padding: 20,
+    paddingTop: 20,
+    backgroundColor: 'red',
+    marginBottom: 20,
+    justifyContent: 'center', // Alinea los elementos de manera equitativa
+    flex: 1,
+    alignContent: 'center',
+
+  },
+
   gridButtonContainerButtonV: {
     borderRadius: 5,
     height: 80,
@@ -837,7 +986,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: 'Epilogue-Variable'
+    fontFamily: 'Epilogue-Variable',
+    paddingBottom: 10
   },
   gridButtonText2: {
     color: 'black',
@@ -866,7 +1016,7 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: 1,
     borderRadius: 25,
-    marginTop: 40,
+    marginTop: 20,
     marginBottom: 20,
 
   },

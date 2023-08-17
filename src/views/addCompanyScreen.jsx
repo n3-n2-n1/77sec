@@ -88,6 +88,8 @@ const AddCompanyScreen = () => {
           value={name}
           onChangeText={setName}
           placeholder="Ingrese el nombre"
+          placeholderTextColor='gray'
+
         />
 
         <Text style={styles.label}>Dirección:</Text>
@@ -96,6 +98,8 @@ const AddCompanyScreen = () => {
           value={address}
           onChangeText={setAddress}
           placeholder="Ingrese la dirección"
+          placeholderTextColor='gray'
+
         />
 
         <Text style={styles.label}>Celular:</Text>
@@ -104,6 +108,8 @@ const AddCompanyScreen = () => {
           value={tel}
           onChangeText={setTel}
           placeholder="Ingrese el numero"
+          placeholderTextColor='gray'
+
         />
 
         <Text style={styles.label}>Nombre Encargado:</Text>
@@ -112,6 +118,8 @@ const AddCompanyScreen = () => {
           value={chief}
           onChangeText={setChief}
           placeholder="Ingrese el nombre del encargado"
+          placeholderTextColor='gray'
+
         />
 
         <Text style={styles.label}>DNI Encargado:</Text>
@@ -120,6 +128,8 @@ const AddCompanyScreen = () => {
           value={chiefDNI}
           onChangeText={setchiefDNI}
           placeholder="Ingrese el DNI del encargado"
+          placeholderTextColor='gray'
+
         />
 
         <Text style={styles.label}>Objetivos (predios que la empresa cuida):</Text>
@@ -130,7 +140,16 @@ const AddCompanyScreen = () => {
           {objectives.map((objective, index) => (
             <View key={index} style={[styles.objectiveContainer, styles.input]}>
               <TextInput
-                style={styles.input}
+                style={{
+                  padding: 15,
+                  borderRadius: 25,
+                  width: '100%',
+                  marginBottom: 12,
+                  fontFamily: 'Epilogue-Variable',
+                  borderColor: 'black',
+                  backgroundColor: 'white',
+                  borderWidth: 2
+                }}
                 value={objective}
                 placeholderTextColor={'gray'}
                 onChangeText={(text) => {
@@ -164,7 +183,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#5DC2BF',
+    backgroundColor: '#3780C3',
     fontFamily: 'Epilogue-Variable',
   },
   objectiveContainer: {
@@ -245,12 +264,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 40,
     paddingHorizontal: 5,
     position: 'sticky',
     top: 0,
     zIndex: 100,
+    
   },
+
   title: {
     fontSize: 24,
     color: 'white',

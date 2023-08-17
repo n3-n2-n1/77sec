@@ -45,26 +45,26 @@ const LoadPresentismo = ({ route }) => {
                 console.log('Aún no se ha obtenido la ubicación.');
                 return;
             }
-            
+
             const user = firebase.auth().currentUser;
-    
+
             if (!user) {
                 console.log('Usuario no autenticado.');
                 return;
             }
-    
+
             const userDni = dni; // Usar el DNI ingresado
             const userSnapshot = await database.collection('users').where('dni', '==', userDni).get();
-    
+
             if (userSnapshot.empty) {
                 console.log('No se encontró información del usuario.');
                 // Muestra un alert indicando que el DNI ingresado no coincide con ningún usuario
                 alert('DNI ingresado no válido. Verifica el DNI.');
                 return;
             }
-            
+
             const userData = userSnapshot.docs[0].data();
-            
+
             if (userDni !== userData.dni) {
                 console.log(userData.dni)
                 console.log('DNI ingresado no coincide con el DNI del usuario.');
@@ -72,7 +72,7 @@ const LoadPresentismo = ({ route }) => {
                 alert('El DNI ingresado no coincide con el DNI del usuario autenticado.');
                 return;
             }
-    
+
             const horasTrabajadasRef = userSnapshot.docs[0].ref.collection('horasTrabajadas'); // Obtener la referencia a la subcolección
             const presentismoData = {
                 fecha: moment().format('YYYY-MM-DD'), // Formato de fecha YYYY-MM-DD
@@ -80,12 +80,12 @@ const LoadPresentismo = ({ route }) => {
                 salida: '',
                 dni: userDni,
                 coordenadas: location
-              };    
-    
-            console.log(presentismoData)    
-    
+            };
+
+            console.log(presentismoData)
+
             await horasTrabajadasRef.add(presentismoData); // Agregar a la subcolección
-    
+
             setGuardadoExitoso(true);
             console.log('Horas trabajadas guardadas con éxito.');
             alert('Horas trabajadas guardadas con éxito');
@@ -94,21 +94,25 @@ const LoadPresentismo = ({ route }) => {
             console.error('Error al guardar las horas trabajadas:', error);
         }
     };
-    
+
 
     return (
-        <KeyboardAvoidingView behavior='padding' style={styles.container2}>
+        <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <View style={styles.navbar}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
                         <Path
                             d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
-                            fill="#ffffff"
+                            fill="white"
                         />
                     </Svg>
                 </TouchableOpacity>
+                <Text style={styles.title}>
+                    Agregar entrada
+                </Text>
             </View>
-            <View style={styles.container}>
+
+            <View style={styles.container2}>
                 <View style={styles.containerIn}>
                     <View style={styles.qr}>
                         {qrValue ? (
@@ -119,7 +123,7 @@ const LoadPresentismo = ({ route }) => {
                             <Text style={styles.instructions}>Generando Código QR...</Text>
                         )}
                     </View>
-                    <Text style={styles.instructions}>Insertar DNI</Text>
+                    <Text style={styles.instructions}>Ingresa tu DNI</Text>
                     <TextInput
                         placeholder="Ingrese el DNI"
                         value={dni}
@@ -128,7 +132,7 @@ const LoadPresentismo = ({ route }) => {
                         keyboardType="numeric"
                     />
                     <TouchableOpacity style={styles.button} onPress={handleGuardarPresentismo}>
-                        <Text style={styles.buttonText}>Guardar Presentismo</Text>
+                        <Text style={styles.buttonText}>Guardar entrada</Text>
                     </TouchableOpacity>
                     {guardadoExitoso && <Text style={styles.successText}>Presentismo guardado con éxito.</Text>}
                 </View>
@@ -140,21 +144,33 @@ const LoadPresentismo = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'black',
+        backgroundColor: '#3780C3',
+        padding: 15
     },
-    qr:{
+
+    title: {
+        fontSize: 24,
+        color: 'white',
+        fontWeight: 800,
+        paddingRight: 16,
+        fontFamily: 'Epilogue-Variable',
+    
+      },
+    qr: {
         padding: 15,
         borderColor: 'white',
         borderWidth: 2,
         borderRadius: 25,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: 'white',
 
     },
     container2: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: '#3780C3',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15
     },
     containerIn: {
         alignItems: 'center',
@@ -179,7 +195,6 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'Epilogue-Variable',
         color: 'white'
-
     },
     qrContainer: {
     },
@@ -189,7 +204,7 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'Epilogue-Variable',
     },
-    coordinatesContainer:{
+    coordinatesContainer: {
         borderColor: 'black',
         borderWidth: 3,
         padding: 15,
@@ -213,14 +228,14 @@ const styles = StyleSheet.create({
 
     },
     button: {
-        flex: 1,
-        backgroundColor: 'green',
-        padding: 15,
+        backgroundColor: '#F89A53',
+        padding: 10,
+        marginTop: 20,
         borderRadius: 25,
         alignItems: 'center',
-        width: 245,
-        marginTop: 26,
-    },
+        borderWidth: 2,
+        borderColor: 'white'
+      },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
@@ -231,9 +246,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
-        paddingTop: 30,
-        paddingLeft: 30,
+        paddingTop: 40,
+        paddingHorizontal: 5,
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
       },
 });
 

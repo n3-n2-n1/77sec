@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-    paddingTop: 30,
+    paddingTop: 40,
     fontFamily: 'Epilogue-Variable',
 
   },

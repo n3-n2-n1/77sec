@@ -95,9 +95,8 @@ const EnterprisesView = () => {
           <View key={empresa.id} style={styles.card}>
             {editingEmpresaId === empresa.id ? (
               // Formulario de edición
+
               <View>
-                {/* Aquí puedes renderizar campos de edición según tus necesidades */}
-                {/* Por ejemplo: */}
 
                 <Text style={styles.cardText}>
                   Nuevo nombre:
@@ -164,13 +163,29 @@ const EnterprisesView = () => {
                 />
                 {/* ... otros campos de edición ... */}
 
-                <TouchableOpacity title="Cancelar" onPress={handleCancelEdit} />
-                <TouchableOpacity title="Guardar" onPress={() => handleSaveEdit(empresa.id)} />
+                <View style={{padding: 15}}>
+
+                <TouchableOpacity style={{ padding: 15, borderWidth: 2, borderColor: 'white', borderRadius: 25, backgroundColor:'#F89A53' }} title="Cancelar" onPress={handleCancelEdit} >
+                  <Text style={{alignSelf: 'center', fontFamily: 'Epilogue-Variable', color: 'white'}}>
+                    Cancelar
+                  </Text>
+                  </TouchableOpacity>
+
+                <TouchableOpacity style={{ padding: 15, borderWidth: 2, borderColor: 'white', borderRadius: 25, backgroundColor:'#F89A53' }} title="Guardar" onPress={() => handleSaveEdit(empresa.id)} >
+                  <Text style={{alignSelf: 'center', fontFamily: 'Epilogue-Variable', color: 'white'}}>
+                    Guardar
+                  </Text>
+                  </TouchableOpacity>
+                
+                </View>
+              
+              
               </View>
+
             ) : (
               // Modo de visualización
               <View>
-                <Text style={styles.cardTitle}>Nombre: {empresa.name}</Text>
+                <Text style={styles.cardTitle}>{empresa.name}</Text>
                 <Text style={styles.cardText}>Direccion: {empresa.address}</Text>
                 <Text style={styles.cardText}>Encargado General: {empresa.chief}</Text>
                 <Text style={styles.cardText}>DNI Encargado General: {empresa.chiefDNI}</Text>
@@ -200,9 +215,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#3780C3',
     fontFamily: 'Epilogue-Variable',
-    backgroundColor: 'black'
   },
   input: {
     borderRadius: 25,
@@ -220,14 +234,17 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 25,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 20,
   },
   button: {
-    backgroundColor: 'gray',
+    backgroundColor: '#F89A53',
     padding: 10,
+    marginTop: 20,
     borderRadius: 25,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'white'
   },
   title: {
     fontSize: 24,
@@ -235,7 +252,6 @@ const styles = StyleSheet.create({
     fontWeight: 800,
     paddingRight: 16,
     fontFamily: 'Epilogue-Variable',
-
   },
   card: {
     backgroundColor: '#fff',
@@ -252,23 +268,25 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: 23,
     fontWeight: 'bold',
     fontFamily: 'Epilogue-Variable',
-
+    paddingLeft: 5,
+    paddingBottom: 5
   },
   cardText: {
-    fontSize: 14,
-    marginBottom: 8,
+    paddingLeft: 5,
+    padding: 10,
+    fontSize: 16,
+    color: 'black',
     fontFamily: 'Epilogue-Variable',
-    marginTop: 8,
 
   },
   navbar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 40,
     paddingHorizontal: 5,
     position: 'sticky',
     top: 0,
