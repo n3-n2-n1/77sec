@@ -37,7 +37,7 @@ const ReportsScreen = () => {
   
   const filteredReports = reports.filter((report) => {
     // Filtrar por empresaSeleccionada
-    const empresas = report.empresaSeleccionada || []; // Asegúrate de manejar el caso en que empresaSeleccionada sea null o undefined
+    const empresas = report.id || []; // Asegúrate de manejar el caso en que empresaSeleccionada sea null o undefined
     for (const empresa of empresas) {
       const fieldValue = empresa.toString().toLowerCase();
       if (fieldValue.includes(searchTerm.toLowerCase())) {
@@ -81,7 +81,8 @@ const ReportsScreen = () => {
         >
           <Text style={styles.cardText}>ID: {item.id}</Text>
           <Text style={styles.cardText}>Descripción: {item.predio}</Text>
-          <Text style={styles.cardText}>Empresa: {item.predio}</Text>
+          <Text style={styles.cardText}>Empresa: {item.empresaSeleccionada || item.empresa}</Text>
+          <Text style={styles.cardText}>Predio: {item.predio}</Text>
         </TouchableOpacity>
       )}
     />
@@ -95,7 +96,7 @@ const ReportsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    padding: 20,
     backgroundColor: '#3780C3'
   },
   searchInput: {

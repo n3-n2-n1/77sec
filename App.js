@@ -29,11 +29,10 @@ import LoadPresentismo from './src/views/loadPresentismo';
 import CalendarScreen from './src/components/Calendar';
 import MarcarSalida from './src/views/loadSalida';
 import AddAdmin from './src/views/addAdmin';
-
 import * as Font from 'expo-font'; // Importa expo-font
 import addAdmin from './src/views/addAdmin';
 import AdminApprovalScreen from './src/views/AdminApproval';
-import requestRegister from './src/views/requestRegister';
+import RequestRegister from './src/views/requestRegister';
 import CalculateHoursScreen from './src/views/CalculateHours';
 import AddSupervisor from './src/views/addSupervisor';
 const Stack = createStackNavigator();
@@ -43,6 +42,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [fontsLoaded, setFontsLoaded] = useState(false); 
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((authenticatedUser) => {
@@ -56,9 +56,9 @@ export default function App() {
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        'Epilogue-Variable': require('../formReport/assets/fonts/Epilogue-Variable.ttf'), // Ajusta la ruta si es necesario
-        // Agrega otras variantes si las necesitas
+        'Epilogue-Variable': require('../formReport/assets/fonts/Epilogue-Variable.ttf'),
       });
+      setFontsLoaded(true); // Mark fonts as loaded
     }
     loadFonts();
   }, []);
@@ -68,6 +68,10 @@ export default function App() {
     const currentUser = firebase.auth().currentUser;
     return currentUser && currentUser.role === 'admin';
   };
+
+  if (loading) {
+    return <LoadingScreen />; // Muestra el loader mientras carga
+  }
 
 
 
@@ -109,7 +113,7 @@ export default function App() {
       <Stack.Screen name="reportHistory" component={ReportsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="AddAdmin" component={AddAdmin} options={{ headerShown: false }}/>
       <Stack.Screen name="AdminApproval" component={AdminApprovalScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="requestRegister" component={requestRegister} options={{ headerShown: false }}/>
+      <Stack.Screen name="RequestRegister" component={RequestRegister} options={{ headerShown: false }}/>
       <Stack.Screen name="calendar" component={CalendarScreen}/>
       <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="addSupervisor" component={AddSupervisor} options={{ headerShown: false }}/>

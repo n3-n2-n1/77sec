@@ -36,9 +36,6 @@ const CrimeForm = () => {
     const [uploadedImages, setUploadedImages] = useState([]);
     const storage = getStorage();
     const [selectedImages, setSelectedImages] = useState([]);
-
-
-
     const [progress, setProgress] = useState(0);
 
 

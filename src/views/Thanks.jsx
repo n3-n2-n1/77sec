@@ -24,7 +24,7 @@ const ThankYouScreen = ({route}) => {
         <View style={styles.thankYouContainer}>
             <Text style={styles.thankYouText}>¡Gracias por enviar el formulario!</Text>
             <TouchableOpacity style={styles.restartButton} onPress={handleFormRestart}>
-                <Text style={styles.restartButtonText}>Volver a llenar el formulario</Text>
+                <Text style={styles.restartButtonText}>Volver a llenar el reporte</Text>
             </TouchableOpacity>
         </View>
     );
@@ -35,21 +35,23 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f0f0f0', // You can change the background color as needed
+        backgroundColor: '#3780C3', // You can change the background color as needed
     },
     thankYouText: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
+        color: 'white'
     },
     restartButton: {
         backgroundColor: 'blue',
-        paddingVertical: 12,
+        padding: 15,
+        backgroundColor:'white',
         paddingHorizontal: 24,
-        borderRadius: 8,
+        borderRadius: 25,
     },
     restartButtonText: {
-        color: 'white',
+        color: 'black',
         fontSize: 16,
         fontWeight: 'bold',
     },

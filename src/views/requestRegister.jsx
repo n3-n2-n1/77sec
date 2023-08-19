@@ -7,7 +7,7 @@ import { database } from '../database/firebaseC'
 import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
-const requestRegister = ({ navigation, route }) => {
+const RequestRegister = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -167,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default requestRegister;
+export default RequestRegister;

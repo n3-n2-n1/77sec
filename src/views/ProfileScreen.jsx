@@ -42,6 +42,8 @@ const ProfileScreen = () => {
     firebase.auth().signOut()
       .then(() => {
         console.log('Cierre de sesión exitoso.');
+        alert('Cierre de sesion exitoso.')
+        navigation.navigate('Login')
       })
       .catch((error) => {
         console.error('Error al cerrar sesión:', error.message);

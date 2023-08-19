@@ -18,12 +18,17 @@ const Home = () => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentUserDisplayName, setCurrentUserDisplayName] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const [loading, setLoading] = useState(true);
 
   const closeMenu = () => {
     setIsMenuVisible(false);
   };
+
+
+
+
 
   useEffect(() => {
 
@@ -35,6 +40,7 @@ const Home = () => {
       const userRef = firebase.firestore().collection('users').doc(currentUser.uid);
       userRef.get().then((doc) => {
         if (doc.exists) {
+
           const userData = doc.data();
           console.log('Rol del usuario:', userData.role);
           console.log('Nombre', userData.name);
@@ -44,11 +50,12 @@ const Home = () => {
           console.log('No se encontró información para el usuario.');
 
         }
-        setIsLoading(false); // Datos cargados, cambiar estado de isLoading
+        setLoading(false); // Datos cargados, cambiar estado de isLoading
+
       });
     } else {
       console.log('No hay usuario autenticado.');
-      setIsLoading(false);
+      setLoading(false);
     }
 
 
@@ -90,21 +97,19 @@ const Home = () => {
 
     <View>
 
+
       <View style={styles.topBar}>
       </View>
 
       <View style={styles.container}>
-
-
         <View>
-
           {isAdmin && (
             <ScrollView showsVerticalScrollIndicator={false}>
               {/* {Navbar} */}
               <TouchableOpacity style={styles.navbar} stickyHeaderIndices={[0]} onPress={() => setIsMenuVisible(true)}>
                 <View style={styles.profileButton}>
                   <TouchableOpacity onPress={() => setIsMenuVisible(true)}>
-                    {/* Replace "Perfil" text with SVG */}
+
                     <Svg width={30} height={30} viewBox="0 0 24 24" fill="#ffffff">
                       <Path
                         d="M3,21.016l.78984-2.87249C5.0964,13.3918,8.5482,10.984,12,10.984"
@@ -259,8 +264,10 @@ const Home = () => {
 
                       <TouchableOpacity onPress={() => { navigation.navigate('Profile') }} style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', fontFamily: 'Epilogue-Variable' }} >
                         <View style={styles.buttonCircle}>
-                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', shadowColor: 'black', shadowOffset: 30, shadowOpacity: 0.3, elevation: 1 }} >
+                          <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', shadowColor: 'black', shadowOffset: '30', shadowOpacity: 0.3, elevation: 1 }} >
                             <Svg
+                              width="40px"
+                              height="40px"
                               viewBox="0 0 24 24"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
@@ -392,11 +399,41 @@ const Home = () => {
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                       >
-                        <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
-                          <Path d="M20.628 9.094c1.248-3.745 1.873-5.618.884-6.606-.988-.989-2.86-.364-6.606.884L10.24 4.927M5.575 6.482c-2.082.694-3.123 1.041-3.439 1.804-.074.18-.12.37-.133.564-.059.824.717 1.6 2.269 3.151l.283.283c.254.254.382.382.478.523.19.28.297.607.31.945.008.171-.019.35-.072.705-.196 1.304-.294 1.956-.179 2.458.23 1 1.004 1.785 2 2.028.5.123 1.154.034 2.46-.143l.072-.01c.368-.05.552-.075.729-.064.32.019.63.124.898.303.147.098.279.23.541.492l.252.252c1.51 1.51 2.265 2.265 3.066 2.226.22-.011.438-.063.64-.152.734-.323 1.072-1.336 1.747-3.362l1.566-4.696M6 18l3.75-3.75M21 3l-8.5 8.5" />
-                        </G>
+                        <Path
+                          d="M22 22H2"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                        />
+                        <Path
+                          d="M17 22V6c0-1.886 0-2.828-.586-3.414C15.828 2 14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586C7 3.172 7 4.114 7 6v16"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                        />
+                        <Path
+                          d="M12 22v-3M10 12h4M5.5 11H7M5.5 14H7M17 11h1.5M17 14h1.5M5.5 8H7M17 8h1.5"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                        />
+                        <Path
+                          d="M12 9V5M14 7h-4"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <Path
+                          d="M20.25 8.5a.75.75 0 001.5 0h-1.5zm-.139-3.163l-.416.624.416-.624zm.552.552l-.624.417.624-.417zM21.75 12.5a.75.75 0 00-1.5 0h1.5zM17.5 5.75c.718 0 1.2 0 1.567.038.355.036.519.1.628.173l.833-1.248c-.396-.264-.835-.369-1.309-.417-.461-.047-1.032-.046-1.719-.046v1.5zm4.25 2.75c0-.687 0-1.258-.046-1.719-.048-.473-.153-.913-.418-1.309l-1.247.834c.073.108.137.272.173.627.037.367.038.85.038 1.567h1.5zm-2.055-2.54c.136.092.253.21.344.346l1.247-.834c-.2-.3-.458-.558-.758-.759l-.833 1.248zm.555 6.54V22h1.5v-9.5h-1.5zM3.889 5.337l.417.624-.417-.624zm-.552.552l.624.417-.624-.417zM3.75 17a.75.75 0 00-1.5 0h1.5zm-1.5-4a.75.75 0 001.5 0h-1.5zM6.5 4.25c-.687 0-1.258 0-1.719.046-.473.048-.913.153-1.309.417l.834 1.248c.108-.073.272-.137.627-.173.367-.037.85-.038 1.567-.038v-1.5zM3.75 8.5c0-.718 0-1.2.038-1.567.036-.355.1-.519.173-.627l-1.248-.834c-.264.396-.369.836-.417 1.309-.047.461-.046 1.032-.046 1.719h1.5zm-.278-3.787c-.3.201-.558.459-.759.76l1.248.833a1.25 1.25 0 01.345-.345l-.834-1.248zM2.25 17v5h1.5v-5h-1.5zm0-8.5V13h1.5V8.5h-1.5z"
+                          fill="#1C274C"
+                        />
+                        <Path
+                          d="M10 15h.5m3.5 0h-1.5"
+                          stroke="#1C274C"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                        />
                       </Svg>
-
                     </View>
                     <Text style={styles.gridButtonText}>Agregar Empresa</Text>
 
@@ -514,7 +551,6 @@ const Home = () => {
                   <CalendarScreen />
 
                 </View>
-
               </View>
 
             </ScrollView>
@@ -696,7 +732,11 @@ const Home = () => {
 
 
                 </View>
-                <View style={{ gap: 30, flexDirection: 'row', paddingBottom: 120, flex: 1, }}>
+
+                <View style={{ paddingBottom: 200}}>
+
+            
+                <View style={{ gap: 30, flexDirection: 'row', flex: 1, }}>
 
                   <TouchableOpacity style={styles.gridButtonContainerAlert} onPress={() => navigation.navigate('Alert')}>
 
@@ -724,6 +764,7 @@ const Home = () => {
 
 
                 </View>
+                </View>
 
               </ScrollView>
             </ScrollView>
@@ -731,7 +772,6 @@ const Home = () => {
 
 
           )}
-
 
         </View>
         {/* Modal para el menú desplegable */}
@@ -758,12 +798,13 @@ const Home = () => {
         </Modal>
 
       </View>
+
       <View style={styles.bottomBar}>
       </View>
     </View>
+  )
+}
 
-  );
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -936,7 +977,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   modalInContainer: {
-    width: '100%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

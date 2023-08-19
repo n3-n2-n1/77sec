@@ -1,71 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { View, Animated, Easing, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-
-import logoSvg from '../../assets/logo-invert.svg'; // Asegúrate de proporcionar la ruta correcta
+import { View, Image, Animated, StyleSheet } from 'react-native';
 
 const LoadingScreen = () => {
-  const [progress, setProgress] = useState(new Animated.Value(0));
-  const [opacity, setOpacity] = useState(new Animated.Value(0));
+  const [fadeAnim] = useState(new Animated.Value(0)); // Estado para la opacidad del logo
 
   useEffect(() => {
-    const animation = Animated.loop(
-      Animated.timing(progress, {
-        toValue: 1,
-        duration: 1500,
-        easing: Easing.bounce,
-        useNativeDriver: false,
-      })
-    );
+    startAnimation(); // Comienza la animación cuando el componente se monta
+  }, []);
 
-    animation.start();
-
-    return () => {
-      animation.stop();
-    };
-  }, [progress]);
-
-  useEffect(() => {
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  }, [opacity]);
-
-  const interpolatedOpacity = opacity.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1],
-  });
-
-
+  const startAnimation = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 1000, // Duración de la animación en milisegundos
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 1000, // Duración de la animación en milisegundos
+          useNativeDriver: true,
+        }),
+      ]),
+      {
+        iterations: -1, // -1 para que se repita indefinidamente
+      }
+    ).start();
+  };
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.logoContainer, { opacity: interpolatedOpacity }]}>
-        {/* Utiliza el componente Svg para renderizar el archivo SVG */}
-        
-      </Animated.View>
+      <Animated.Image
+        source={require('../../assets/logo.png')} // Ajusta la ruta de la imagen si es necesario
+        style={{ ...styles.logo, opacity: fadeAnim }}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: 414,
-    height: 816,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor:'#3780C3'
   },
-  logoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center',
-
-    opacity: 0,
+  logo: {
+    width: 150,
+    height: 150,
   },
 });
 
