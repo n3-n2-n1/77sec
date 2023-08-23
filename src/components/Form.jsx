@@ -459,8 +459,8 @@ const CrimeForm = () => {
                     defaultValue=""
                 />
 
-                <TouchableOpacity title="Seleccionar Imagen" onPress={handleFilePick} >
-                    <Text>Seleccionar Imagen</Text>
+                <TouchableOpacity style={styles.buttonSelect} title="Seleccionar Imagen" onPress={handleFilePick} >
+                    <Text style={styles.submitButtonTextImage}>Seleccionar Imagen</Text>
                 </TouchableOpacity>
                 {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
 
@@ -555,6 +555,23 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
     },
+
+    buttonSelect: {
+        flex: 1,
+        backgroundColor: 'black',
+        padding: 15,
+        borderRadius: 25,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    buttonImage: {
+        flex: 1,
+        backgroundColor: 'black',
+        padding: 15,
+        borderRadius: 25,
+        alignItems: 'center',
+        marginTop: 20,
+    },
     containerR: {
         flex: 1,
         paddingBottom: 10,
@@ -600,6 +617,11 @@ const styles = StyleSheet.create({
     },
     submitButtonText: {
         color: 'black',
+        fontFamily: 'Epilogue-Variable',
+        fontWeight: 'bold',
+    },
+    submitButtonTextImage: {
+        color: 'white',
         fontFamily: 'Epilogue-Variable',
         fontWeight: 'bold',
     },

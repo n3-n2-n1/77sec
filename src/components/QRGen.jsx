@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import moment from 'moment'; // Importa la librería moment para manipular fechas
 import { useState, useEffect } from 'react';
+import LoadingSpinner from 'react-native-loading-spinner-overlay'; // Import a loading spinner component
 
 const QRCodeGenerator = ({ userData }) => {
   const [qrValue, setQRValue] = useState('');
@@ -12,7 +13,7 @@ const QRCodeGenerator = ({ userData }) => {
     generateQRValue(userData);
 
     // Establece un intervalo de 1 minuto para regenerar el valor del QR
-    const interval = setInterval(() => generateQRValue(userData), 60000);
+    const interval = setInterval(() => generateQRValue(userData), 60);
 
     // Limpia el intervalo cuando el componente se desmonta
     return () => clearInterval(interval);

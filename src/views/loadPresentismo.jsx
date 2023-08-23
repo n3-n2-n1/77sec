@@ -8,6 +8,7 @@ import QRCode from 'react-native-qrcode-svg';
 import moment from 'moment'; // Importa la librería moment para manipular fechas
 import { Svg, Path } from 'react-native-svg';
 import 'firebase/compat/auth';
+import LoadingSpinner from 'react-native-loading-spinner-overlay';
 
 
 const LoadPresentismo = ({ route }) => {
@@ -16,18 +17,28 @@ const LoadPresentismo = ({ route }) => {
     const [location, setLocation] = useState(null);
     const navigation = useNavigation();
     const [qrValue, setQRValue] = useState('');
+    const [loading, setLoading] = useState(false); // Add a loading state variable
+
 
     useEffect(() => {
+        setLoading(true); // Set loading to true when starting the generation process
+    
         // Pedir permiso para acceder a la ubicación
         (async () => {
+          try {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === 'granted') {
-                // Obtener la ubicación actual
-                const currentLocation = await Location.getCurrentPositionAsync({});
-                setLocation(currentLocation);
+              // Obtener la ubicación actual
+              const currentLocation = await Location.getCurrentPositionAsync({});
+              setLocation(currentLocation);
             }
+          } catch (error) {
+            console.error('Error obtaining location:', error);
+          } finally {
+            setLoading(false); // Set loading to false when done fetching location data
+          }
         })();
-    }, []);
+      }, []);
 
     useEffect(() => {
         if (location) {
@@ -115,7 +126,9 @@ const LoadPresentismo = ({ route }) => {
             <View style={styles.container2}>
                 <View style={styles.containerIn}>
                     <View style={styles.qr}>
-                        {qrValue ? (
+                        {loading ? (
+                            <LoadingSpinner visible={loading} textContent={'Obteniendo tu ubicacion...'} animation={'slide'} textStyle={{ color: '#FFF' }} overlayColor={'black'} />
+                        ) : qrValue ? (
                             <View style={styles.qrContainer}>
                                 <QRCode value={qrValue} size={200} />
                             </View>
@@ -154,8 +167,8 @@ const styles = StyleSheet.create({
         fontWeight: 800,
         paddingRight: 16,
         fontFamily: 'Epilogue-Variable',
-    
-      },
+
+    },
     qr: {
         padding: 15,
         borderColor: 'white',
@@ -235,7 +248,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 2,
         borderColor: 'white'
-      },
+    },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
@@ -251,7 +264,7 @@ const styles = StyleSheet.create({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-      },
+    },
 });
 
 export default LoadPresentismo;

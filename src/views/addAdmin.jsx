@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import firebase from '../database/firebaseC'
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -33,7 +33,7 @@ const AddAdmin = ({ navigation, route }) => {
       await database.collection('users').doc(userId).set({
         name: name,
         email: email,
-        role: role,
+        role: 'admin',
         location: location,
         uid: userId,
         dni: dni,
@@ -110,17 +110,14 @@ const AddAdmin = ({ navigation, route }) => {
           onChangeText={(text) => setPassword(text)}
         />
 
-        <Text style={styles.label}>Rol:</Text>
+        
         <View style={styles.roleButtons}>
 
-          <Button
-            title="Admin"
-            onPress={() => setRole('admin')}
-            color={role === 'admin' ? '#007BFF' : '#C7C57D'}
-          />
+        <TouchableOpacity style= {styles.button} title="Registrarse" onPress={handleRegister} >
+          <Text style= {styles.buttonText}>Registrar</Text>
+          </TouchableOpacity>
         </View>
 
-        <Button title="Registrarse" onPress={handleRegister} />
 
 
 
@@ -139,6 +136,21 @@ const styles = StyleSheet.create({
   },
   objectiveContainer: {
     padding: 15,
+  },
+  button: {
+    backgroundColor: '#F89A53',
+    padding: 10,
+    marginTop: 20,
+    borderRadius: 25,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white'
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Epilogue-Variable',
   },
 
   label: {
@@ -228,7 +240,6 @@ const styles = StyleSheet.create({
     fontWeight: 800,
     paddingRight: 16,
     fontFamily: 'Epilogue-Variable',
-
   },
 });
 

@@ -36,7 +36,7 @@ const ProfileScreen = () => {
     }
   }, []);
 
-  
+
   const handleLogout = () => {
     // Lógica para cerrar sesión
     firebase.auth().signOut()
@@ -70,20 +70,30 @@ const ProfileScreen = () => {
       </View>
       {user ? (
         <>
-        <View style={{padding: 15, color: 'white'}}>
+          <View style={{ padding: 15, color: 'white',paddingTop: 20, }}>
 
-          <Text style={styles.label}>Nombre:</Text>
-          <Text style={styles.value}>{user.name}</Text>
+            <Text style={styles.label}>Nombre:</Text>
+            <Text style={styles.value}>{user.name}</Text>
 
-          <Text style={styles.label}>Correo electrónico:</Text>
-          <Text style={styles.value}>{user.email}</Text>
+            <Text style={styles.label}>Correo electrónico:</Text>
+            <Text style={styles.value}>{user.email}</Text>
 
-          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-            <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
-          </TouchableOpacity>
+            <Text style={styles.label}>Tipo de usuario:</Text>
+            <Text style={styles.value}>{user.role}</Text>
 
-        
-        </View>
+            <Text style={styles.label}>DNI:</Text>
+            <Text style={styles.value}>{user.dni}</Text>
+
+            <Text style={styles.label}>CUIL:</Text>
+            <Text style={styles.value}>{user.cuil}</Text>
+
+
+            <TouchableOpacity onPress={handleLogout} style={styles.button}>
+              <Text style={styles.buttonText}>Cerrar Sesión</Text>
+            </TouchableOpacity>
+
+
+          </View>
 
           {/* Agrega más campos de datos del usuario aquí si es necesario */}
         </>
@@ -99,6 +109,21 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#3780C3',
+  }, 
+  button: {
+    backgroundColor: '#F89A53',
+    padding: 10,
+    marginTop: 20,
+    borderRadius: 25,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white'
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Epilogue-Variable',
   },
 
   title: {
@@ -126,7 +151,7 @@ const styles = StyleSheet.create({
     position: 'sticky',
     top: 0,
     zIndex: 100,
-    
+
   },
   label: {
     fontSize: 16,
