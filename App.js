@@ -17,7 +17,6 @@ import VigilantesScreen from './src/views/vigilanteScreen';
 import QRScanner from './src/components/QRscanner';
 import AlertForm from './src/components/AlertForm';
 import QRCodeGenerator from './src/components/QRGen';
-import AdminViewScreen from './src/views/Admin';
 import EnterprisesView from './src/views/EnterprisesView';
 import UserVigilantesView from './src/views/userVigilanteScreen';
 import ReportDetailScreen from './src/views/ReportDetails';
@@ -30,11 +29,14 @@ import CalendarScreen from './src/components/Calendar';
 import MarcarSalida from './src/views/loadSalida';
 import AddAdmin from './src/views/addAdmin';
 import * as Font from 'expo-font'; // Importa expo-font
-import addAdmin from './src/views/addAdmin';
 import AdminApprovalScreen from './src/views/AdminApproval';
 import RequestRegister from './src/views/requestRegister';
 import CalculateHoursScreen from './src/views/CalculateHours';
 import AddSupervisor from './src/views/addSupervisor';
+import AdminHome from './src/views/AdminHome';
+import UserHome from './src/views/UserHome';
+
+
 const Stack = createStackNavigator();
 
 // Agrega la configuración de Firebase aquí si no lo has hecho aún
@@ -102,7 +104,6 @@ export default function App() {
       <Stack.Screen name="LoadingScreen" component={LoadingScreen} options={{ headerShown: false, title: 'Cargando...' }}/>
       <Stack.Screen name="LoadPresentismo" component={LoadPresentismo} options={{ headerShown: false }}/>
       <Stack.Screen name="LoadSalida" component={MarcarSalida} options={{ headerShown: false }}/>
-      <Stack.Screen name="AdminDashboard" component={AdminViewScreen} options={{ headerShown: false }} />
       <Stack.Screen name="NotificationSender" component={NotificationSender} />
       <Stack.Screen name="Empresas" component={EnterprisesView} options={{ headerShown: false }}/>
       <Stack.Screen name="vigilantesView" component={UserVigilantesView} options={{ headerShown: false }}/>
@@ -117,6 +118,8 @@ export default function App() {
       <Stack.Screen name="calendar" component={CalendarScreen}/>
       <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="addSupervisor" component={AddSupervisor} options={{ headerShown: false }}/>
+      <Stack.Screen name="AdminHome" component={AdminHome} options={{headerShown:false}} />
+      <Stack.Screen name="UserHome" component={UserHome} options={{headerShown:false}} />
       
      
 
