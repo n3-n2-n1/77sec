@@ -71,8 +71,13 @@ const AdminHome = () => {
     return (
 
         <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.topBar}>
-            </View>
+
+        <View style={styles.topBar}>
+        </View>
+
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+           
+            
 
             {/* {Navbar} */}
             <TouchableOpacity style={styles.navbar} stickyHeaderIndices={[0]} onPress={() => setIsMenuVisible(true)}>
@@ -266,7 +271,7 @@ const AdminHome = () => {
 
 
                     <View style={{ alignContent: 'flex-start', flex: 1, width: 280, alignSelf: 'flex-start', paddingTop: 20, shadowColor: '#004764', shadowOffset: '30', shadowOpacity: 0.9 }}>
-                        <TouchableOpacity style={{ padding: 15, borderRadius: 25, backgroundColor: '#F89A53', }} onPress={() => { navigation.navigate('calendar') }}>
+                        <TouchableOpacity style={{ padding: 15, borderRadius: 25, backgroundColor: '#F89A53', }} onPress={() => { navigation.navigate('CalendarView') }}>
                             <Text style={styles.secondaryText}> Evalúa el presentismo ahora!</Text>
                         </TouchableOpacity>
                     </View>
@@ -433,7 +438,7 @@ const AdminHome = () => {
 
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('calendar')}>
+                    <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => { navigation.navigate('CalendarView') }}>
 
                         <View style={{ padding: 15 }}>
 
@@ -513,7 +518,7 @@ const AdminHome = () => {
 
             </View>
 
-            <View style={{ paddingBottom: 120 }}>
+            <View>
 
                 <View style={styles.gridButtonContainer}>
 
@@ -543,8 +548,15 @@ const AdminHome = () => {
 
                 </View>
             </Modal>
+            
+
+
 
         </ScrollView>
+
+        
+        </ScrollView>
+
 
 
     )
@@ -577,11 +589,10 @@ const styles = StyleSheet.create({
       left: 0,
       right: 0,
       height: 50,
+      width: 1000,
       backgroundColor: '#318ADB',
       alignItems: 'center',
       justifyContent: 'center',
-      shadowColor: 'white',
-      shadowOpacity: 0.9,
       elevation: 1,
     },
     bottomBar: {

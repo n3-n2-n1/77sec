@@ -4,10 +4,13 @@ import { Calendar } from 'react-native-calendars';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
+import CalendarScreen from '../components/Calendar';
+import { useNavigation } from '@react-navigation/native';
 
-const CalendarScreen = () => {
+const CalendarView = () => {
   const [events, setEvents] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
+  const navigation = useNavigation()
 
   useEffect(() => {
     const fetchPresentismo = async () => {
@@ -64,49 +67,26 @@ const CalendarScreen = () => {
   }, []);
 
   return (
-    <View>
-        <Calendar
-          theme={{
-            borderRadius: 15,
-            arrowWidth: 3,
-            arrowColor: 'black',
-            backgroundColor: '#ffffff',
-            calendarBackground: 'white',
-            textSectionTitleColor: 'white',
-            selectedDayBackgroundColor: 'black',
-            selectedDayTextColor: 'red',
-            todayTextColor: '#00adf5',
-            dayTextColor: '#2d4150',
-            textDisabledColor: '#d9e'
-          }}
-          
-          markedDates={events}
-          onDayPress={day => {
-            setSelectedDate(day.dateString);
-          }}
-        />
-        <SafeAreaView style={styles.contentContainer}>
-          {selectedDate && events[selectedDate] && (
-            <ScrollView style={styles.eventContainer}>
-              <Text style={styles.eventTitle}>Registros el {selectedDate}:</Text>
-              {Object.entries(events[selectedDate]).map(([dni, registrosArray], index) => (
-                <ScrollView key={index} style={styles.eventCard}>
-                  <Text style={styles.cardTextDNI}>#{dni}</Text>
-                  {registrosArray.map((registro, index) => (
-                    <View key={index} style={styles.eventContainerIn}>
-                      <Text style={styles.cardText}>DNI: {dni}</Text>
-                      <Text style={styles.cardText}>Entrada: {registro.entrada}</Text>
-                      <Text style={styles.cardText}>Salida: {registro.salida}</Text>
-                      <Text style={styles.cardText}>Trabajado: {registro.horasTotal}</Text>
-                    </View>
-                  ))}
-                </ScrollView>
-              ))}
-            </ScrollView>
-          )}
-        </SafeAreaView>
+    <View style={styles.container}>
+
+
+      <View style={styles.navbar}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
+            <Path
+              d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
+              fill="#ffffff"
+            />
+          </Svg>
+        </TouchableOpacity>
+        <Text style={styles.title}>Presentismo</Text>
       </View>
 
+      <View style={styles.containerCalendar}>
+        <CalendarScreen />
+      </View>
+
+    </View>
   );
 };
 
@@ -184,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CalendarScreen;
+export default CalendarView;

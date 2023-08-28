@@ -68,6 +68,13 @@ const UserHome = () => {
     return (
         // Aca empiezan todos los vigilantes
         <ScrollView showsVerticalScrollIndicator={false}>
+
+
+        <View style={styles.topBar}>
+        </View>
+        
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+
             {/* {Navbar} */}
             <TouchableOpacity style={styles.navbar} stickyHeaderIndices={[0]} onPress={() => setIsMenuVisible(true)}>
                 <View style={styles.profileButton}>
@@ -305,6 +312,10 @@ const UserHome = () => {
             </Modal>
 
         </ScrollView>
+
+
+        </ScrollView>
+
     )
 }
 
@@ -312,7 +323,7 @@ const styles = StyleSheet.create({
     container: {
       paddingRight: 20,
       paddingLeft: 20,
-      paddingBottom: 80,
+      paddingBottom: 60,
       backgroundColor: '#3780C3',
       fontFamily: 'Epilogue-Variable',
     },
@@ -337,8 +348,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#318ADB',
       alignItems: 'center',
       justifyContent: 'center',
-      shadowColor: 'white',
-      shadowOpacity: 0.9,
       elevation: 1,
     },
     bottomBar: {

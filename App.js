@@ -35,6 +35,8 @@ import CalculateHoursScreen from './src/views/CalculateHours';
 import AddSupervisor from './src/views/addSupervisor';
 import AdminHome from './src/views/AdminHome';
 import UserHome from './src/views/UserHome';
+import CalendarView from './src/views/calendarView';
+import AdminHomeWeb from './src/web/AdminHomeWeb';
 
 
 const Stack = createStackNavigator();
@@ -115,11 +117,13 @@ export default function App() {
       <Stack.Screen name="AddAdmin" component={AddAdmin} options={{ headerShown: false }}/>
       <Stack.Screen name="AdminApproval" component={AdminApprovalScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="RequestRegister" component={RequestRegister} options={{ headerShown: false }}/>
-      <Stack.Screen name="calendar" component={CalendarScreen}/>
+      <Stack.Screen name="calendar" component={CalendarScreen} options={{headerShown:false}}/>
       <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="addSupervisor" component={AddSupervisor} options={{ headerShown: false }}/>
       <Stack.Screen name="AdminHome" component={AdminHome} options={{headerShown:false}} />
       <Stack.Screen name="UserHome" component={UserHome} options={{headerShown:false}} />
+      <Stack.Screen name="CalendarView" component={CalendarView} options={{headerShown:false}} />
+      <Stack.Screen name="AdminHomeWeb" component={AdminHomeWeb} options={{headerShown:false}} />
       
      
 

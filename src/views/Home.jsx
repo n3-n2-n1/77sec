@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import LoadingScreen from './LoadingScreen';
 import AdminHome from './AdminHome';
 import UserHome from './UserHome';
+import AdminHomeWeb from '../web/AdminHomeWeb';
+import { Platform } from 'react-native' 
 
 
 
@@ -25,83 +27,147 @@ const Home = () => {
 
 
 
+  if (Platform.OS === 'ios') {
+    // Renderizar componente web
 
 
-  useEffect(() => {
+    useEffect(() => {
 
 
-    // Verificar el rol del usuario actual
-    const currentUser = firebase.auth().currentUser;
-    if (currentUser) {
-      // Guardar el nombre del usuario actual
-      const userRef = firebase.firestore().collection('users').doc(currentUser.uid);
-      userRef.get().then((doc) => {
-        if (doc.exists) {
+      // Verificar el rol del usuario actual
+      const currentUser = firebase.auth().currentUser;
+      if (currentUser) {
+        // Guardar el nombre del usuario actual
+        const userRef = firebase.firestore().collection('users').doc(currentUser.uid);
+        userRef.get().then((doc) => {
+          if (doc.exists) {
 
-          const userData = doc.data();
-          console.log('Rol del usuario:', userData.role);
-          console.log('Nombre', userData.name);
-          setCurrentUserDisplayName(userData.name);
-          setIsAdmin(userData.role === 'admin');
-        } else {
-          console.log('No se encontró información para el usuario.');
+            const userData = doc.data();
+            console.log('Rol del usuario:', userData.role);
+            console.log('Nombre', userData.name);
+            setCurrentUserDisplayName(userData.name);
+            setIsAdmin(userData.role === 'admin');
+          } else {
+            console.log('No se encontró información para el usuario.');
 
-        }
-        setLoading(false); // Datos cargados, cambiar estado de isLoading
+          }
+          setLoading(false); // Datos cargados, cambiar estado de isLoading
 
-      });
-    } else {
-      console.log('No hay usuario autenticado.');
-      setLoading(false);
+        });
+      } else {
+        console.log('No hay usuario autenticado.');
+        setLoading(false);
+      }
+
+
+    },
+      []);
+    if (loading) {
+      return <LoadingScreen />; // Muestra el loader mientras carga
     }
 
 
-  },
-    []);
-  if (loading) {
-    return <LoadingScreen />; // Muestra el loader mientras carga
+    const handleLogout = () => {
+      // Lógica para cerrar sesión
+      firebase.auth().signOut()
+        .then(() => {
+          console.log('Cierre de sesión exitoso.');
+        })
+        .catch((error) => {
+          console.error('Error al cerrar sesión:', error.message);
+        });
+    };
+
+
+    return (
+
+
+      <View style={{ backgroundColor: '#318ADB' }}>
+
+        {isAdmin ? (
+          <AdminHome />
+        ) : (
+          <UserHome />
+        )}
+
+      </View>
+
+
+    )
+  } else {
+
+
+    // ACA RENDERIZO WEB 
+    useEffect(() => {
+
+
+      // Verificar el rol del usuario actual
+      const currentUser = firebase.auth().currentUser;
+      if (currentUser) {
+        // Guardar el nombre del usuario actual
+        const userRef = firebase.firestore().collection('users').doc(currentUser.uid);
+        userRef.get().then((doc) => {
+          if (doc.exists) {
+
+            const userData = doc.data();
+            console.log('Rol del usuario:', userData.role);
+            console.log('Nombre', userData.name);
+            setCurrentUserDisplayName(userData.name);
+            setIsAdmin(userData.role === 'admin');
+          } else {
+            console.log('No se encontró información para el usuario.');
+
+          }
+          setLoading(false); // Datos cargados, cambiar estado de isLoading
+
+        });
+      } else {
+        console.log('No hay usuario autenticado.');
+        setLoading(false);
+      }
+
+
+    },
+      []);
+    if (loading) {
+      return <LoadingScreen />; // Muestra el loader mientras carga
+    }
+
+
+    const handleLogout = () => {
+      // Lógica para cerrar sesión
+      firebase.auth().signOut()
+        .then(() => {
+          console.log('Cierre de sesión exitoso.');
+        })
+        .catch((error) => {
+          console.error('Error al cerrar sesión:', error.message);
+        });
+    };
+
+
+    return (
+
+
+      <View style={{ backgroundColor: '#318ADB' }}>
+
+        {isAdmin ? (
+          <AdminHomeWeb />
+        ) : (
+          <UserHome />
+        )}
+
+      </View>
+
+
+    )
+
   }
-
-
-  const handleLogout = () => {
-    // Lógica para cerrar sesión
-    firebase.auth().signOut()
-      .then(() => {
-        console.log('Cierre de sesión exitoso.');
-      })
-      .catch((error) => {
-        console.error('Error al cerrar sesión:', error.message);
-      });
-  };
-
-
-  return (
-
-
-    <View style={styles.container}>
-
-      {isAdmin ? (
-        <AdminHome />
-      ) : (
-        <UserHome />
-      )}
-
-    </View>
-
-
-
-  )
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    paddingRight: 20,
-    paddingLeft: 20,
-    paddingBottom: 80,
-    backgroundColor: '#3780C3',
-    fontFamily: 'Epilogue-Variable',
-  },
+
   alerta: {
     borderRadius: 10,
     padding: 20,
