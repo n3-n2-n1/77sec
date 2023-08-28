@@ -5,6 +5,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import firebase from '../database/firebaseC';
 import { useNavigation } from '@react-navigation/native';
+import LoadingScreen from './LoadingScreen';
 
 
 const ProfileScreen = () => {
@@ -98,7 +99,7 @@ const ProfileScreen = () => {
           {/* Agrega más campos de datos del usuario aquí si es necesario */}
         </>
       ) : (
-        <Text>No se pudo cargar la información del usuario.</Text>
+        <LoadingScreen />
       )}
     </View>
   );

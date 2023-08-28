@@ -82,7 +82,7 @@ const Home = () => {
     return (
 
 
-      <View style={{ backgroundColor: '#318ADB' }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#318ADB' }}>
 
         {isAdmin ? (
           <AdminHome />
@@ -90,7 +90,7 @@ const Home = () => {
           <UserHome />
         )}
 
-      </View>
+      </ScrollView>
 
 
     )
@@ -149,7 +149,7 @@ const Home = () => {
     return (
 
 
-      <View style={{ backgroundColor: '#318ADB' }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#318ADB' }}>
 
         {isAdmin ? (
           <AdminHomeWeb />
@@ -157,7 +157,7 @@ const Home = () => {
           <UserHome />
         )}
 
-      </View>
+      </ScrollView>
 
 
     )
