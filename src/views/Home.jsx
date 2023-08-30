@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import LoadingScreen from './LoadingScreen';
 import AdminHome from './AdminHome';
 import UserHome from './UserHome';
+import UserHomeWeb from '../web/UserHomeWeb'
 import AdminHomeWeb from '../web/AdminHomeWeb';
 import { Platform } from 'react-native' 
 
@@ -154,7 +155,7 @@ const Home = () => {
         {isAdmin ? (
           <AdminHomeWeb />
         ) : (
-          <UserHome />
+          <UserHomeWeb />
         )}
 
       </ScrollView>

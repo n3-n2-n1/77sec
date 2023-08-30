@@ -56,47 +56,49 @@ const LoadPresentismo = ({ route }) => {
                 console.log('Aún no se ha obtenido la ubicación.');
                 return;
             }
-
+    
             const user = firebase.auth().currentUser;
-
+    
             if (!user) {
                 console.log('Usuario no autenticado.');
                 return;
             }
-
+    
             const userDni = dni; // Usar el DNI ingresado
-            const userSnapshot = await database.collection('users').where('dni', '==', userDni).get();
-
-            if (userSnapshot.empty) {
+            const userQuery = await database.collection('users').where('dni', '==', userDni).get();
+    
+            if (userQuery.empty) {
                 console.log('No se encontró información del usuario.');
                 // Muestra un alert indicando que el DNI ingresado no coincide con ningún usuario
                 alert('DNI ingresado no válido. Verifica el DNI.');
                 return;
             }
-
-            const userData = userSnapshot.docs[0].data();
-
-            if (userDni !== userData.dni) {
-                console.log(userData.dni)
-                console.log('DNI ingresado no coincide con el DNI del usuario.');
-                // Muestra un alert indicando que el DNI ingresado no coincide con el usuario autenticado
-                alert('El DNI ingresado no coincide con el DNI del usuario autenticado.');
+    
+            const userDoc = userQuery.docs[0];
+            const userData = userDoc.data();
+    
+            // Verifica si el campo 'nombre' está presente en los datos del usuario
+            if (!userData.name) {
+                console.log('El usuario no tiene un nombre definido.');
+                // Muestra un alert indicando que el usuario no tiene un nombre definido
+                alert('El usuario no tiene un nombre definido.');
                 return;
             }
-
-            const horasTrabajadasRef = userSnapshot.docs[0].ref.collection('horasTrabajadas'); // Obtener la referencia a la subcolección
+    
+            const horasTrabajadasRef = userDoc.ref.collection('horasTrabajadas'); // Obtener la referencia a la subcolección
             const presentismoData = {
                 fecha: moment().format('YYYY-MM-DD'), // Formato de fecha YYYY-MM-DD
                 entrada: moment().format('HH:mm:ss'), // Formato de hora HH:mm:ss
                 salida: '',
                 dni: userDni,
+                nombre: userData.name, // Guarda el nombre del usuario
                 coordenadas: location
             };
-
-            console.log(presentismoData)
-
+    
+            console.log(presentismoData);
+    
             await horasTrabajadasRef.add(presentismoData); // Agregar a la subcolección
-
+    
             setGuardadoExitoso(true);
             console.log('Horas trabajadas guardadas con éxito.');
             alert('Horas trabajadas guardadas con éxito');
@@ -105,6 +107,7 @@ const LoadPresentismo = ({ route }) => {
             console.error('Error al guardar las horas trabajadas:', error);
         }
     };
+    
 
 
     return (

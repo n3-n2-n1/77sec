@@ -28,6 +28,7 @@ const CalendarScreen = () => {
             const fecha = data.fecha;
             const entrada = data.entrada;
             const salida = data.salida;
+            const nombre = data.nombre;
 
 
             //Valores convertidos SOLO PARA CALCULAR HORAS, CON ESTO NO FILTRAS
@@ -50,6 +51,8 @@ const CalendarScreen = () => {
               entrada: entrada,
               salida: salida,
               horasTotal: hoursWorked,
+              nombre: nombre
+            
             });
           });
         }));
@@ -95,6 +98,7 @@ const CalendarScreen = () => {
                   {registrosArray.map((registro, index) => (
                     <View key={index} style={styles.eventContainerIn}>
                       <Text style={styles.cardText}>DNI: {dni}</Text>
+                      <Text style={styles.cardText}>Nombre: {registro.nombre}</Text>
                       <Text style={styles.cardText}>Entrada: {registro.entrada}</Text>
                       <Text style={styles.cardText}>Salida: {registro.salida}</Text>
                       <Text style={styles.cardText}>Trabajado: {registro.horasTotal}</Text>
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
   },
   containerCalendar:{
     padding: 15,
-    paddingTop:30,
+    paddingTop:10,
   },
   navbar: {
     flexDirection: 'row',
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
 
   eventTitle: {
     fontSize: 20,
-    padding: 25,
+    padding: 15,
     fontFamily: 'Epilogue-Variable',
     fontWeight: 'bold',
     color: '#CACACA',

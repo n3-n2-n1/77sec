@@ -45,38 +45,41 @@ const MarcarSalida = ({ }) => {
                 console.log('Aún no se ha obtenido la ubicación.');
                 return;
             }
-
+    
             const user = firebase.auth().currentUser;
             if (!user) {
                 console.log('Usuario no autenticado.');
                 return;
             }
-
+    
             const userDni = dni;
             const userSnapshot = await database.collection('users').where('dni', '==', userDni).get();
-
+    
             if (userSnapshot.empty) {
                 console.log('No se encontró información del usuario.');
                 return;
             }
-
+    
             const userDoc = userSnapshot.docs[0];
             const userData = userDoc.data();
-
+    
+            // Obtener el nombre del usuario a partir del DNI
+            const nombre = userData.name; // Supongamos que el nombre está directamente en el documento del usuario
+    
+            // Resto del código para marcar la salida
             const horasTrabajadasRef = userDoc.ref.collection('horasTrabajadas');
-
-            // Buscar el último registro de entrada sin salida para el DNI del vigilante
             const querySnapshot = await horasTrabajadasRef.where('salida', '==', '').orderBy('entrada', 'desc').limit(1).get();
-
+    
             if (!querySnapshot.empty) {
                 // Actualizar el registro de entrada encontrado con la marca de salida
                 const documentId = querySnapshot.docs[0].id;
                 const salidaTimestamp = firebase.firestore.Timestamp.now();
-
+    
                 await horasTrabajadasRef.doc(documentId).update({
                     salida: moment(salidaTimestamp.toDate()).format('HH:mm:ss'),
+                    nombre: nombre, // Actualizar el nombre
                 });
-
+    
                 setGuardadoExitoso(true);
                 console.log('Marca de salida registrada con éxito.');
                 alert('Marca de salida registrada con éxito.');
@@ -88,7 +91,7 @@ const MarcarSalida = ({ }) => {
             console.error('Error al marcar la salida:', error);
         }
     };
-
+    
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
 

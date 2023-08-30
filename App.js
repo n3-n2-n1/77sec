@@ -37,7 +37,8 @@ import AdminHome from './src/views/AdminHome';
 import UserHome from './src/views/UserHome';
 import CalendarView from './src/views/calendarView';
 import AdminHomeWeb from './src/web/AdminHomeWeb';
-
+import UserHomeWeb from './src/web/UserHomeWeb';
+import CrimeFormWeb from './src/web/FormWeb'
 
 const Stack = createStackNavigator();
 
@@ -100,6 +101,7 @@ export default function App() {
 
       <Stack.Screen name="Form" component={CrimeForm} options={{ headerShown: false, title: 'Nuevo Reporte - 77Report'}}/>
       <Stack.Screen name="ThankYou" component={ThankYouScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="FormWeb" component={CrimeFormWeb} options={{ headerShown: false }} />
       
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
@@ -130,6 +132,7 @@ export default function App() {
       
       
       <Stack.Screen name="UserHome" component={UserHome} options={{headerShown:false}} />
+      <Stack.Screen name="UserHomeWeb" component={UserHomeWeb} options={{headerShown:false}} />
       <Stack.Screen name="UserDetails" component={UserDetailsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="RequestRegister" component={RequestRegister} options={{ headerShown: false }}/>
       
