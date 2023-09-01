@@ -150,7 +150,7 @@ const UserHomeWeb = () => {
 
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.alerta} onPress={() => navigation.navigate('Alert')}>
+                        <TouchableOpacity style={styles.alerta} onPress={() => navigation.navigate('Alerta')}>
 
                             <View style={{ padding: 15, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
 
