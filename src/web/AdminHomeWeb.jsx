@@ -86,7 +86,7 @@ const AdminHomeWeb = () => {
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                         >
-                            <G stroke="#1C274C" strokeWidth={1.5}>
+                            <G stroke="#ffffff" strokeWidth={1.5}>
                                 <Circle cx={12} cy={6} r={4} />
                                 <Path d="M20 17.5c0 2.485 0 4.5-8 4.5s-8-2.015-8-4.5S7.582 13 12 13s8 2.015 8 4.5z" />
                             </G>
@@ -251,33 +251,81 @@ const AdminHomeWeb = () => {
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Profile')}>
-                        <Text style={styles.navItemText}>Tu perfil</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10, paddingLeft: 25, paddingTop: 25, gap: 30 }}>
+
+                            <TouchableOpacity>
+                                <Svg
+                                    width="26px"
+                                    height="26px"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    stroke="#1C274C"
+                                >
+                                    <G
+                                        stroke="#1C274C"
+                                        strokeWidth={1.5}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <Path
+                                            d="M12.12 12.78a.963.963 0 00-.24 0 3.269 3.269 0 01-3.16-3.27c0-1.81 1.46-3.28 3.28-3.28a3.276 3.276 0 01.12 6.55z"
+                                        />
+                                        <Path
+                                            d="M18.74 19.38A9.934 9.934 0 0112 22c-2.6 0-4.96-.99-6.74-2.62.1-.94.7-1.86 1.77-2.58 2.74-1.82 7.22-1.82 9.94 0 1.07.72 1.67 1.64 1.77 2.58z"
+                                        />
+                                        <Path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                                    </G>
+                                </Svg>
+                            </TouchableOpacity>
+                            <Text style={styles.navItemText}>Tu perfil</Text>
+
+                        </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.navItem} onPress={handleLogout}>
-                        <Text style={styles.navItemText}>Cerrar Sesion</Text>
+                    <TouchableOpacity onPress={handleLogout}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 25, borderBottomColor: '#ccc', borderBottomWidth: 1, gap: 30 }}>
+
+                            <TouchableOpacity>
+                                <Svg
+                                    width="26px"
+                                    height="26px"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
+                                        <Path d="M15 12H6m0 0l2 2m-2-2l2-2" strokeLinejoin="round" />
+                                        <Path d="M12 21.983c-1.553-.047-2.48-.22-3.121-.862-.769-.768-.865-1.946-.877-4.121M16 21.998c2.175-.012 3.353-.108 4.121-.877C21 20.243 21 18.828 21 16V8c0-2.828 0-4.243-.879-5.121C19.243 2 17.828 2 15 2h-1c-2.829 0-4.243 0-5.121.879-.769.768-.865 1.946-.877 4.121M3 9.5v5c0 2.357 0 3.535.732 4.268.732.732 1.911.732 4.268.732M3.732 5.232C4.464 4.5 5.643 4.5 8 4.5" />
+                                    </G>
+                                </Svg>
+                            </TouchableOpacity>
+                            <Text style={styles.navItemText}>Cerrar Sesion</Text>
+
+                        </View>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity>
+
+                        <Text style={styles.navItem2}>Accesibilidad</Text>
+
                     </TouchableOpacity>
 
                     <TouchableOpacity>
 
-                        <Text style={styles.navItem}>Accesibilidad</Text>
+                        <Text style={styles.navItem3}>Privacidad</Text>
 
                     </TouchableOpacity>
 
-                    <TouchableOpacity>
-
-                        <Text style={styles.navItem}>Privacidad</Text>
-
-                    </TouchableOpacity>
-                    
                     {/* Agrega más elementos de navegación según sea necesario */}
                 </ScrollView>
 
             </View>
 
             {/* Contenido principal */}
-            <ScrollView style={styles.mainPanel} scrollbarStyle={{  borderRadius: 10 }} >
+            <ScrollView style={styles.mainPanel} scrollbarStyle={{ borderRadius: 10 }} >
                 {/* Navbar */}
                 <View style={styles.navbar}>
 
@@ -285,20 +333,20 @@ const AdminHomeWeb = () => {
                         <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Inicio</Text>
                     </View>
 
-                    <View style={{paddingRight: 10}}>
-                            <Svg
-                                width="35px"
-                                height="35px"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <Path
-                                    d="M11.726 7.34a.75.75 0 00-.052-1.499l.052 1.5zm-4.568 4.222l-.75.023.002.026.748-.049zm-1.28 3.417l.49.568a.716.716 0 00.039-.036l-.529-.532zm-.438.363l.44.607a.778.778 0 00.036-.028l-.476-.579zm4.31 2.408a.75.75 0 000-1.5v1.5zm1.976-11.909a.75.75 0 00-.052 1.5l.052-1.5zm4.515 5.721l.749.05.001-.027-.75-.023zm1.28 3.416l-.528.532a.78.78 0 00.04.036l.489-.568zm.44.363l-.477.579c.011.01.023.019.035.027l.442-.606zm-4.311.909a.75.75 0 000 1.5v-1.5zm-2.7-9.659a.75.75 0 001.5 0h-1.5zM12.45 5a.75.75 0 00-1.5 0h1.5zm-2.7 11.25a.75.75 0 000 1.5v-1.5zm3.9 1.5a.75.75 0 000-1.5v1.5zM10.5 17A.75.75 0 009 17h1.5zm3.9 0a.75.75 0 00-1.5 0h1.5zM11.674 5.841c-3.022.104-5.359 2.691-5.265 5.744l1.5-.046c-.07-2.263 1.656-4.124 3.817-4.198l-.052-1.5zm-5.264 5.77a3.66 3.66 0 01-1.06 2.836l1.057 1.064a5.16 5.16 0 001.5-3.998l-1.497.098zm-1.021 2.8c-.157.135-.289.239-.426.352l.953 1.158c.11-.09.279-.225.452-.374l-.98-1.136zm-.39.324a2.25 2.25 0 00-.567.627 1.953 1.953 0 00-.305.909c-.02.386.113.815.508 1.117.354.27.82.362 1.312.362v-1.5c-.163 0-.27-.016-.337-.033-.066-.017-.078-.03-.063-.02a.22.22 0 01.063.087c.016.039.015.064.015.063 0-.003.002-.024.016-.063a.935.935 0 01.164-.264.515.515 0 01.075-.071L5 14.735zm.948 3.015H9.75v-1.5H5.947v1.5zm5.727-10.41c2.161.075 3.887 1.936 3.818 4.199l1.5.046c.093-3.053-2.244-5.64-5.266-5.744l-.052 1.5zm3.82 4.173a5.16 5.16 0 001.5 3.997l1.056-1.064a3.66 3.66 0 01-1.06-2.835l-1.497-.098zm1.538 4.033c.173.15.342.283.452.374l.953-1.158c-.137-.113-.269-.217-.426-.352l-.979 1.136zm.487.401c.014.01.04.033.076.072a.955.955 0 01.165.266c.015.04.017.06.017.064 0 0-.001-.025.015-.065a.22.22 0 01.064-.087c.014-.011.002.003-.064.02a1.409 1.409 0 01-.339.033v1.5c.494 0 .96-.091 1.314-.361a1.29 1.29 0 00.508-1.12 1.957 1.957 0 00-.307-.909 2.264 2.264 0 00-.566-.625l-.883 1.212zm-.066.303H13.65v1.5h3.803v-1.5zM12.45 6.591V5h-1.5v1.591h1.5zM9.75 17.75h3.9v-1.5h-3.9v1.5zM9 17c0 1.5 1.191 2.75 2.7 2.75v-1.5c-.645 0-1.2-.542-1.2-1.25H9zm2.7 2.75c1.509 0 2.7-1.25 2.7-2.75h-1.5c0 .708-.555 1.25-1.2 1.25v1.5z"
-                                    fill="white"
-                                />
-                            </Svg>
-                        </View>
+                    <View style={{ paddingRight: 10 }}>
+                        <Svg
+                            width="35px"
+                            height="35px"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <Path
+                                d="M11.726 7.34a.75.75 0 00-.052-1.499l.052 1.5zm-4.568 4.222l-.75.023.002.026.748-.049zm-1.28 3.417l.49.568a.716.716 0 00.039-.036l-.529-.532zm-.438.363l.44.607a.778.778 0 00.036-.028l-.476-.579zm4.31 2.408a.75.75 0 000-1.5v1.5zm1.976-11.909a.75.75 0 00-.052 1.5l.052-1.5zm4.515 5.721l.749.05.001-.027-.75-.023zm1.28 3.416l-.528.532a.78.78 0 00.04.036l.489-.568zm.44.363l-.477.579c.011.01.023.019.035.027l.442-.606zm-4.311.909a.75.75 0 000 1.5v-1.5zm-2.7-9.659a.75.75 0 001.5 0h-1.5zM12.45 5a.75.75 0 00-1.5 0h1.5zm-2.7 11.25a.75.75 0 000 1.5v-1.5zm3.9 1.5a.75.75 0 000-1.5v1.5zM10.5 17A.75.75 0 009 17h1.5zm3.9 0a.75.75 0 00-1.5 0h1.5zM11.674 5.841c-3.022.104-5.359 2.691-5.265 5.744l1.5-.046c-.07-2.263 1.656-4.124 3.817-4.198l-.052-1.5zm-5.264 5.77a3.66 3.66 0 01-1.06 2.836l1.057 1.064a5.16 5.16 0 001.5-3.998l-1.497.098zm-1.021 2.8c-.157.135-.289.239-.426.352l.953 1.158c.11-.09.279-.225.452-.374l-.98-1.136zm-.39.324a2.25 2.25 0 00-.567.627 1.953 1.953 0 00-.305.909c-.02.386.113.815.508 1.117.354.27.82.362 1.312.362v-1.5c-.163 0-.27-.016-.337-.033-.066-.017-.078-.03-.063-.02a.22.22 0 01.063.087c.016.039.015.064.015.063 0-.003.002-.024.016-.063a.935.935 0 01.164-.264.515.515 0 01.075-.071L5 14.735zm.948 3.015H9.75v-1.5H5.947v1.5zm5.727-10.41c2.161.075 3.887 1.936 3.818 4.199l1.5.046c.093-3.053-2.244-5.64-5.266-5.744l-.052 1.5zm3.82 4.173a5.16 5.16 0 001.5 3.997l1.056-1.064a3.66 3.66 0 01-1.06-2.835l-1.497-.098zm1.538 4.033c.173.15.342.283.452.374l.953-1.158c-.137-.113-.269-.217-.426-.352l-.979 1.136zm.487.401c.014.01.04.033.076.072a.955.955 0 01.165.266c.015.04.017.06.017.064 0 0-.001-.025.015-.065a.22.22 0 01.064-.087c.014-.011.002.003-.064.02a1.409 1.409 0 01-.339.033v1.5c.494 0 .96-.091 1.314-.361a1.29 1.29 0 00.508-1.12 1.957 1.957 0 00-.307-.909 2.264 2.264 0 00-.566-.625l-.883 1.212zm-.066.303H13.65v1.5h3.803v-1.5zM12.45 6.591V5h-1.5v1.591h1.5zM9.75 17.75h3.9v-1.5h-3.9v1.5zM9 17c0 1.5 1.191 2.75 2.7 2.75v-1.5c-.645 0-1.2-.542-1.2-1.25H9zm2.7 2.75c1.509 0 2.7-1.25 2.7-2.75h-1.5c0 .708-.555 1.25-1.2 1.25v1.5z"
+                                fill="white"
+                            />
+                        </Svg>
+                    </View>
                     {/* Agrega el botón de menú o icono de hamburguesa si es necesario */}
                 </View>
 
@@ -322,7 +370,7 @@ const AdminHomeWeb = () => {
 
                                         <View style={{ flexDirection: 'column', paddingRight: 0, }}>
                                             <View style={{ justifyContent: 'center' }}>
-                                                <TouchableOpacity style={styles.button}>
+                                                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
                                                     <Svg
                                                         viewBox="0 0 24 24"
                                                         fill="none"
@@ -353,7 +401,7 @@ const AdminHomeWeb = () => {
 
                                         <View style={{ flexDirection: 'column', paddingRight: 0, }}>
                                             <View style={{ justifyContent: 'center' }}>
-                                                <TouchableOpacity style={styles.button}>
+                                                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('addSupervisor')}>
                                                     <Svg
                                                         viewBox="0 0 24 24"
                                                         fill="none"
@@ -389,7 +437,7 @@ const AdminHomeWeb = () => {
 
                                         <View style={{ flexDirection: 'column', paddingRight: 0, }}>
                                             <View style={{ justifyContent: 'center' }}>
-                                                <TouchableOpacity style={styles.button}>
+                                                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('addCompany')}>
                                                     <Svg
                                                         viewBox="0 0 24 24"
                                                         fill="none"
@@ -455,7 +503,7 @@ const AdminHomeWeb = () => {
 
                                         <View style={{ flexDirection: 'column', paddingRight: 0, }}>
                                             <View style={{ justifyContent: 'center' }}>
-                                                <TouchableOpacity style={styles.button}>
+                                                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('reportHistory')}>
                                                     <Svg
                                                         width="40px"
                                                         height="40px"
@@ -486,7 +534,7 @@ const AdminHomeWeb = () => {
 
                                         <View style={{ flexDirection: 'column', paddingRight: 0, }}>
                                             <View style={{ justifyContent: 'center' }}>
-                                                <TouchableOpacity style={styles.button}>
+                                                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CalendarView')}>
 
                                                     <Svg
                                                         viewBox="0 0 24 24"
@@ -517,7 +565,7 @@ const AdminHomeWeb = () => {
 
                                         <View style={{ flexDirection: 'column', paddingRight: 0, }}>
                                             <View style={{ justifyContent: 'center' }}>
-                                                <TouchableOpacity style={styles.button}>
+                                                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('vigilantesView')}>
                                                     <Svg
                                                         width="40px"
                                                         height="40px"
@@ -551,115 +599,116 @@ const AdminHomeWeb = () => {
 
 
                         <TouchableOpacity onPress={() => navigation.navigate('reportHistory')}>
-                        <View style={{ backgroundColor: 'white', borderRadius: 25, justifyContent: 'flex-start', alignContent: 'center', flexDirection: 'row' }}>
+                            <View style={{ backgroundColor: 'white', borderRadius: 25, justifyContent: 'flex-start', alignContent: 'center', flexDirection: 'row' }}>
 
-                            <View style={{ justifyContent: 'center' }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
+                                <View style={{ justifyContent: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
 
 
-                                    <View style={{ flexDirection: 'column', paddingRight: 0, }}>
-                                        <View style={{ justifyContent: 'center' }}>
-                                            <TouchableOpacity style={styles.button}>
-                                                <Svg
-                                                    width="60px"
-                                                    height="60px"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
-                                                        <Path d="M11.777 10l4.83 1.294M11 12.898l2.898.776M20.312 12.647c-.605 2.255-.907 3.383-1.592 4.114a4 4 0 01-2.01 1.161c-.097.023-.195.04-.295.052-.915.113-2.032-.186-4.064-.73-2.255-.605-3.383-.907-4.114-1.592a4 4 0 01-1.161-2.011c-.228-.976.074-2.103.679-4.358l.517-1.932.244-.905c.455-1.666.761-2.583 1.348-3.21a4 4 0 012.01-1.16c.976-.228 2.104.074 4.36.679 2.254.604 3.382.906 4.113 1.59a4 4 0 011.161 2.012c.161.69.057 1.456-.231 2.643" />
-                                                        <Path
-                                                            d="M3.272 16.647c.604 2.255.907 3.383 1.592 4.114a4 4 0 002.01 1.161c.976.227 2.104-.075 4.36-.679 2.254-.604 3.382-.906 4.113-1.591a4 4 0 001.068-1.678M8.516 6.445c-.352.091-.739.195-1.165.31-2.255.604-3.383.906-4.114 1.59a4 4 0 00-1.161 2.012c-.161.69-.057 1.456.231 2.643"
-                                                            strokeLinejoin="round"
-                                                        />
-                                                    </G>
-                                                </Svg>
-                                            </TouchableOpacity>
+                                        <View style={{ flexDirection: 'column', paddingRight: 0, }}>
+                                            <View style={{ justifyContent: 'center' }}>
+                                                <TouchableOpacity style={styles.button}>
+                                                    <Svg
+                                                        width="60px"
+                                                        height="60px"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
+                                                            <Path d="M11.777 10l4.83 1.294M11 12.898l2.898.776M20.312 12.647c-.605 2.255-.907 3.383-1.592 4.114a4 4 0 01-2.01 1.161c-.097.023-.195.04-.295.052-.915.113-2.032-.186-4.064-.73-2.255-.605-3.383-.907-4.114-1.592a4 4 0 01-1.161-2.011c-.228-.976.074-2.103.679-4.358l.517-1.932.244-.905c.455-1.666.761-2.583 1.348-3.21a4 4 0 012.01-1.16c.976-.228 2.104.074 4.36.679 2.254.604 3.382.906 4.113 1.59a4 4 0 011.161 2.012c.161.69.057 1.456-.231 2.643" />
+                                                            <Path
+                                                                d="M3.272 16.647c.604 2.255.907 3.383 1.592 4.114a4 4 0 002.01 1.161c.976.227 2.104-.075 4.36-.679 2.254-.604 3.382-.906 4.113-1.591a4 4 0 001.068-1.678M8.516 6.445c-.352.091-.739.195-1.165.31-2.255.604-3.383.906-4.114 1.59a4 4 0 00-1.161 2.012c-.161.69-.057 1.456.231 2.643"
+                                                                strokeLinejoin="round"
+                                                            />
+                                                        </G>
+                                                    </Svg>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View>
+                                            <Text style={styles.buttonTextAction}> | Reportes</Text>
                                         </View>
                                     </View>
-                                    <View>
-                                        <Text style={styles.buttonTextAction}>Reportes</Text>
-                                    </View>
                                 </View>
-                            </View>
 
-                        </View>
+                            </View>
                         </TouchableOpacity>
 
-                        
+
                         <TouchableOpacity onPress={() => navigation.navigate('LoadPresentismo')}>
-                        <View style={{ backgroundColor: 'white', borderRadius: 25, justifyContent: 'flex-start', alignContent: 'center', flexDirection: 'row' }}>
+                            <View style={{ backgroundColor: 'white', borderRadius: 25, justifyContent: 'flex-start', alignContent: 'center', flexDirection: 'row' }}>
 
-                            <View style={{ justifyContent: 'center' }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10, }}>
+                                <View style={{ justifyContent: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10, }}>
 
 
-                                    <View style={{ flexDirection: 'column', paddingRight: 0, }}>
-                                        <View style={{ justifyContent: 'center' }}>
-                                            <TouchableOpacity style={styles.button}>
-                                                <Svg
-                                                    width="60px"
-                                                    height="60px"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
-                                                        <Path d="M11.777 10l4.83 1.294M11 12.898l2.898.776M20.312 12.647c-.605 2.255-.907 3.383-1.592 4.114a4 4 0 01-2.01 1.161c-.097.023-.195.04-.295.052-.915.113-2.032-.186-4.064-.73-2.255-.605-3.383-.907-4.114-1.592a4 4 0 01-1.161-2.011c-.228-.976.074-2.103.679-4.358l.517-1.932.244-.905c.455-1.666.761-2.583 1.348-3.21a4 4 0 012.01-1.16c.976-.228 2.104.074 4.36.679 2.254.604 3.382.906 4.113 1.59a4 4 0 011.161 2.012c.161.69.057 1.456-.231 2.643" />
+                                        <View style={{ flexDirection: 'column', paddingRight: 0, }}>
+                                            <View style={{ justifyContent: 'center' }}>
+                                                <TouchableOpacity style={styles.button}>
+                                                    <Svg
+
+                                                        width="60px"
+                                                        height="60px"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
                                                         <Path
-                                                            d="M3.272 16.647c.604 2.255.907 3.383 1.592 4.114a4 4 0 002.01 1.161c.976.227 2.104-.075 4.36-.679 2.254-.604 3.382-.906 4.113-1.591a4 4 0 001.068-1.678M8.516 6.445c-.352.091-.739.195-1.165.31-2.255.604-3.383.906-4.114 1.59a4 4 0 00-1.161 2.012c-.161.69-.057 1.456.231 2.643"
+                                                            d="M12 4.5l5 5m-5-5l-5 5m5-5V11m0 3.5c0 1.667-1 5-5 5"
+                                                            stroke="#1C274C"
+                                                            strokeWidth={1.5}
+                                                            strokeLinecap="round"
                                                             strokeLinejoin="round"
                                                         />
-                                                    </G>
-                                                </Svg>
-                                            </TouchableOpacity>
+                                                    </Svg>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View>
+                                            <Text style={styles.buttonTextAction}>| Marcar Entrada</Text>
                                         </View>
                                     </View>
-                                    <View>
-                                        <Text style={styles.buttonTextAction}>Marcar Entrada</Text>
-                                    </View>
                                 </View>
-                            </View>
 
-                        </View>
+                            </View>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => navigation.navigate('LoadSalida')}>
-                        <View style={{ backgroundColor: 'white', borderRadius: 25, justifyContent: 'flex-start', alignContent: 'center', flexDirection: 'row' }}>
+                            <View style={{ backgroundColor: 'white', borderRadius: 25, justifyContent: 'flex-start', alignContent: 'center', flexDirection: 'row' }}>
 
-                            <View style={{ justifyContent: 'center' }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
+                                <View style={{ justifyContent: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
 
 
-                                    <View style={{ flexDirection: 'column', paddingRight: 0, }}>
-                                        <View style={{ justifyContent: 'center' }}>
-                                            <TouchableOpacity style={styles.button}>
-                                                <Svg
-                                                    width="60px"
-                                                    height="60px"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <G stroke="#1C274C" strokeWidth={1.5} strokeLinecap="round">
-                                                        <Path d="M11.777 10l4.83 1.294M11 12.898l2.898.776M20.312 12.647c-.605 2.255-.907 3.383-1.592 4.114a4 4 0 01-2.01 1.161c-.097.023-.195.04-.295.052-.915.113-2.032-.186-4.064-.73-2.255-.605-3.383-.907-4.114-1.592a4 4 0 01-1.161-2.011c-.228-.976.074-2.103.679-4.358l.517-1.932.244-.905c.455-1.666.761-2.583 1.348-3.21a4 4 0 012.01-1.16c.976-.228 2.104.074 4.36.679 2.254.604 3.382.906 4.113 1.59a4 4 0 011.161 2.012c.161.69.057 1.456-.231 2.643" />
+                                        <View style={{ flexDirection: 'column', paddingRight: 0, }}>
+                                            <View style={{ justifyContent: 'center' }}>
+                                                <TouchableOpacity style={styles.button}>
+                                                    <Svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        width="60px"
+                                                        height="60px"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
                                                         <Path
-                                                            d="M3.272 16.647c.604 2.255.907 3.383 1.592 4.114a4 4 0 002.01 1.161c.976.227 2.104-.075 4.36-.679 2.254-.604 3.382-.906 4.113-1.591a4 4 0 001.068-1.678M8.516 6.445c-.352.091-.739.195-1.165.31-2.255.604-3.383.906-4.114 1.59a4 4 0 00-1.161 2.012c-.161.69-.057 1.456.231 2.643"
+                                                            d="M12 19.5l5-5m-5 5l-5-5m5 5V13m0-3.5c0-1.667-1-5-5-5"
+                                                            stroke="#1C274C"
+                                                            strokeWidth={1.5}
+                                                            strokeLinecap="round"
                                                             strokeLinejoin="round"
                                                         />
-                                                    </G>
-                                                </Svg>
-                                            </TouchableOpacity>
+                                                    </Svg>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View>
+                                            <Text style={styles.buttonTextAction}>| Marcar Salida</Text>
                                         </View>
                                     </View>
-                                    <View>
-                                        <Text style={styles.buttonTextAction}>Marcar Salida</Text>
-                                    </View>
                                 </View>
-                            </View>
 
-                        </View>
+                            </View>
                         </TouchableOpacity>
 
 
@@ -668,13 +717,14 @@ const AdminHomeWeb = () => {
 
 
                     <View style={{ backgroundColor: 'white', height: '768px', width: '30%', borderRadius: 25 }}>
-                        <View style={{ justifyContent: 'center', padding: 15 }}>
+                        <View style={{ padding: 15 }}>
 
-                            <View>
-                                <Text style={styles.logoText}>
+                            <View style={{padding: 15}}>
+                                <Text style={styles.buttonTextAction}>
                                     Presentismo
                                 </Text>
                             </View>
+
                             <View>
                                 <CalendarScreen />
                             </View>
@@ -686,11 +736,10 @@ const AdminHomeWeb = () => {
                 </View>
 
 
-                {/* 
                 <View style={styles.footer}>
-                    <Text style={styles.footerText}>.
+                    <Text style={styles.footerText}> IGS SYS | 2023 | Todos los derechos reservados
                     </Text>
-                </View> */}
+                </View>
 
             </ScrollView>
 
@@ -728,7 +777,6 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         fontSize: 20,
         fontFamily: 'Epilogue-Variable',
-        alignSelf: 'center'
 
     },
     sidebar: {
@@ -744,7 +792,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         padding: 10,
-        backgroundColor: 'orange',
+        backgroundColor: '#004764',
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 25,
@@ -760,6 +808,28 @@ const styles = StyleSheet.create({
         padding: 25,
         borderBottomColor: '#ccc',
         borderBottomWidth: 1,
+        fontFamily: 'Epilogue-Variable',
+
+
+    },
+    navItem2: {
+        padding: 5,
+        paddingLeft: 25,
+        borderBottomColor: '#ccc',
+        fontFamily: 'Epilogue-Variable',
+        fontSize: 12,
+        paddingTop: 20,
+        color: '#318ADB'
+
+    },
+    navItem3: {
+        padding: 5,
+        paddingLeft: 25,
+        borderBottomColor: '#ccc',
+        fontFamily: 'Epilogue-Variable',
+        fontSize: 12,
+        color: '#318ADB'
+
 
     },
     navItemNoBorder: {

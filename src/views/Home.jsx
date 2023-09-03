@@ -5,7 +5,7 @@ import firebase from '../database/firebaseC';
 import 'firebase/compat/auth'
 import { useEffect } from 'react';
 import LoadingScreen from './LoadingScreen';
-import AdminHome from './AdminHome';
+import  AdminHome from './AdminHome';
 import UserHome from './UserHome';
 import UserHomeWeb from '../web/UserHomeWeb'
 import AdminHomeWeb from '../web/AdminHomeWeb';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Platform, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, StyleSheet, FlatList } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'; // Asegúrate de haber instalado esta librería
 import firebase from '../database/firebaseC';
 import { useNavigation } from '@react-navigation/native';
@@ -10,11 +10,13 @@ import Svg, { Path } from 'react-native-svg';
 const AlertComponent = () => {
   const [canMakeCall, setCanMakeCall] = useState(false);
   const [countdown, setCountdown] = useState(30);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const countdownTimer = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
     }, 1000);
+    console.log(countdown)
 
     if (countdown === 0) {
       clearInterval(countdownTimer);
@@ -56,8 +58,8 @@ const AlertComponent = () => {
         </Text>
       </View>
 
-      <View>
-        <Flatlist>
+      <View style={styles.container}>
+        <FlatList>
 
           <TouchableOpacity style={styles.button} >
             <Text style={styles.buttonText}>Llamar policia</Text>
@@ -75,7 +77,7 @@ const AlertComponent = () => {
             <Text style={styles.buttonText}>Llamar SAME</Text>
           </TouchableOpacity>
 
-        </Flatlist>
+        </FlatList>
       </View>
     </View>
   );

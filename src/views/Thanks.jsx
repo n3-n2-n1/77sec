@@ -22,9 +22,9 @@ const ThankYouScreen = ({route}) => {
 
     return (
         <View style={styles.thankYouContainer}>
-            <Text style={styles.thankYouText}>¡Gracias por enviar el formulario!</Text>
+            <Text style={styles.thankYouText}>¡Gracias por enviar el reporte!</Text>
             <TouchableOpacity style={styles.restartButton} onPress={handleFormRestart}>
-                <Text style={styles.restartButtonText}>Volver a llenar el reporte</Text>
+                <Text style={styles.restartButtonText}>Volver a llenar al inicio</Text>
             </TouchableOpacity>
         </View>
     );

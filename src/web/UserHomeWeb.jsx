@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     container: {
         paddingRight: 20,
         paddingLeft: 20,
-        paddingBottom: 354,
+        paddingBottom: 346,
         backgroundColor: '#3780C3',
         fontFamily: 'Epilogue-Variable',
     },

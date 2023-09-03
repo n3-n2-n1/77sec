@@ -80,7 +80,7 @@ const CalendarScreen = () => {
             selectedDayTextColor: 'red',
             todayTextColor: '#00adf5',
             dayTextColor: '#2d4150',
-            textDisabledColor: '#d9e'
+            textDisabledColor: '#gray'
           }}
           
           markedDates={events}

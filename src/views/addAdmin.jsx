@@ -69,6 +69,7 @@ const AddAdmin = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           value={name}
+          placeholder='Inserte el nombre'
           onChangeText={(text) => setName(text)}
         />
 
@@ -77,6 +78,8 @@ const AddAdmin = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           value={dni}
+          placeholder='Inserte el DNI'
+
           onChangeText={(text) => setDNI(text)}
         />
 
@@ -84,6 +87,7 @@ const AddAdmin = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           value={cuil}
+          placeholder='Inserte el CUIL'
           onChangeText={(text) => setCuil(text)}
         />
 
@@ -91,12 +95,14 @@ const AddAdmin = ({ navigation, route }) => {
         <Text style={styles.label}>Correo electrónico:</Text>
         <TextInput
           style={styles.input}
+          placeholder='Inserte el email'
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
 
         <Text style={styles.label}>Predio</Text>
         <TextInput
+          placeholder='Inserte el predio'
           style={styles.input}
           value={location}
           onChangeText={(text) => setLocation(text)}
@@ -106,6 +112,7 @@ const AddAdmin = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           secureTextEntry
+          placeholder='Cree una contraseña'
           value={password}
           onChangeText={(text) => setPassword(text)}
         />

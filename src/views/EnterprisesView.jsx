@@ -98,9 +98,7 @@ const EnterprisesView = () => {
 
               <View>
 
-                <Text style={styles.cardText}>
-                  Nuevo nombre:
-                </Text>
+               <View style={styles.cardText}></View>
                 <TextInput
                   placeholder="Nuevo nombre"
                   value={newData.name || empresa.name}
@@ -108,9 +106,7 @@ const EnterprisesView = () => {
                   style={styles.input}
                 />
 
-                <Text style={styles.cardText}>
-                  Nueva direccion:
-                </Text>
+               <View style={styles.cardText}></View>
                 <TextInput
                   placeholder="Nueva direccion"
                   value={newData.address || empresa.address}
@@ -119,9 +115,7 @@ const EnterprisesView = () => {
                 />
 
 
-                <Text style={styles.cardText}>
-                  Nuevo encargado:
-                </Text>
+                <View style={styles.cardText}></View>
                 <TextInput
                   placeholder="Nuevo Encargado"
                   value={newData.chief || empresa.chief}
@@ -130,9 +124,7 @@ const EnterprisesView = () => {
                 />
 
 
-                <Text style={styles.cardText}>
-                  Nuevo DNI:
-                </Text>
+               <View style={styles.cardText}></View>
                 <TextInput
                   placeholder="Nuevo DNI"
                   value={newData.chiefDNI || empresa.chiefDNI}
@@ -141,9 +133,7 @@ const EnterprisesView = () => {
                 />
 
 
-                <Text style={styles.cardText}>
-                  Nuevo telefono:
-                </Text>
+                <View style={styles.cardText}></View>
                 <TextInput
                   placeholderTextColor={'white'}
                   placeholder="Nuevo telefono"
@@ -152,9 +142,7 @@ const EnterprisesView = () => {
                   style={styles.input}
                 />
 
-                <Text style={styles.cardText}>
-                  Nuevo objetivo:
-                </Text>
+               <View style={styles.cardText}></View>
                 <TextInput
                   placeholder="Nuevo objetivo"
                   value={newData.objectives || empresa.objectives}
@@ -163,23 +151,23 @@ const EnterprisesView = () => {
                 />
                 {/* ... otros campos de edición ... */}
 
-                <View style={{padding: 15}}>
+                <View style={{ padding: 15 }}>
 
-                <TouchableOpacity style={{ padding: 15, borderWidth: 2, borderColor: 'white', borderRadius: 25, backgroundColor:'#F89A53' }} title="Cancelar" onPress={handleCancelEdit} >
-                  <Text style={{alignSelf: 'center', fontFamily: 'Epilogue-Variable', color: 'white'}}>
-                    Cancelar
-                  </Text>
+                  <TouchableOpacity style={{ padding: 15, borderWidth: 2, borderColor: 'white', borderRadius: 25, backgroundColor: '#F89A53' }} title="Cancelar" onPress={handleCancelEdit} >
+                    <Text style={{ alignSelf: 'center', fontFamily: 'Epilogue-Variable', color: 'white' }}>
+                      Cancelar
+                    </Text>
                   </TouchableOpacity>
 
-                <TouchableOpacity style={{ padding: 15, borderWidth: 2, borderColor: 'white', borderRadius: 25, backgroundColor:'#F89A53' }} title="Guardar" onPress={() => handleSaveEdit(empresa.id)} >
-                  <Text style={{alignSelf: 'center', fontFamily: 'Epilogue-Variable', color: 'white'}}>
-                    Guardar
-                  </Text>
+                  <TouchableOpacity style={{ padding: 15, borderWidth: 2, borderColor: 'white', borderRadius: 25, backgroundColor: '#F89A53' }} title="Guardar" onPress={() => handleSaveEdit(empresa.id)} >
+                    <Text style={{ alignSelf: 'center', fontFamily: 'Epilogue-Variable', color: 'white' }}>
+                      Guardar
+                    </Text>
                   </TouchableOpacity>
-                
+
                 </View>
-              
-              
+
+
               </View>
 
             ) : (
@@ -189,7 +177,9 @@ const EnterprisesView = () => {
                 <Text style={styles.cardText}>Direccion: {empresa.address}</Text>
                 <Text style={styles.cardText}>Encargado General: {empresa.chief}</Text>
                 <Text style={styles.cardText}>DNI Encargado General: {empresa.chiefDNI}</Text>
-                <Text style={styles.cardText}>Objetivos: {empresa.objectives}</Text>
+                <Text style={styles.cardText}>
+                  Objetivos: {empresa.objectives.join(', ')} {/* Mostrar objetivos separados por coma */}
+                </Text>
                 <Text style={styles.cardText}>Contacto: {empresa.tel}</Text>
                 {/* ... otros campos ... */}
                 <TouchableOpacity title="Editar" onPress={() => handleEditClick(empresa.id)} style={styles.button} >
@@ -268,7 +258,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   cardTitle: {
-    fontSize: 23,
+    fontSize: 25,
     fontWeight: 'bold',
     fontFamily: 'Epilogue-Variable',
     paddingLeft: 5,
@@ -276,8 +266,8 @@ const styles = StyleSheet.create({
   },
   cardText: {
     paddingLeft: 5,
-    padding: 10,
-    fontSize: 16,
+    padding: 5,
+    fontSize: 17,
     color: 'black',
     fontFamily: 'Epilogue-Variable',
 

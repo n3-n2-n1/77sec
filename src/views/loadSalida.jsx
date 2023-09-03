@@ -8,90 +8,101 @@ import { useEffect } from 'react';
 import * as Location from 'expo-location';
 import QRCode from 'react-native-qrcode-svg';
 import moment from 'moment'; // Importa la librería moment para manipular fechas
+import LoadingSpinner from 'react-native-loading-spinner-overlay';
 
 
 
-const MarcarSalida = ({ }) => {
+
+const MarcarSalida = ({}) => {
     const [dni, setDni] = useState('');
     const [guardadoExitoso, setGuardadoExitoso] = useState(false);
     const [location, setLocation] = useState(null);
     const navigation = useNavigation();
     const [qrValue, setQRValue] = useState('');
-
+    const [loading, setLoading] = useState(true); // Inicialmente, muestra la pantalla de carga
+  
     useEffect(() => {
-        // Pedir permiso para acceder a la ubicación
-        (async () => {
-            const { status } = await Location.requestForegroundPermissionsAsync();
-            if (status === 'granted') {
-                // Obtener la ubicación actual
-                const currentLocation = await Location.getCurrentPositionAsync({});
-                setLocation(currentLocation);
-            }
-        })();
-    }, []);
-
-    useEffect(() => {
-        if (location) {
-            // Genera la información del QR con el DNI del vigilante, la ubicación y la hora actual
-            const currentDate = new Date().toLocaleString();
-            const qrData = `DNI: ${dni}\nUbicación: Lat ${location.coords.latitude}, Long ${location.coords.longitude}\nFecha y Hora: ${currentDate}`;
-            setQRValue(qrData);
-        }
-    }, [location, dni]);
-
-    const handleMarcarSalida = async () => {
+      const getLocation = async () => {
         try {
-            if (!location) {
-                console.log('Aún no se ha obtenido la ubicación.');
-                return;
-            }
-    
-            const user = firebase.auth().currentUser;
-            if (!user) {
-                console.log('Usuario no autenticado.');
-                return;
-            }
-    
-            const userDni = dni;
-            const userSnapshot = await database.collection('users').where('dni', '==', userDni).get();
-    
-            if (userSnapshot.empty) {
-                console.log('No se encontró información del usuario.');
-                return;
-            }
-    
-            const userDoc = userSnapshot.docs[0];
-            const userData = userDoc.data();
-    
-            // Obtener el nombre del usuario a partir del DNI
-            const nombre = userData.name; // Supongamos que el nombre está directamente en el documento del usuario
-    
-            // Resto del código para marcar la salida
-            const horasTrabajadasRef = userDoc.ref.collection('horasTrabajadas');
-            const querySnapshot = await horasTrabajadasRef.where('salida', '==', '').orderBy('entrada', 'desc').limit(1).get();
-    
-            if (!querySnapshot.empty) {
-                // Actualizar el registro de entrada encontrado con la marca de salida
-                const documentId = querySnapshot.docs[0].id;
-                const salidaTimestamp = firebase.firestore.Timestamp.now();
-    
-                await horasTrabajadasRef.doc(documentId).update({
-                    salida: moment(salidaTimestamp.toDate()).format('HH:mm:ss'),
-                    nombre: nombre, // Actualizar el nombre
-                });
-    
-                setGuardadoExitoso(true);
-                console.log('Marca de salida registrada con éxito.');
-                alert('Marca de salida registrada con éxito.');
-                navigation.goBack();
-            } else {
-                console.log('No se encontró registro de entrada sin salida para este DNI.');
-            }
+          const { status } = await Location.requestForegroundPermissionsAsync();
+          if (status === 'granted') {
+            const currentLocation = await Location.getCurrentPositionAsync({});
+            setLocation(currentLocation);
+          } else {
+            console.log('Permiso de ubicación no otorgado.');
+          }
         } catch (error) {
-            console.error('Error al marcar la salida:', error);
+          console.error('Error al obtener la ubicación:', error);
+        } finally {
+          setLoading(false); // Cuando se obtiene la ubicación, oculta la pantalla de carga
         }
+      };
+  
+      getLocation();
+    }, []);
+  
+    useEffect(() => {
+      if (location) {
+        const currentDate = new Date().toLocaleString();
+        const qrData = `DNI: ${dni}\nUbicación: Lat ${location.coords.latitude}, Long ${location.coords.longitude}\nFecha y Hora: ${currentDate}`;
+        setQRValue(qrData);
+      }
+    }, [location, dni]);
+  
+    const handleMarcarSalida = async () => {
+      setLoading(true);
+  
+      try {
+        if (!location) {
+          console.log('Aún no se ha obtenido la ubicación.');
+          return;
+        }
+  
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          console.log('Usuario no autenticado.');
+          return;
+        }
+  
+        const userDni = dni;
+        const userSnapshot = await database.collection('users').where('dni', '==', userDni).get();
+  
+        if (userSnapshot.empty) {
+          console.log('No se encontró información del usuario.');
+          return;
+        }
+  
+        const userDoc = userSnapshot.docs[0];
+        const userData = userDoc.data();
+  
+        const nombre = userData.name;
+  
+        const horasTrabajadasRef = userDoc.ref.collection('horasTrabajadas');
+        const querySnapshot = await horasTrabajadasRef.where('salida', '==', '').orderBy('entrada', 'desc').limit(1).get();
+  
+        if (!querySnapshot.empty) {
+          const documentId = querySnapshot.docs[0].id;
+          const salidaTimestamp = firebase.firestore.Timestamp.now();
+  
+          await horasTrabajadasRef.doc(documentId).update({
+            salida: moment(salidaTimestamp.toDate()).format('HH:mm:ss'),
+            nombre: nombre,
+          });
+  
+          setGuardadoExitoso(true);
+          console.log('Marca de salida registrada con éxito.');
+          alert('Marca de salida registrada con éxito.');
+          navigation.goBack();
+        } else {
+          console.log('No se encontró registro de entrada sin salida para este DNI.');
+        }
+      } catch (error) {
+        console.error('Error al marcar la salida:', error);
+      } finally {
+        setLoading(false);
+      }
     };
-    
+  
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
 
@@ -112,7 +123,9 @@ const MarcarSalida = ({ }) => {
             <View style={styles.container2}>
                 <View style={styles.containerIn}>
                     <View style={styles.qr}>
-                        {qrValue ? (
+                        {loading ? (
+                            <LoadingSpinner visible={loading} textContent={'Obteniendo tu ubicación...'} animation={'slide'} textStyle={{ color: '#FFF' }} overlayColor={'black'} />
+                        ) : qrValue ? (
                             <View style={styles.qrContainer}>
                                 <QRCode value={qrValue} size={200} />
                             </View>
@@ -135,7 +148,7 @@ const MarcarSalida = ({ }) => {
                 </View>
             </View>
 
-            
+
         </KeyboardAvoidingView>
     );
 };
@@ -153,8 +166,8 @@ const styles = StyleSheet.create({
         fontWeight: 800,
         paddingRight: 16,
         fontFamily: 'Epilogue-Variable',
-    
-      },
+
+    },
     qr: {
         padding: 15,
         borderColor: 'white',
@@ -234,7 +247,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 2,
         borderColor: 'white'
-      },
+    },
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
@@ -250,7 +263,7 @@ const styles = StyleSheet.create({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-      },
+    },
 });
 
 
