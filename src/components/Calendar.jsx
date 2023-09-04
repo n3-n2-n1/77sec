@@ -71,8 +71,11 @@ const CalendarScreen = () => {
         <Calendar
           theme={{
             borderRadius: 15,
-            arrowWidth: 3,
-            arrowColor: 'black',
+            todayDotColor: 'black',
+            selectedDotColor: 'red',
+            arrowWidth: 40,
+            arrowHeight: 40,
+            arrowColor:' black',
             backgroundColor: '#ffffff',
             calendarBackground: 'white',
             textSectionTitleColor: 'white',

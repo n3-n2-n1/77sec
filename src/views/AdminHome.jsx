@@ -530,21 +530,21 @@ const AdminHome = () => {
                 <Modal visible={isMenuVisible} animationType="slide" transparent={true}>
                     <View style={styles.modalContainer}>
 
-                            <TouchableOpacity onPress={() => setIsMenuVisible(false)} style={styles.button2}>
-                                <Text style={styles.buttonText}>Atrás</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setIsMenuVisible(false)} style={styles.button2}>
+                            <Text style={styles.buttonText}>Atrás</Text>
+                        </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')} onPressOut={() => setIsMenuVisible(false)} >
-                                <Text style={styles.buttonText} >Perfil</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')} onPressOut={() => setIsMenuVisible(false)} >
+                            <Text style={styles.buttonText} >Perfil</Text>
+                        </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>Soporte Tecnico</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>Soporte Tecnico</Text>
+                        </TouchableOpacity>
 
-                            <TouchableOpacity onPress={handleLogout} style={styles.button}>
-                                <Text style={styles.buttonText}>Cerrar Sesión</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity onPress={handleLogout} style={styles.button}>
+                            <Text style={styles.buttonText}>Cerrar Sesión</Text>
+                        </TouchableOpacity>
 
 
                     </View>
@@ -572,6 +572,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#3780C3',
         fontFamily: 'Epilogue-Variable',
     },
+    navText: {
+        fontSize: 11, padding: 0, fontWeight: '600', alignItems: 'center', alignContent: 'center', fontFamily: 'Epilogue-Variable'
+    },
     alerta: {
         borderRadius: 10,
         padding: 20,
@@ -595,6 +598,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 1,
+        fontFamily: 'Epilogue-Variable',
     },
     bottomBar: {
         position: 'absolute',
@@ -609,6 +613,7 @@ const styles = StyleSheet.create({
         shadowOffset: '30',
         shadowOpacity: 0.9,
         elevation: 1
+
     },
     secondaryText: {
         fontFamily: 'Epilogue-Variable',
@@ -632,12 +637,14 @@ const styles = StyleSheet.create({
     main: {
         justifyContent: 'center',
         alignItems: 'center',
+        fontFamily: 'Epilogue-Variable',
     },
     column: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 10,
+
     },
     chatButton: {
         flex: 1,
@@ -652,6 +659,7 @@ const styles = StyleSheet.create({
     logoutButtonText2: {
         color: 'black',
         fontSize: 18,
+        fontFamily: 'Epilogue-Variable',
     },
     footer: {
         flexDirection: 'row',
@@ -878,6 +886,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.9)',
         padding: 15,
         borderRadius: 25,
+        fontFamily: 'Epilogue-Variable',
     },
     button: {
         backgroundColor: 'white',
@@ -887,15 +896,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginBottom: 15,
         width: 150,
-    
-      },
-      buttonText: {
+
+    },
+    buttonText: {
         color: 'black',
         fontWeight: 'bold',
         fontSize: 16,
         fontFamily: 'Epilogue-Variable',
-    
-      },
+
+    },
     button2: {
         backgroundColor: 'white',
         padding: 15,
@@ -915,6 +924,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 18,
         borderRadius: 25,
+        fontFamily: 'Epilogue-Variable',
     },
     menuButton: {
         backgroundColor: 'black',

@@ -21,7 +21,7 @@ const hours = ['07 a 19', '19 a 06'];
 
 
 
-const CrimeFormWeb = () => {
+const CrimeForm = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const { control, handleSubmit, reset } = useForm();
     const [formData, setFormData] = useState({});
@@ -43,6 +43,13 @@ const CrimeFormWeb = () => {
     const handleFilePick = async () => {
         try {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            
+            const uploadPromises = selectedImages.map((imageUri) => {
+                return uploadImage(imageUri, 'image/jpg'); // Asegúrate de que esta función retorna una promesa
+            });
+            await Promise.all(uploadPromises);
+            setUploadedImages([]);
+            
             if (status === 'granted') {
                 const result = await ImagePicker.launchImageLibraryAsync({
                     mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -217,7 +224,9 @@ const CrimeFormWeb = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView 
+        showsVerticalScrollIndicator={false}
+        style={styles.container}>
 
 
             <View style={styles.navbar}>
@@ -235,9 +244,8 @@ const CrimeFormWeb = () => {
             </View>
 
 
-            <View style={{justifyContent:'center'}}>
 
-            <KeyboardAvoidingView style={styles.box}>
+            <KeyboardAvoidingView behavior='padding' style={styles.box}>
 
                 <Text style={styles.titleForm}>Vigilador de turno</Text>
                 <Controller
@@ -263,7 +271,9 @@ const CrimeFormWeb = () => {
 
 
             {/* Notice Type */}
-            <KeyboardAvoidingView style={styles.box}>
+            <KeyboardAvoidingView
+                behavior='padding'
+                style={styles.box}>
                 <Text style={styles.titleForm}>Tipo de novedad</Text>
                 {news.map((newSuccess, index) => (
                     <View style={styles.containerR}>
@@ -287,9 +297,9 @@ const CrimeFormWeb = () => {
                     style={styles.box}
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <KeyboardAvoidingView 
-                        
-                        style={styles.containerR}>
+                        <KeyboardAvoidingView
+                            behavior='padding'
+                            style={styles.containerR}>
 
                             <TextInput
                                 style={styles.input}
@@ -439,10 +449,9 @@ const CrimeFormWeb = () => {
                 <Text style={styles.titleForm}>Descripcion</Text>
                 <Controller
                     control={control}
-                    style={styles.container}
                     render={({ field: { onChange, onBlur, value } }) => (
 
-                        <KeyboardAvoidingView style={styles.container}>
+                        <KeyboardAvoidingView style={styles.containerR}>
 
 
                             <TextInput
@@ -460,9 +469,7 @@ const CrimeFormWeb = () => {
                     defaultValue=""
                 />
 
-                <TouchableOpacity style={styles.buttonSelect} title="Seleccionar Imagen" onPress={handleFilePick} >
-                    <Text style={styles.submitButtonTextImage}>Seleccionar Imagen</Text>
-                </TouchableOpacity>
+
                 {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
 
                 <View style={styles.imagePreviewContainer}>
@@ -471,27 +478,31 @@ const CrimeFormWeb = () => {
                     ))}
                 </View>
             </View>
+            <View style={{
 
-            <View style={styles.container}>
+                flex: 1,
+                padding: 15,
+                backgroundColor: 'white',
+                paddingBottom: 40
+            }}>
+
+                <TouchableOpacity style={styles.buttonSelect} title="Seleccionar Imagen" onPress={handleFilePick} >
+                    <Text style={styles.submitButtonTextImage}>Seleccionar Imagen</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit(handleFormSubmit)} onPressOut={uploadImage}>
                     <Text style={styles.submitButtonText}>Enviar reporte</Text>
                 </TouchableOpacity>
-            </View>
-
 
             </View>
 
-
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '768px',
-        height: '868px',    
-        justifyContent:'center',
+        padding: 15,
         backgroundColor: 'white'
     },
     topBar: {
@@ -527,8 +538,7 @@ const styles = StyleSheet.create({
     titleForm: {
         fontSize: 20,
         color: '#3780C3',
-        padding: 10,
-        paddingLeft: 16,
+        fontWeight:'bold',
         paddingBottom: 15,
     },
     navbar: {
@@ -581,15 +591,13 @@ const styles = StyleSheet.create({
     },
     containerR: {
         flex: 1,
-        paddingBottom: 10,
         paddingTop: 10,
         botton: 0,
-        paddingHorizontal: 15,
         flexDirection: 'column', // Cambio el flexDirection a 'column'
         color: 'black',
         fontSize: 25,
         fontFamily: 'Epilogue-Variable',
-        marginBottom: 12, // Añado marginBottom para separar de la sección anterior
+        marginBottom: 22, // Añado marginBottom para separar de la sección anterior
     },
 
     containerScroll: {
@@ -623,7 +631,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     submitButtonText: {
-        color: 'black',
+        color: 'white',
         fontFamily: 'Epilogue-Variable',
         fontWeight: 'bold',
     },
@@ -682,7 +690,14 @@ const styles = StyleSheet.create({
     },
 
     box: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderColor: '#B8B8C5',
+        elevation: 1,
+        shadowColor:'#B8B8C5',
+        shadowOpacity: 0.9,
+        shadowRadius: 10,
+        borderBottomWidth: 1,
+        padding: 20,
     }
 });
-export default CrimeFormWeb
+export default CrimeForm

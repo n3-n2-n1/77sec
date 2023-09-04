@@ -39,6 +39,7 @@ import CalendarView from './src/views/calendarView';
 import AdminHomeWeb from './src/web/AdminHomeWeb';
 import UserHomeWeb from './src/web/UserHomeWeb';
 import CrimeFormWeb from './src/web/FormWeb'
+import ReportDetailScreenWeb from './src/web/ReportDetailsWeb';
 
 const Stack = createStackNavigator();
 
@@ -85,7 +86,7 @@ export default function App() {
     <Stack.Navigator initialRouteName="CrimeForm">
       {user && isUserAdmin? (
         <>
-          <Stack.Screen name="Home" component={Home} options={{ headerShown: false, title: 'Home - 77Report' }}/>
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false, title: 'Home | IGS' }}/>
          
 
 
@@ -113,7 +114,6 @@ export default function App() {
 
       
       <Stack.Screen name="Alerta" component={AlertComponent} options={{ headerShown: false, title: 'Alerta | IGS' }}/>
-      <Stack.Screen name="Vigilantes" component={VigilantesScreen} options={{ headerShown: false, title: 'Vigilantes | IGS' }}/>
       <Stack.Screen name="vigilantesView" component={UserVigilantesView} options={{ headerShown: false, title: 'Detalle de Vigilante | IGS' }}/>
       
       
@@ -138,6 +138,8 @@ export default function App() {
       
       <Stack.Screen name="reportHistory" component={ReportsScreen} options={{ headerShown: false, title: 'Historial de reportes | IGS' }}/>
       <Stack.Screen name="ReportDetail" component={ReportDetailScreen} options={{ headerShown: false, title:'Detalles de reporte | IGS' }}/>
+      <Stack.Screen name="ReportDetailWeb" component={ReportDetailScreenWeb} options={{ headerShown: false, title:'Detalles de reporte | IGS' }}/>
+
       
       <Stack.Screen name="calendar" component={CalendarScreen} options={{headerShown:false, title:'Calendario'}}/>
       <Stack.Screen name="CalendarView" component={CalendarView} options={{headerShown:false, title:'Calendario'}} />

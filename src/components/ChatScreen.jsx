@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
 import firebase from '../database/firebaseC';
 import { Platform } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
@@ -111,6 +111,8 @@ const ChatScreen = () => {
 
 
   return (
+    <View style={{ flex: 1 }}>
+      
     <View style={styles.container}>
 
       <View style={styles.navbar}>
@@ -129,6 +131,7 @@ const ChatScreen = () => {
 
       </View>
 
+      <ScrollView style={styles.container}>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={messages}
@@ -149,6 +152,7 @@ const ChatScreen = () => {
           </View>
         )}
       />
+      </ScrollView>
 
       {unreadMessages && ( // Mostrar la notificación solo si hay mensajes no leídos
         <Text style={styles.unreadNotification}>¡Tienes mensajes no leídos!</Text>
@@ -178,6 +182,7 @@ const ChatScreen = () => {
         </TouchableOpacity>
       </KeyboardAvoidingView>
 
+    </View>
     </View>
   );
 };

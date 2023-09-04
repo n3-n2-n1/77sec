@@ -22,27 +22,37 @@ const AddAdmin = ({ navigation, route }) => {
   const handleRegister = async () => {
     try {
       // Lógica para registrar un nuevo usuario...
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const userId = userRef.id; // Obtener el ID del usuario recién agregado
 
-      // Obtenemos el ID del usuario creado
-      const userId = userCredential.user.uid;
-
+      console.log('Usuario agregado a Firestore con ID:', userId);
+      await userRef.update({ uid: userId });
+      // Obtener el token de registro
       // Obtener el token de registro
 
       // Guardamos el usuario en la colección "users" de Firestore junto con el token de registro
-      await database.collection('users').doc(userId).set({
+      const userRef = await database.collection('users').add({
         name: name,
         email: email,
         role: 'admin',
         location: location,
-        uid: userId,
         dni: dni,
         cuil: cuil,
         horasTrabajadas: []
       });
 
+      setEmail('');
+      setPassword('');
+      setName('');
+      setRole('');
+      setLocation('');
+      setDNI('');
+      setCuil('');
+      setDirection('');
+
+
       // Redirigimos al usuario a la pantalla de inicio de sesión
-      navigation.navigate('Profile');
+      alert('Usuario creado exitosamente')
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error al registrar el usuario:', error.message);
     }
@@ -239,6 +249,7 @@ const styles = StyleSheet.create({
     position: 'sticky',
     top: 0,
     zIndex: 100,
+    fontFamily: 'Epilogue-Variable',
   },
 
   title: {

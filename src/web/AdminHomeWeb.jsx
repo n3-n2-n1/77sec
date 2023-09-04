@@ -80,15 +80,26 @@ const AdminHomeWeb = () => {
                 <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                     <View style={styles.logo}>
                         <Svg
-                            width="25px"
-                            height="25px"
+                            width="30px"
+                            height="30px"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
+                            stroke="#1C274C"
                         >
-                            <G stroke="#ffffff" strokeWidth={1.5}>
-                                <Circle cx={12} cy={6} r={4} />
-                                <Path d="M20 17.5c0 2.485 0 4.5-8 4.5s-8-2.015-8-4.5S7.582 13 12 13s8 2.015 8 4.5z" />
+                            <G
+                                stroke="white"
+                                strokeWidth={1.5}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <Path
+                                    d="M12.12 12.78a.963.963 0 00-.24 0 3.269 3.269 0 01-3.16-3.27c0-1.81 1.46-3.28 3.28-3.28a3.276 3.276 0 01.12 6.55z"
+                                />
+                                <Path
+                                    d="M18.74 19.38A9.934 9.934 0 0112 22c-2.6 0-4.96-.99-6.74-2.62.1-.94.7-1.86 1.77-2.58 2.74-1.82 7.22-1.82 9.94 0 1.07.72 1.67 1.64 1.77 2.58z"
+                                />
+                                <Path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
                             </G>
                         </Svg>
                         <Text style={styles.logoText}>Hola, Jefe!</Text>
@@ -330,13 +341,13 @@ const AdminHomeWeb = () => {
                 <View style={styles.navbar}>
 
                     <View style={styles.navbarBrand}>
-                        <Text style={{ fontSize: 15, fontWeight: 'bold', color: 'white' }}>Inicio</Text>
+                        <Text style={{ fontSize: 15.5, padding: 2, fontWeight: 'bold', color: 'white', fontFamily:'Epilogue-Variable' }}>Inicio</Text>
                     </View>
 
                     <View style={{ paddingRight: 10 }}>
                         <Svg
-                            width="35px"
-                            height="35px"
+                            width="34px"
+                            height="34px"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -719,7 +730,7 @@ const AdminHomeWeb = () => {
                     <View style={{ backgroundColor: 'white', height: '768px', width: '30%', borderRadius: 25 }}>
                         <View style={{ padding: 15 }}>
 
-                            <View style={{padding: 15}}>
+                            <View style={{ padding: 15 }}>
                                 <Text style={styles.buttonTextAction}>
                                     Presentismo
                                 </Text>
@@ -800,8 +811,9 @@ const styles = StyleSheet.create({
     logoText: {
         fontWeight: 'bold',
         fontSize: 15,
-        padding: 10,
-        color: 'white'
+        padding: 12,
+        color: 'white',
+        fontFamily: 'Epilogue-Variable',
 
     },
     navItem: {
@@ -836,7 +848,8 @@ const styles = StyleSheet.create({
         padding: 25,
     },
     navItemText: {
-        fontSize: '13px',
+        fontSize: 13,
+        fontFamily: 'Epilogue-Variable',
     },
     mainPanel: {
         flex: 1,
@@ -847,13 +860,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'transparent',
         padding: 10,
+        fontFamily: 'Epilogue-Variable',
     },
     navbarBrand: {
         fontSize: 20,
         fontWeight: 'bold',
         padding: 10,
         paddingLeft: 30,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Epilogue-Variable',
     },
     content: {
         flex: 1,

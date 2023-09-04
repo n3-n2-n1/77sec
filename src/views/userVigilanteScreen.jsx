@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import firebase from '../database/firebaseC';
 import Svg, { Path, Circle, ClipPath, Rect } from 'react-native-svg';
+import LoadingScreen from '../views/LoadingScreen'
 
 
 
@@ -10,6 +11,7 @@ const UserVigilantesView = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigation = useNavigation(); // Agregar esta línea
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Cargar la lista de usuarios desde Firebase
@@ -20,12 +22,25 @@ const UserVigilantesView = () => {
         userList.push({ id: doc.id, ...doc.data() });
       });
       setUsers(userList);
+      setIsLoading(false);
     });
   }, []);
 
   const filteredUsers = users.filter((user) =>
     user.name && user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Filtrar usuarios por rol (por ejemplo, "vigilante")
+  const vigilanteUsers = [...new Set(filteredUsers)]
+    .filter((user) => user.role === 'vigilante');
+
+
+  const supervisorUsers = [...new Set(filteredUsers)]
+    .filter((user) => user.role === 'supervisor');
+
+
+  const adminUsers = [...new Set(filteredUsers)]
+    .filter((user) => user.role === 'admin');
 
   return (
     <View style={styles.container}>
@@ -34,38 +49,95 @@ const UserVigilantesView = () => {
           <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
             <Path
               d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
-              fill="#FDC826"
+              fill="#ffffff"
             />
           </Svg>
         </TouchableOpacity>
-        <Text style={styles.title}>
-          Detalles
-        </Text>
+        <Text style={styles.title}>Detalles</Text>
       </View>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Buscar usuario..."
-        placeholderTextColor={'gray'}
-        value={searchTerm}
-        onChangeText={(text) => setSearchTerm(text)}
-      />
-      <View style={styles.section}>
-        {filteredUsers.map((user) => (
-          <TouchableOpacity
-            key={user.name}
-            style={styles.card}
-            onPress={() => {
-              navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
-            }}
-          >
-            <Text style={styles.cardText}>{user.name}</Text>
-            <Text style={styles.cardText}>{user.dni}</Text>
-            <Text style={styles.cardText}>{user.email}</Text>
-            {/* Mostrar más detalles del usuario si es necesario */}
-          </TouchableOpacity>
-        ))}
-      </View>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar usuario..."
+            placeholderTextColor="gray"
+            value={searchTerm}
+            onChangeText={(text) => setSearchTerm(text)}
+          />
+          <View style={styles.section}>
+
+            <Text style={styles.sectionTitle}>Admin</Text>
+            {adminUsers.map((user) => (
+              <TouchableOpacity
+                key={user.name}
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
+                }}
+              >
+                <Text style={styles.cardText}>{user.name}</Text>
+                <Text style={styles.cardText}>{user.dni}</Text>
+                <Text style={styles.cardText}>{user.email}</Text>
+                {/* Mostrar más detalles del usuario si es necesario */}
+              </TouchableOpacity>
+            ))}
+
+            <Text style={styles.sectionTitle}>Supervisores</Text>
+            {supervisorUsers.map((user) => (
+              <TouchableOpacity
+                key={user.name}
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
+                }}
+              >
+                <Text style={styles.cardText}>{user.name}</Text>
+                <Text style={styles.cardText}>{user.dni}</Text>
+                <Text style={styles.cardText}>{user.email}</Text>
+                {/* Mostrar más detalles del usuario si es necesario */}
+              </TouchableOpacity>
+            ))}
+
+            <Text style={styles.sectionTitle}>Vigilantes</Text>
+            {vigilanteUsers.map((user) => (
+              <TouchableOpacity
+                key={user.name}
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
+                }}
+              >
+                <Text style={styles.cardText}>{user.name}</Text>
+                <Text style={styles.cardText}>{user.dni}</Text>
+                <Text style={styles.cardText}>{user.email}</Text>
+                {/* Mostrar más detalles del usuario si es necesario */}
+              </TouchableOpacity>
+            ))}
+
+
+
+            <Text style={styles.sectionTitle}> Todos </Text>
+            {filteredUsers.map((user) => (
+              <TouchableOpacity
+                key={user.name}
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('UserDetails', { user }); // Navegar a la pantalla UserDetailsScreen
+                }}
+              >
+                <Text style={styles.cardText}>{user.name}</Text>
+                <Text style={styles.cardText}>{user.dni}</Text>
+                <Text style={styles.cardText}>{user.email}</Text>
+                {/* Mostrar más detalles del usuario si es necesario */}
+              </TouchableOpacity>
+            ))}
+          </View>
+        </>
+      )}
     </View>
+
   );
 };
 
@@ -92,7 +164,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: 'black'
+    marginTop: 16,
+    color: 'white',
+    fontFamily: 'Epilogue-Variable',
+
   },
   card: {
     marginBottom: 8,

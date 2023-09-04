@@ -122,7 +122,7 @@ const UserHomeWeb = () => {
 
                 <View style={{ justifyContent: 'center', alignContent: 'center' }}>
 
-                    <View style={{ gap: 20, flexDirection: 'row'}}>
+                    <View style={{ gap: 20, flexDirection: 'row' }}>
 
                         <TouchableOpacity style={styles.gridButtonContainerButtonR} onPress={() => navigation.navigate('FormWeb')}>
 
@@ -150,37 +150,13 @@ const UserHomeWeb = () => {
 
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.alerta} onPress={() => navigation.navigate('Alerta')}>
-
-                            <View style={{ padding: 15, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-
-                                <Svg
-                                    width="132px"
-                                    height="132px"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <Path
-                                        d="M6.31 9C8.594 5 9.967 3 12 3c2.31 0 3.77 2.587 6.688 7.761l.364.645c2.425 4.3 3.638 6.45 2.542 8.022S17.786 21 12.364 21h-.728c-5.422 0-8.134 0-9.23-1.572-.951-1.364-.163-3.165 1.648-6.428M12 8v5"
-                                        stroke="white"
-                                        strokeWidth={1.5}
-                                        strokeLinecap="round"
-                                    />
-                                    <Circle cx={12} cy={16} r={1} fill="white" />
-                                </Svg>
-
-                            </View>
-                            <Text style={styles.gridButtonTextA}>Alerta</Text>
-
-                        </TouchableOpacity>
 
                         <TouchableOpacity style={styles.gridButtonContainerButton} onPress={() => navigation.navigate('LoadPresentismo')}>
 
                             <View style={{ padding: 15, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
-                                
-                                <Svg 
-                                
+
+                                <Svg
+
                                     width="132px"
                                     height="132px"
                                     viewBox="0 0 24 24"
@@ -223,6 +199,31 @@ const UserHomeWeb = () => {
                                 </Svg>
                             </View>
                             <Text style={styles.gridButtonText}>Marcar salida</Text>
+
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.alerta} onPress={() => navigation.navigate('Alerta')}>
+
+                            <View style={{ padding: 15, justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+
+                                <Svg
+                                    width="132px"
+                                    height="132px"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <Path
+                                        d="M6.31 9C8.594 5 9.967 3 12 3c2.31 0 3.77 2.587 6.688 7.761l.364.645c2.425 4.3 3.638 6.45 2.542 8.022S17.786 21 12.364 21h-.728c-5.422 0-8.134 0-9.23-1.572-.951-1.364-.163-3.165 1.648-6.428M12 8v5"
+                                        stroke="white"
+                                        strokeWidth={1.5}
+                                        strokeLinecap="round"
+                                    />
+                                    <Circle cx={12} cy={16} r={1} fill="white" />
+                                </Svg>
+
+                            </View>
+                            <Text style={styles.gridButtonTextA}>Alerta</Text>
 
                         </TouchableOpacity>
                     </View>
@@ -295,14 +296,6 @@ const UserHomeWeb = () => {
 
                         <View>
 
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>Soporte Tecnico</Text>
-                            </TouchableOpacity>
-
-                        </View>
-
-                        <View>
-
                             <TouchableOpacity onPress={handleLogout} style={styles.button}>
                                 <Text style={styles.buttonText}>Cerrar Sesión</Text>
                             </TouchableOpacity>
@@ -321,11 +314,11 @@ const UserHomeWeb = () => {
                 </Modal>
 
             </ScrollView>
-                            
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}> IGS SYS | 2023 | Todos los derechos reservados
-                    </Text>
-                </View> 
+
+            <View style={styles.footer}>
+                <Text style={styles.footerText}> IGS SYS | 2023 | Todos los derechos reservados
+                </Text>
+            </View>
 
 
         </ScrollView>
@@ -343,7 +336,7 @@ const styles = StyleSheet.create({
     },
     footer: {
         backgroundColor: 'white',
-        padding: 10,
+        padding: 14,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
     },
@@ -643,33 +636,42 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     button: {
-        backgroundColor: '#F89A53',
-        padding: 10,
-        marginTop: 20,
+        backgroundColor: 'white',
+        padding: 15,
         borderRadius: 25,
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: 'white'
+        backgroundColor: 'white',
+        marginBottom: 15,
+        width: 150,
+
     },
     buttonText: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 16,
+        color: 'black',
+        fontSize: 15,
         fontFamily: 'Epilogue-Variable',
+
     },
     closeButton: {
         position: 'absolute',
-        top: 60,
+        top: 25,
         right: 20,
         zIndex: 1,
         backgroundColor: '#ffffff',
         borderRadius: 25,
-        padding: 15
+        padding: 15,
+        backgroundColor: 'white',
+        padding: 15,
+        borderRadius: 25,
+        alignItems: 'center',
+        backgroundColor: 'white',
+        marginBottom: 15,
+        width: 150,
     },
     closeButtonText: {
         color: 'black',
-        fontSize: 18,
+        fontSize: 15,
         borderRadius: 25,
+
     },
     menuButton: {
         backgroundColor: 'black',

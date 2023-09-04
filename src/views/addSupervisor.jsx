@@ -21,28 +21,35 @@ const AddSupervisor = ({ navigation, route }) => {
 
   const handleRegisterSupervisor = async () => {
     try {
-      // Lógica para registrar un nuevo usuario...
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-      // Obtenemos el ID del usuario creado
-      const userId = userCredential.user.uid;
-
-      // Obtener el token de registro
-
       // Guardamos el usuario en la colección "users" de Firestore junto con el token de registro
-      await database.collection('users').doc(userId).set({
+      const userRef = await database.collection('users').add({
         name: name,
         email: email,
         role: 'supervisor',
         location: location,
-        uid: userId,
         dni: dni,
         cuil: cuil,
         horasTrabajadas: []
       });
 
+      const userId = userRef.id; // Obtener el ID del usuario recién agregado
+
+      console.log('Usuario agregado a Firestore con ID:', userId);
+      await userRef.update({ uid: userId });
+      // Obtener el token de registro
+
+      setEmail('');
+      setPassword('');
+      setName('');
+      setRole('');
+      setLocation('');
+      setDNI('');
+      setCuil('');
+
+      alert('Usuario creado exitosamente')
+
       // Redirigimos al usuario a la pantalla de inicio de sesión
-      navigation.navigate('Profile');
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error al registrar el usuario:', error.message);
     }

@@ -5,6 +5,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Svg, { Path } from 'react-native-svg';
+import { Platform } from 'react-native';
 
 
 const ReportsScreen = () => {
@@ -34,7 +35,7 @@ const ReportsScreen = () => {
   useEffect(() => {
     loadReports();
   }, []);
-  
+
   const filteredReports = reports.filter((report) => {
     // Filtrar por empresaSeleccionada
     const empresas = report.id || []; // Asegúrate de manejar el caso en que empresaSeleccionada sea null o undefined
@@ -46,7 +47,51 @@ const ReportsScreen = () => {
     }
     return false;
   });
-  
+
+  if (Platform.OS === 'web') {
+    return (
+
+      <View style={styles.container}>
+
+        <View style={styles.navbar}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Svg width={30} height={30} viewBox="0 0 1024 1024" fill="#000000">
+              <Path
+                d="M669.6 849.6c8.8 8 22.4 7.2 30.4-1.6s7.2-22.4-1.6-30.4l-309.6-280c-8-7.2-8-17.6 0-24.8l309.6-270.4c8.8-8 9.6-21.6 2.4-30.4-8-8.8-21.6-9.6-30.4-2.4L360.8 480.8c-27.2 24-28 64-0.8 88.8l309.6 280z"
+                fill="#ffffff"
+              />
+            </Svg>
+          </TouchableOpacity>
+          <Text style={styles.title}>Lista de Reportes</Text>
+        </View>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar..."
+          placeholderTextColor={'gray'}
+          value={searchTerm}
+          onChangeText={(text) => setSearchTerm(text)}
+        />
+        <FlatList
+          data={filteredReports}
+          keyExtractor={(item) => item.id} // Utiliza el campo "id" como clave
+          renderItem={({ item }) => (
+            <TouchableOpacity
+
+              style={styles.card}
+              onPress={() => navigation.navigate('ReportDetailWeb', { report: item })}
+            >
+              <Text style={styles.cardText}>ID: {item.id}</Text>
+              <Text style={styles.cardText}>Descripción: {item.predio}</Text>
+              <Text style={styles.cardText}>Empresa: {item.empresaSeleccionada || item.empresa}</Text>
+              <Text style={styles.cardText}>Predio: {item.predio}</Text>
+            </TouchableOpacity>
+          )}
+        />
+
+      </View>
+    );
+  }
+
 
 
   return (
@@ -71,21 +116,21 @@ const ReportsScreen = () => {
         onChangeText={(text) => setSearchTerm(text)}
       />
       <FlatList
-      data={filteredReports}
-      keyExtractor={(item) => item.id} // Utiliza el campo "id" como clave
-      renderItem={({ item }) => (
-        <TouchableOpacity
-        
+        data={filteredReports}
+        keyExtractor={(item) => item.id} // Utiliza el campo "id" como clave
+        renderItem={({ item }) => (
+          <TouchableOpacity
+
             style={styles.card}
-          onPress={() => navigation.navigate('ReportDetail', { report: item })}
-        >
-          <Text style={styles.cardText}>ID: {item.id}</Text>
-          <Text style={styles.cardText}>Descripción: {item.predio}</Text>
-          <Text style={styles.cardText}>Empresa: {item.empresaSeleccionada || item.empresa}</Text>
-          <Text style={styles.cardText}>Predio: {item.predio}</Text>
-        </TouchableOpacity>
-      )}
-    />
+            onPress={() => navigation.navigate('ReportDetail', { report: item })}
+          >
+            <Text style={styles.cardText}>ID: {item.id}</Text>
+            <Text style={styles.cardText}>Descripción: {item.predio}</Text>
+            <Text style={styles.cardText}>Empresa: {item.empresaSeleccionada || item.empresa}</Text>
+            <Text style={styles.cardText}>Predio: {item.predio}</Text>
+          </TouchableOpacity>
+        )}
+      />
 
     </View>
   );

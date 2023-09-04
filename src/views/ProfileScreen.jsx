@@ -99,6 +99,7 @@ const ProfileScreen = () => {
           {/* Agrega más campos de datos del usuario aquí si es necesario */}
         </>
       ) : (
+        
         <LoadingScreen />
       )}
     </View>

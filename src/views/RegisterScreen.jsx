@@ -22,33 +22,33 @@ const RegisterScreen = ({ navigation, route }) => {
 
   const handleRegister = async () => {
     try {
-      // Lógica para registrar un nuevo usuario...
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-      // Obtenemos el ID del usuario creado
-      const userId = userCredential.user.uid;
-
-      // Obtener el token de registro
-
-      // Guardamos el usuario en la colección "users" de Firestore junto con el token de registro
-      await database.collection('users').doc(userId).set({
+      const userRef = await database.collection('users').add({
         name: name,
         email: email,
         role: 'vigilante',
         empresa: location,
-        uid: userId,
         dni: dni,
         cuil: cuil,
-        direccion: direction
+        direccion: direction,
+        horasTrabajadas: []
       });
 
-      // Crear la subcolección "horasTrabajadas" dentro del documento del usuario
-      await database.collection('users').doc(userId).collection('horasTrabajadas').add({
-        // Puedes agregar campos relevantes para la subcolección aquí
-      });
+      const userId = userRef.id; // Obtener el ID del usuario recién agregado
 
-      // Redirigimos al usuario a la pantalla de inicio de sesión
-      navigation.navigate('Profile');
+      console.log('Usuario agregado a Firestore con ID:', userId);
+      await userRef.update({ uid: userId });
+
+      setEmail('');
+      setPassword('');
+      setName('');
+      setRole('');
+      setLocation('');
+      setDNI('');
+      setCuil('');
+      setDirection('');
+      alert('Usuario creado exitosamente')
+
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error al registrar el usuario:', error.message);
     }
