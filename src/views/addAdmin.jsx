@@ -22,12 +22,6 @@ const AddAdmin = ({ navigation, route }) => {
   const handleRegister = async () => {
     try {
       // Lógica para registrar un nuevo usuario...
-      const userId = userRef.id; // Obtener el ID del usuario recién agregado
-
-      console.log('Usuario agregado a Firestore con ID:', userId);
-      await userRef.update({ uid: userId });
-      // Obtener el token de registro
-      // Obtener el token de registro
 
       // Guardamos el usuario en la colección "users" de Firestore junto con el token de registro
       const userRef = await database.collection('users').add({
@@ -40,6 +34,14 @@ const AddAdmin = ({ navigation, route }) => {
         horasTrabajadas: []
       });
 
+      const userId = userRef.id; // Obtener el ID del usuario recién agregado
+
+      console.log('Usuario agregado a Firestore con ID:', userId);
+      await userRef.update({ uid: userId });
+      // Obtener el token de registro
+      // Obtener el token de registro
+
+
       setEmail('');
       setPassword('');
       setName('');
@@ -47,7 +49,6 @@ const AddAdmin = ({ navigation, route }) => {
       setLocation('');
       setDNI('');
       setCuil('');
-      setDirection('');
 
 
       // Redirigimos al usuario a la pantalla de inicio de sesión
@@ -55,6 +56,7 @@ const AddAdmin = ({ navigation, route }) => {
       navigation.navigate('Home');
     } catch (error) {
       console.error('Error al registrar el usuario:', error.message);
+      alert('Error al crear el usuario')
     }
   };
 

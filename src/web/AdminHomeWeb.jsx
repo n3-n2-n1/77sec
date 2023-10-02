@@ -67,6 +67,8 @@ const AdminHomeWeb = () => {
             .catch((error) => {
                 console.error('Error al cerrar sesión:', error.message);
             });
+
+            navigation.navigate('Login')
     };
 
     console.log('ESTE ES EL COMPONENTE WEB')
@@ -715,6 +717,48 @@ const AdminHomeWeb = () => {
                                         </View>
                                         <View>
                                             <Text style={styles.buttonTextAction}>| Marcar Salida</Text>
+                                        </View>
+                                    </View>
+                                </View>
+
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => navigation.navigate('AddAdmin')}>
+                            <View style={{ backgroundColor: 'white', borderRadius: 25, justifyContent: 'flex-start', alignContent: 'center', flexDirection: 'row' }}>
+
+                                <View style={{ justifyContent: 'center' }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
+
+
+                                        <View style={{ flexDirection: 'column', paddingRight: 0, }}>
+                                            <View style={{ justifyContent: 'center' }}>
+                                                <TouchableOpacity style={styles.button}>
+                                                <Svg
+                                                    width="60px"
+                                                    height="60px"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                    <G stroke="#1C274C" strokeWidth={1.5}>
+                                                        <Circle cx={11} cy={6} r={4} />
+                                                        <Path
+                                                        d="M17 10.3l1.333 1.2L21 8.5"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        />
+                                                        <Path
+                                                        d="M18.997 18c.003-.164.003-.331.003-.5 0-2.485-3.582-4.5-8-4.5s-8 2.015-8 4.5S3 22 11 22c2.231 0 3.84-.157 5-.437"
+                                                        strokeLinecap="round"
+                                                        />
+                                                    </G>
+                                                </Svg>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View>
+                                            <Text style={styles.buttonTextAction}> | Agregar Administrador</Text>
                                         </View>
                                     </View>
                                 </View>

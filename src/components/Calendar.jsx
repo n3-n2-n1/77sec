@@ -92,13 +92,18 @@ const CalendarScreen = () => {
           }}
         />
         <SafeAreaView style={styles.contentContainer}>
+
           {selectedDate && events[selectedDate] && (
+
             <ScrollView style={styles.eventContainer}>
+
               <Text style={styles.eventTitle}>Registros el {selectedDate}:</Text>
               {Object.entries(events[selectedDate]).map(([dni, registrosArray], index) => (
                 <ScrollView key={index} style={styles.eventCard}>
                   <Text style={styles.cardTextDNI}>#{dni}</Text>
+
                   {registrosArray.map((registro, index) => (
+
                     <View key={index} style={styles.eventContainerIn}>
                       <Text style={styles.cardText}>DNI: {dni}</Text>
                       <Text style={styles.cardText}>Nombre: {registro.nombre}</Text>
@@ -106,6 +111,7 @@ const CalendarScreen = () => {
                       <Text style={styles.cardText}>Salida: {registro.salida}</Text>
                       <Text style={styles.cardText}>Trabajado: {registro.horasTotal}</Text>
                     </View>
+
                   ))}
                 </ScrollView>
               ))}
@@ -156,14 +162,15 @@ const styles = StyleSheet.create({
   },
   eventContainerIn: {
     backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 25,
+    padding: 12,
+    borderRadius: 20,
     margin: 15
   },
   cardTextDNI: {
     color: 'white',
     fontSize: 15,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    padding: 4,
 
   },
 

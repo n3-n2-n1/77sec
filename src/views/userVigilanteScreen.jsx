@@ -68,7 +68,7 @@ const UserVigilantesView = () => {
           />
           <View style={styles.section}>
 
-            <Text style={styles.sectionTitle}>Admin</Text>
+            <Text style={styles.sectionTitle}>Administradores</Text>
             {adminUsers.map((user) => (
               <TouchableOpacity
                 key={user.name}
